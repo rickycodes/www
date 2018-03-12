@@ -1,0 +1,7 @@
+[package]
+name = "rickycodes"
+version = "0.0.1"
+authors = ["Ricky Miller"]
+
+[dependencies]
+stdweb = { git = "https://github.com/rickycodes/stdweb", branch = "add-scroll-top" }

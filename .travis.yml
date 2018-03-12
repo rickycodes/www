@@ -1,0 +1,9 @@
+language: rust
+dist: trusty
+sudo: false
+rust:
+  - nightly
+
+script:
+  - cargo install -f cargo-web
+  - cargo web build --target=wasm32-unknown-unknown
