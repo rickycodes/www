@@ -237,10 +237,10 @@ footer {
 .slideshow .next {
   position: absolute;
   top: 0;
-  width: 16em;
+  width: 30%;
   background: transparent;
   border: none;
-  height: 340px;
+  height: 100%;
   z-index: 2;
 }
 
