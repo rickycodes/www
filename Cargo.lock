@@ -48,7 +48,7 @@ dependencies = [
 name = "rickycodes"
 version = "0.0.1"
 dependencies = [
- "stdweb 0.4.2 (git+https://github.com/rickycodes/stdweb?branch=add-scroll-top)",
+ "stdweb 0.4.2",
 ]
 
 [[package]]
@@ -90,20 +90,18 @@ dependencies = [
 [[package]]
 name = "stdweb"
 version = "0.4.2"
-source = "git+https://github.com/rickycodes/stdweb?branch=add-scroll-top#6d2ebbe2d635a977217cdb3753f99d62fd82d534"
 dependencies = [
  "discard 1.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures 0.1.20 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.36 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_json 1.0.13 (registry+https://github.com/rust-lang/crates.io-index)",
- "stdweb-derive 0.4.0 (git+https://github.com/rickycodes/stdweb?branch=add-scroll-top)",
- "stdweb-internal-macros 0.1.0 (git+https://github.com/rickycodes/stdweb?branch=add-scroll-top)",
+ "stdweb-derive 0.4.0",
+ "stdweb-internal-macros 0.1.0",
 ]
 
 [[package]]
 name = "stdweb-derive"
 version = "0.4.0"
-source = "git+https://github.com/rickycodes/stdweb?branch=add-scroll-top#6d2ebbe2d635a977217cdb3753f99d62fd82d534"
 dependencies = [
  "quote 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.36 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -114,7 +112,6 @@ dependencies = [
 [[package]]
 name = "stdweb-internal-macros"
 version = "0.1.0"
-source = "git+https://github.com/rickycodes/stdweb?branch=add-scroll-top#6d2ebbe2d635a977217cdb3753f99d62fd82d534"
 dependencies = [
  "base-x 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "quote 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -152,8 +149,5 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum serde_derive 1.0.36 (registry+https://github.com/rust-lang/crates.io-index)" = "6fffe22d41dbddcead5b2c380c4714d44f2eb39292f7e7a0d966d2d45bf56408"
 "checksum serde_derive_internals 0.22.2 (registry+https://github.com/rust-lang/crates.io-index)" = "d2f04ed291686ce195a5c8f554aaf36e50a721fbf829ee3b6151e6f85eccf945"
 "checksum serde_json 1.0.13 (registry+https://github.com/rust-lang/crates.io-index)" = "5c508584d9913df116b91505eec55610a2f5b16e9ed793c46e4d0152872b3e74"
-"checksum stdweb 0.4.2 (git+https://github.com/rickycodes/stdweb?branch=add-scroll-top)" = "<none>"
-"checksum stdweb-derive 0.4.0 (git+https://github.com/rickycodes/stdweb?branch=add-scroll-top)" = "<none>"
-"checksum stdweb-internal-macros 0.1.0 (git+https://github.com/rickycodes/stdweb?branch=add-scroll-top)" = "<none>"
 "checksum syn 0.12.14 (registry+https://github.com/rust-lang/crates.io-index)" = "8c5bc2d6ff27891209efa5f63e9de78648d7801f085e4653701a692ce938d6fd"
 "checksum unicode-xid 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "fc72304796d0818e357ead4e000d19c9c174ab23dc11093ac919054d20a6a7fc"
