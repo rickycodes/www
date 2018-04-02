@@ -90,7 +90,7 @@ dependencies = [
 [[package]]
 name = "stdweb"
 version = "0.4.2"
-source = "git+https://github.com/rickycodes/stdweb?branch=add-scroll-top#bf3b9790902e67d2cfa16b2b2f5d765af213a6b9"
+source = "git+https://github.com/rickycodes/stdweb?branch=add-scroll-top#ca360521b6319e9ccae66327c1f88498adf0c36a"
 dependencies = [
  "discard 1.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures 0.1.20 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -103,7 +103,7 @@ dependencies = [
 [[package]]
 name = "stdweb-derive"
 version = "0.4.0"
-source = "git+https://github.com/rickycodes/stdweb?branch=add-scroll-top#bf3b9790902e67d2cfa16b2b2f5d765af213a6b9"
+source = "git+https://github.com/rickycodes/stdweb?branch=add-scroll-top#ca360521b6319e9ccae66327c1f88498adf0c36a"
 dependencies = [
  "quote 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.36 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -114,7 +114,7 @@ dependencies = [
 [[package]]
 name = "stdweb-internal-macros"
 version = "0.1.0"
-source = "git+https://github.com/rickycodes/stdweb?branch=add-scroll-top#bf3b9790902e67d2cfa16b2b2f5d765af213a6b9"
+source = "git+https://github.com/rickycodes/stdweb?branch=add-scroll-top#ca360521b6319e9ccae66327c1f88498adf0c36a"
 dependencies = [
  "base-x 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "quote 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
