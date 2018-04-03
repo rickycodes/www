@@ -9,7 +9,7 @@ use stdweb::web::event::{
 };
 
 pub fn initialize() {
-  let info: HtmlElement = qs(".info");
+  let info = qs(".info");
   for link in nl(".content a:not(.project-link)") {
     let el: HtmlElement = link.clone().try_into().unwrap();
     el.set_attribute("target", "_blank").unwrap();
