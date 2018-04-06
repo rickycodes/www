@@ -1,8 +1,15 @@
 use util::{nl,create_el};
-use stdweb::web::event::ClickEvent;
+use stdweb::web::event::{
+  ClickEvent,
+  KeyUpEvent
+};
 use stdweb::traits::*;
 use stdweb::unstable::TryInto;
-use stdweb::web::HtmlElement;
+use stdweb::web::{
+  document,
+  window,
+  HtmlElement
+};
 
 macro_rules! prev_next {
   ($slideshow:expr, $slides:expr, $dir:expr) => {
@@ -63,4 +70,29 @@ pub fn initialize() {
       slideshow_next.add_event_listener(slideshow_next_event);
     }
   }
+
+  // use keyboard to navigate
+  let next_prev_click = |selector: &str| {
+    if document().query_selector(selector).unwrap().is_some() {
+      js!( document.querySelector(@{selector}).click(); );
+    }
+  };
+
+  let determine_key = |key: String| {
+    if key == "ArrowLeft" { return "prev" }
+    else if key == "ArrowRight" { return "next" }
+    else { return "lol" };
+  };
+
+  let keyup_event = move |event: KeyUpEvent| {
+    let data_project = document().body().unwrap().get_attribute("data-project");
+    if data_project.is_some() {
+      let key = event.key();
+      let selector = determine_key(key);
+      let selector = &format!(".project.{} .{}", data_project.unwrap(), selector);
+      next_prev_click(selector)
+    }
+  };
+
+  window().add_event_listener(keyup_event);
 }
