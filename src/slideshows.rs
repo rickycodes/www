@@ -79,18 +79,26 @@ pub fn initialize() {
   };
 
   let determine_key = |key: String| {
-    if key == "ArrowLeft" { return "prev" }
-    else if key == "ArrowRight" { return "next" }
-    else { return "lol" };
+    match key.as_ref() {
+      "ArrowLeft" => "prev",
+      "ArrowRight" => "next",
+      _ => "_"
+    }
   };
 
   let keyup_event = move |event: KeyUpEvent| {
     let data_project = document().body().unwrap().get_attribute("data-project");
     if data_project.is_some() {
       let key = event.key();
-      let selector = determine_key(key);
-      let selector = &format!(".project.{} .{}", data_project.unwrap(), selector);
-      next_prev_click(selector)
+      if key == "Escape" {
+        js!( window.location.hash = ""; );
+      } else {
+        let next_prev = determine_key(key);
+        if next_prev != "_" {
+          let selector = &format!(".project.{} .{}", data_project.unwrap(), next_prev);
+          next_prev_click(selector)
+        }
+      }
     }
   };
 
