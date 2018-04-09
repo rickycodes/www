@@ -312,14 +312,6 @@ footer {
   background-position: center;
 }
 
-/* .audio-visualizer .slideshow-container .slideshow div div,
-.emoji-picker .slideshow-container .slideshow div div,
-.moonmoji .slideshow-container .slideshow div div,
-.retrorecord .slideshow-container .slideshow div:nth-child(3) div,
-.retrorecord .slideshow-container .slideshow div:nth-child(4) div {
-  background-size: cover;
-} */
-
 .projects .project img, .projects .project video {
   border: 2px solid lightgrey;
 }
