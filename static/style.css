@@ -205,7 +205,8 @@ footer {
 
 .projects .project {
   position: absolute;
-  width: 100%;
+  width: calc(100% - 4em);
+  margin-left: 4em;
   height: inherit;
   top: 0;
   z-index: 4;
@@ -213,16 +214,10 @@ footer {
   overflow-y: scroll;
   transform: translate3d(100%,0,0) rotateX(0);
   transition: all .4s ease-out;
-  pointer-events: none;
 }
 
 .projects .project .wrap {
-  width: calc(100% - 4em);
-  height: inherit;
   background: white;
-  position: absolute;
-  right: 0;
-  pointer-events: auto;
 }
 
 [data-project='intel'] .projects .project.intel,
