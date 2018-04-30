@@ -215,11 +215,7 @@ footer {
   overflow-y: scroll;
   transform: translate3d(100%,0,0) rotateX(0);
   transition: all .4s ease-out;
-}
-
-.projects .project .wrap {
   background: white;
-  height: inherit;
 }
 
 [data-project='intel'] .projects .project.intel,
