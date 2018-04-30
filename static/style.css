@@ -219,6 +219,7 @@ footer {
 
 .projects .project .wrap {
   background: white;
+  height: inherit;
 }
 
 [data-project='intel'] .projects .project.intel,
