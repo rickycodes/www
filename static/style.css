@@ -75,7 +75,7 @@ h4 {
 }
 
 .content {
-  width: 80%;
+  width: 70vw;
   padding: 2em;
   position: relative;
   z-index: 2;
@@ -118,7 +118,7 @@ h4 {
   top: 0;
   right: 0;
   transform: translate3d(0,0,0) rotateX(0);
-  transition: all .3s ease-out;
+  transition: transform .3s ease-out;
 }
 
 .info.hidden {
@@ -204,16 +204,25 @@ footer {
 }
 
 .projects .project {
-  background: white;
   position: absolute;
-  width: calc(100% - 4em);
+  width: 100%;
   height: inherit;
   top: 0;
-  right: 0;
   z-index: 4;
   transition: all .6s ease;
   overflow-y: scroll;
-  right: -100%;
+  transform: translate3d(100%,0,0) rotateX(0);
+  transition: all .4s ease-out;
+  pointer-events: none;
+}
+
+.projects .project .wrap {
+  width: calc(100% - 4em);
+  height: inherit;
+  background: white;
+  position: absolute;
+  right: 0;
+  pointer-events: auto;
 }
 
 [data-project='intel'] .projects .project.intel,
@@ -222,7 +231,7 @@ footer {
 [data-project='emoji-picker'] .projects .project.emoji-picker,
 [data-project='android-drag-and-drop'] .projects .project.android-drag-and-drop,
 [data-project='audio-visualizer'] .projects .project.audio-visualizer {
-  right: 0;
+  transform: translate3d(0%,0,0) rotateX(0);
 }
 
 .slideshow {
@@ -375,7 +384,7 @@ code {
     font-size: 1em;
   }
 
-  .content, .projects .project {
+  .content, .projects .project .wrap {
     width: 100%;
   }
 
