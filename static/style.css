@@ -197,6 +197,7 @@ footer {
   height: 100%;
   z-index: 3;
   pointer-events: none;
+  display: block;
 }
 
 [data-project] .projects {
@@ -379,8 +380,12 @@ code {
     font-size: 1em;
   }
 
-  .content, .projects .project .wrap {
+  .content, .projects .project {
     width: 100%;
+  }
+
+  .projects .project {
+    margin-left: 0;
   }
 
   .slideshow {
