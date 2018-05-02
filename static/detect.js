@@ -6,6 +6,10 @@
     document.body.appendChild(script)
   } else {
     // womp womp
-    document.querySelector('._projects').style.display = 'none'
+    var els = ['._projects', '.projects']
+    els.forEach(function(selector) {
+      var el = document.querySelector(selector)
+      el.style.display = 'none'
+    })
   }
 })()
