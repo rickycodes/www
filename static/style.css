@@ -409,6 +409,10 @@ code {
     display: none;
   }
 
+  #work-history .cv-link span::after {
+    margin-top: 0;
+  }
+
   html, body {
     font-size: 1em;
   }
