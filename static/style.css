@@ -379,10 +379,9 @@ code {
 }
 
 #work-history .cv-link span::after {
-  content: '↓';
+  content: '+';
   display: block;
-  font-size: 1.4em;
-  margin: -6px 0 0 10px;
+  margin: 0 0 0 10px;
   float: right;
 }
 
@@ -401,16 +400,12 @@ code {
 }
 
 #work-history input#cv-toggle:checked + .cv-link span::after {
-  content: '↑';
+  content: '-';
 }
 
 @media (max-width: 720px) {
   .info, .coord, .x, .y {
     display: none;
-  }
-
-  #work-history .cv-link span::after {
-    margin-top: 0;
   }
 
   html, body {
