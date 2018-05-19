@@ -4,5 +4,4 @@ version = "0.0.1"
 authors = ["Ricky Miller"]
 
 [dependencies]
-stdweb = { git = "https://github.com/rickycodes/stdweb", branch = "add-scroll-top" }
-# stdweb = { path = "../stdweb" }
+stdweb = "0.4.6"
