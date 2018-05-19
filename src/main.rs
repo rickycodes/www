@@ -9,12 +9,16 @@ mod links;
 mod util;
 mod toggle_project;
 mod canvas;
+mod work_history;
 
+use work_history::{
+  scroll_to,
+  bind_work_toggle
+};
 use toggle_project::toggle;
-use util::{qs, get_hash};
+use util::qs;
 use stdweb::traits::*;
 use stdweb::web::{
-  document,
   window,
   Date
 };
@@ -33,18 +37,8 @@ fn main() {
 
   toggle(&mut scrolls);
 
-  // scroll to #work-history and expand
-  let hash = get_hash();
-  if hash == "work-history" {
-    let input_el = document().query_selector("#cv-toggle").unwrap();
-    let scroll_to_el = document().query_selector(&format!("#{}", hash)).unwrap();
-    if input_el.is_some() && scroll_to_el.is_some() {
-      js!{ @(no_return)
-        @{input_el}.click();
-        @{scroll_to_el}.scrollIntoView();
-      }
-    }
-  }
+  scroll_to();
+  bind_work_toggle();
 
   let toggle_project_event = move |_event: HashChangeEvent| {
     toggle(&mut scrolls)
