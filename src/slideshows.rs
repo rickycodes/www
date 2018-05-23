@@ -48,7 +48,7 @@ pub fn initialize() {
       let controls_el = create_el("div", "controls");
 
       for (index, _slide) in slides.iter().enumerate() {
-        let control_el = create_el("a", "control-link");
+        let control_el = create_el("a", "link");
         control_el.set_text_content(&(index + 1).to_string());
         control_el.add_event_listener(enclose!( (slideshow_el, index) move |_:ClickEvent| {
           slideshow_el.set_attribute("data-index", &index.to_string()).unwrap();

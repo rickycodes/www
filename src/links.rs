@@ -10,7 +10,7 @@ use stdweb::web::event::{
 
 pub fn initialize() {
   let info = qs(".info");
-  for link in nl(".content a:not(.project-link)") {
+  for link in nl(".content a:not(.project)") {
     let el: HtmlElement = link.clone().try_into().unwrap();
     el.set_attribute("target", "_blank").unwrap();
     link.add_event_listener(enclose!( (el, info) move |_event: MouseOverEvent| {

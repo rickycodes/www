@@ -1,3 +1,57 @@
+@keyframes rgbshift {
+  0% {
+    text-shadow: 3px 5px 0px #bbb;
+    box-shadow: 3px 5px 0px #bbb;
+    opacity: 1;
+  }
+  4% {
+    text-shadow: 1px 1px 0px rgba(255, 0, 0, .5),
+      -3px -1px 0px rgba(0, 255, 0, .5),
+      -1px 2px 0px rgba(0, 0, 255, .5);
+    box-shadow: 1px 1px 0px rgba(255, 0, 0, .5),
+      -3px -1px 0px rgba(0, 255, 0, .5),
+      -1px 2px 0px rgba(0, 0, 255, .5);
+    opacity: 1;
+  }
+  7% {
+    text-shadow: 4px -1px 0px rgba(255, 0, 0, .5),
+      -3px -1px 0px rgba(0, 255, 0, .5),
+      1px -1px 0px rgba(0, 0, 255, .5);
+    box-shadow: 4px -1px 0px rgba(255, 0, 0, .5),
+      -3px -1px 0px rgba(0, 255, 0, .5),
+      1px -1px 0px rgba(0, 0, 255, .5);
+    opacity: 0.6;
+  }
+  9% {
+    text-shadow: none;
+    box-shadow: none;
+    opacity: 1;
+  }
+  58% {
+    text-shadow: none;
+    box-shadow: none;
+    opacity: 1;
+  }
+  59% {
+    text-shadow: -3px -4px 0px #bbb;
+    box-shadow: -3px -4px 0px #bbb;
+    opacity: 0.6;
+  }
+  62% {
+    text-shadow: 4px -1px 0px rgba(255, 0, 0, .5),
+      -3px -1px 0px rgba(0, 255, 0, .5),
+      1px -1px 0px rgba(0, 0, 255, .5);
+    box-shadow: 4px -1px 0px rgba(255, 0, 0, .5),
+      -3px -1px 0px rgba(0, 255, 0, .5),
+      1px -1px 0px rgba(0, 0, 255, .5);
+    opacity: 1;
+  }
+  67% {
+    text-shadow: none;
+    box-shadow: none;
+  }
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0 }
 
 html, body {
@@ -142,7 +196,7 @@ footer {
   font-family: 'Roboto Mono', monospace;
 }
 
-.project-link, .control-link, .cv-link {
+.link {
   font-family: 'Roboto Mono', monospace;
   cursor: zoom-in;
   display: inline-block;
@@ -160,7 +214,7 @@ footer {
   text-shadow: none;
 }
 
-.cv-link::before, .project-link:before, .control-link:before {
+.link:before {
   content: "";
   position: absolute;
   z-index: -1;
@@ -174,28 +228,17 @@ footer {
   transition: transform .3s ease-out;
 }
 
-.cv-link:hover,
-.cv-link:focus,
-.cv-link:active,
-.project-link:hover,
-.project-link:focus,
-.project-link:active,
-.control-link:hover,
-.control-link:focus,
-.control-link:active {
+.link:hover,
+.link:focus,
+.link:active {
   color: white;
   border: 2px solid black;
+  animation: visible 0.2s, rgbshift 3s infinite;
 }
 
-.cv-link:hover:before,
-.cv-link:focus:before,
-.cv-link:active:before,
-.project-link:hover:before,
-.project-link:focus:before,
-.project-link:active:before,
-.control-link:hover:before,
-.control-link:focus:before,
-.control-link:active:before {
+.link:hover:before,
+.link:focus:before,
+.link:active:before {
   transform: scaleX(1);
 }
 
@@ -294,7 +337,7 @@ footer {
   margin: 1em 0;
 }
 
-.slideshow-container .controls .control-link {
+.slideshow-container .controls .link {
   display: inline-block;
   padding: 0 1em 0 1em;
   margin-right: 1em;
@@ -302,11 +345,11 @@ footer {
   cursor: pointer;
 }
 
-.slideshow[data-index='0'] + .controls .control-link:nth-child(1),
-.slideshow[data-index='1'] + .controls .control-link:nth-child(2),
-.slideshow[data-index='2'] + .controls .control-link:nth-child(3),
-.slideshow[data-index='3'] + .controls .control-link:nth-child(4),
-.slideshow[data-index='4'] + .controls .control-link:nth-child(5) {
+.slideshow[data-index='0'] + .controls .link:nth-child(1),
+.slideshow[data-index='1'] + .controls .link:nth-child(2),
+.slideshow[data-index='2'] + .controls .link:nth-child(3),
+.slideshow[data-index='3'] + .controls .link:nth-child(4),
+.slideshow[data-index='4'] + .controls .link:nth-child(5) {
   background: black;
   color: white;
   pointer-events: none;
@@ -378,7 +421,7 @@ code {
   border-radius: 3px;
 }
 
-#work-history .cv-link span::after {
+#work-history .cv.link span::after {
   content: '+';
   display: block;
   margin: 0 0 0 10px;
@@ -387,19 +430,19 @@ code {
 
 #work-history input#cv-toggle { display: none; }
 
-#work-history input#cv-toggle + .cv-link + .cv-content {
+#work-history input#cv-toggle + .cv.link + .cv-content {
   display: none;
 }
 
-#work-history input#cv-toggle:checked + .cv-link + .cv-content {
+#work-history input#cv-toggle:checked + .cv.link + .cv-content {
   display: block;
 }
 
-#work-history input#cv-toggle:checked + .cv-link {
+#work-history input#cv-toggle:checked + .cv.link {
   cursor: zoom-out;
 }
 
-#work-history input#cv-toggle:checked + .cv-link span::after {
+#work-history input#cv-toggle:checked + .cv.link span::after {
   content: '-';
 }
 
