@@ -74,21 +74,21 @@ a:hover {
   border-color: lightgrey;
 }
 
-h2, h3 {
+h1, h2 {
   margin-top: 2em;
   font-weight: 500;
   padding: 6px 0;
 }
 
-h2 {
+h1 {
   font-size: 1.6em;
 }
 
-h3 {
+h2 {
   font-size: 1.4em;
 }
 
-h4 {
+h3 {
   font-size: .8em;
   margin: -10px 0;
   text-transform: uppercase;
@@ -150,8 +150,8 @@ h4 {
   overflow-y: hidden;
 }
 
-.content h2:first-child,
-.projects .project h3:first-child {
+.content h1:first-child,
+.projects .project h2:first-child {
   margin-top: 0;
 }
 
