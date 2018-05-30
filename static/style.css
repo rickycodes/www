@@ -355,20 +355,9 @@ footer {
   pointer-events: none;
 }
 
-.slideshow-container .slideshow img,
-.slideshow-container .slideshow video {
-  max-height: 100%;
-  object-fit: fill;
-}
-
-.slideshow-container .slideshow div div {
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.projects .project img, .projects .project video {
-  border: 2px solid lightgrey;
+.slideshow-container .slideshow div img {
+  object-fit: contain;
+  max-width: 100%;
 }
 
 .projects .project .close-link {
