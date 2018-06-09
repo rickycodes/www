@@ -6,24 +6,96 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
     <title>Ricky's WWWebsite</title>
-    <link href='https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono' rel='stylesheet'>
-    <style>.projects { display: none; }</style>
-    <link href='style.css' rel='stylesheet'>
 
     <!-- social woo woo -->
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:creator" content="@rickycodes" />
-    <meta property="og:url" content="https://ricky.codes/" />
-    <meta property="og:title" content="Ricky Miller's wwwebsite" />
-    <meta property="og:description" content="online wwwebsite of software developer Ricky Miller" />
-    <meta property="og:image" content="https://ricky.codes/avi.jpg" />
+    <meta name='twitter:card' content='summary' />
+    <meta name='twitter:creator' content='@rickycodes' />
+    <meta property='og:url' content='https://ricky.codes/' />
+    <meta property='og:title' content="Ricky Miller's wwwebsite" />
+    <meta property='og:description' content='online wwwebsite of software developer Ricky Miller' />
+    <meta property='og:image' content='https://ricky.codes/avi.jpg' />
 
     <meta name='description' content='online wwwebsite of software developer Ricky Miller'>
     <meta name='author' content='Ricky Miller'>
     <meta name='keywords' content='developer, software, JavaScript, rust, react, résumé'>
 
     <link rel='icon' href='favicon.png'>
+    <style>
+    ._container {
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+    }
 
+    .content {
+      width: 70vw;
+      padding: 2em;
+      position: relative;
+      z-index: 2;
+      text-shadow: 0px 0px .2em white,
+        0px 0px .2em white;
+    }
+
+    .content p {
+      margin: 2em 0;
+    }
+
+    .content h1:first-child,
+    .projects .project h2:first-child {
+      margin-top: 0;
+    }
+
+    .projects { display: none; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0 }
+
+    html, body {
+      margin: 0; padding: 0;
+      letter-spacing: .02em;
+      line-height: 1.8em;
+      font-size: 1.16em;
+      font-family: 'Roboto', sans-serif;
+      cursor: crosshair;
+    }
+
+    a {
+      color: black;
+      text-decoration: none;
+      border-bottom: 2px solid black;
+      transition: all .3s ease-out;
+    }
+
+    a:hover {
+      border-color: lightgrey;
+    }
+
+    h1, h2 {
+      margin-top: 2em;
+      font-weight: 500;
+      padding: 6px 0;
+    }
+
+    h1 {
+      font-size: 1.6em;
+    }
+
+    h2 {
+      font-size: 1.4em;
+    }
+
+    h3 {
+      font-size: .8em;
+      margin: -10px 0;
+      text-transform: uppercase;
+      font-family: 'Roboto Mono', monospace;
+      font-weight: normal;
+    }
+    </style>
   </head>
   <body>
     <div class='_container'>
@@ -96,16 +168,6 @@
           </p>
         </div>
       </div>
-      <!--
-      <h3>Other roles<br /><small>Mid-level, entry level roles</small></h3>
-      <p>
-        <ul>
-          <li>2014, Metalab: An interface design firm.</li>
-          <li>2010-2013, High Road: A communications agency.</li>
-          <li>2009, BIONIQ: An e-commerce and web solutions company.</li>
-        </ul>
-      </p>
-      -->
       <footer>
         Built with <a title='A systems programming language that runs blazingly fast' href='https://www.rust-lang.org/'>Rust</a> • <a title='If you see something, say something' href='https://github.com/rickycodes/www/issues'>File a bug on this website</a><br />
         Icons and cursors made with <a href='https://hundredrabbits.itch.io/dotgrid'>Dotgrid</a><br />
@@ -256,35 +318,34 @@
           </p>
         </div>
       </div>
-      <!-- <div class='project glitch-bitmapdata'>
-        <a href='#' class='close-link'>close</a>
-        <div class='content'>
-          <h3>glitch bitmapdata</h3>
-          <div class='slideshow-container'>
-            <div class='slideshow' data-index='0'>
-              <div><img data-src="images/intel_preview.png" /></div>
-              <div><img data-src="images/intel_01.png" /></div>
-              <div><img data-src="images/intel_02.png" /></div>
-              <div><img data-src="images/intel_03.png" /></div>
-              <div><img data-src="images/intel_04.png" /></div>
-            </div>
-          </div>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pharetra tortor vel tellus vestibulum, lobortis condimentum tellus sagittis. Donec eget venenatis sem. Fusce vestibulum convallis magna, quis efficitur nunc placerat in. Vestibulum mauris nunc, auctor venenatis diam vel, gravida consectetur felis. Praesent malesuada ac augue eget scelerisque. Sed pretium risus nec tortor porttitor, sed imperdiet risus porta. Sed vel ligula vel sem commodo pulvinar eget non ex. Phasellus posuere viverra dolor eget congue. Nunc pulvinar tristique velit, et consequat augue. Quisque aliquam fringilla est, eu finibus magna tempus et. Aenean pharetra elit in placerat tempus. Suspendisse tincidunt sodales augue, a tempus nulla. Curabitur imperdiet, ex id porta lacinia, ex justo egestas nulla, quis porttitor urna dolor vel magna.
-          </p>
-        </div>
-      </div> -->
       <a href='#' class='close'></a>
     </div>
     <div class='info hidden'></div>
     <div class='coord'></div>
     <script src='detect.js'></script>
     <script async src='https://www.googletagmanager.com/gtag/js?id=UA-71959023-1'></script>
+    <noscript class='deferred'>
+      <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono'>
+      <link rel='stylesheet' href='projects.css'/>
+      <link rel='stylesheet' href='style.css'>
+    </noscript>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'UA-71959023-1');
+
+      var loadDeferredStyles = function() {
+        var addStylesNode = document.querySelector('.deferred');
+        var replacement = document.createElement('div');
+        replacement.innerHTML = addStylesNode.textContent;
+        document.body.appendChild(replacement)
+        addStylesNode.parentElement.removeChild(addStylesNode);
+      };
+      var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+          window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+      if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+      else window.addEventListener('load', loadDeferredStyles);
     </script>
   </body>
 </html>

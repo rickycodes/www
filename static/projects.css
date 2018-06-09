@@ -1,0 +1,182 @@
+[data-project] > .content {
+  height: 100vh;
+  overflow-y: hidden;
+}
+
+.projects {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+  display: block;
+}
+
+[data-project] .projects {
+  pointer-events: auto;
+}
+
+.projects .project {
+  position: absolute;
+  width: calc(100% - 4em);
+  margin-left: 4em;
+  height: inherit;
+  top: 0;
+  z-index: 4;
+  transition: all .6s ease;
+  overflow-y: scroll;
+  transform: translate3d(100%,0,0) rotateX(0);
+  transition: all .4s ease-out;
+  background: white;
+}
+
+[data-project='intel'] .projects .project.intel,
+[data-project='moonmoji'] .projects .project.moonmoji,
+[data-project='retrorecord'] .projects .project.retrorecord,
+[data-project='emoji-picker'] .projects .project.emoji-picker,
+[data-project='android-drag-and-drop'] .projects .project.android-drag-and-drop,
+[data-project='audio-visualizer'] .projects .project.audio-visualizer {
+  transform: translate3d(0%,0,0) rotateX(0);
+}
+
+.projects .project .close-link {
+  display: block;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  text-indent: -999999%;
+  overflow: hidden;
+  background: url("images/close.png") center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  position: absolute;
+  top: .6em;
+  right: .6em;
+  transition: opacity .3s ease-out;
+}
+
+.projects .project .close-link:hover {
+  opacity: .3;
+}
+
+.projects .close {
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  opacity: .4;
+}
+
+[data-project] .close {
+  visibility: visible;
+}
+
+.projects .close:hover {
+  cursor: url("images/close.png") 50 50, pointer;
+}
+
+.projects .close.hidden {
+  display: none;
+}
+
+/* consider putting this in another stylesheet as well? */
+
+.slideshow {
+  position: relative;
+  height: 380px;
+  border: 2px solid lightgrey;
+  overflow: hidden;
+  background: radial-gradient(white, rgb(0,0,0,.1));
+}
+
+.slideshow .prev,
+.slideshow .next {
+  position: absolute;
+  top: 0;
+  width: 30%;
+  background: transparent;
+  border: none;
+  height: 100%;
+  z-index: 2;
+}
+
+.slideshow .prev {
+  left: 0;
+  cursor: url("images/prev.png") 30 50, pointer;
+}
+.slideshow .next {
+  right: 0;
+  cursor: url("images/next.png") 30 50, pointer;
+}
+
+.slideshow div {
+  /* slides */
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  z-index: 1;
+}
+
+.slideshow div * {
+  height: 100%;
+  transition: opacity .3s ease-out;
+  opacity: 0;
+}
+
+.slideshow[data-index='0'] div:nth-child(1) *,
+.slideshow[data-index='1'] div:nth-child(2) *,
+.slideshow[data-index='2'] div:nth-child(3) *,
+.slideshow[data-index='3'] div:nth-child(4) *,
+.slideshow[data-index='4'] div:nth-child(5) * {
+  opacity: 1;
+}
+
+.slideshow-container .controls {
+  margin: 1em 0;
+}
+
+.slideshow-container .controls .link {
+  display: inline-block;
+  padding: 0 1em 0 1em;
+  margin-right: 1em;
+  font-size: .8em;
+  cursor: pointer;
+}
+
+.slideshow[data-index='0'] + .controls .link:nth-child(1),
+.slideshow[data-index='1'] + .controls .link:nth-child(2),
+.slideshow[data-index='2'] + .controls .link:nth-child(3),
+.slideshow[data-index='3'] + .controls .link:nth-child(4),
+.slideshow[data-index='4'] + .controls .link:nth-child(5) {
+  background: black;
+  color: white;
+  pointer-events: none;
+}
+
+.slideshow-container .slideshow div img {
+  object-fit: contain;
+  max-width: 100%;
+}
+
+@media (max-width: 720px) {
+  .content, .projects .project {
+    width: 100%;
+  }
+
+  .projects .project {
+    margin-left: 0;
+  }
+
+  .slideshow {
+    height: 260px;
+  }
+}
