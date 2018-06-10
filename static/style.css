@@ -196,6 +196,18 @@ code {
 }
 
 @media (max-width: 720px) {
+  .content, .projects .project {
+    width: 100%;
+  }
+
+  .projects .project {
+    margin-left: 0;
+  }
+
+  .slideshow {
+    height: 260px;
+  }
+
   .info, .coord, .x, .y {
     display: none;
   }
