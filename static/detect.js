@@ -1,6 +1,6 @@
 // WebAssembly Feature Detection
 (function () {
-  if (window.hasOwnProperty('WebAssembly')) {
+  if ('WebAssembly' in window) {
     var script = document.createElement('script')
     script.setAttribute('src', 'rickycodes.js')
     document.body.appendChild(script)
