@@ -10,9 +10,7 @@ mod util;
 mod toggle_project;
 mod canvas;
 mod work_history;
-// mod lazy_load_images;
 
-// use lazy_load_images::lazy_load_images;
 use work_history::{
   scroll_to,
   bind_work_toggle
@@ -41,7 +39,6 @@ fn main() {
 
   scroll_to();
   bind_work_toggle();
-  // lazy_load_images();
 
   let toggle_project_event = move |_event: HashChangeEvent| {
     toggle(&mut scrolls)
