@@ -41,10 +41,12 @@ pub fn scroll_to() {
 
 pub fn bind_work_toggle() {
   let input_el = document().query_selector("#cv-toggle").unwrap().unwrap();
-  input_el.add_event_listener(enclose!( (input_el) move |_: ClickEvent| {
+  let click_event = enclose!( (input_el) move |_: ClickEvent| {
     if is_checked(input_el.clone()) {
       let scroll_to_el = document().query_selector("#work-history").unwrap().unwrap();
       scroll_into_view(scroll_to_el);
     }
-  }));
+  });
+
+  input_el.add_event_listener(click_event);
 }
