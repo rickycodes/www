@@ -7,7 +7,7 @@
   } else {
     // womp womp
     var els = ['._projects', '.projects']
-    els.forEach(function(selector) {
+    els.forEach(function (selector) {
       var el = document.querySelector(selector)
       el.style.display = 'none'
     })
