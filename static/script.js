@@ -36,14 +36,35 @@
     }
   }
 
-  var init = function () {
+  var attachScript = function (source) {
+    var script = document.createElement('script')
+    script.setAttribute('src', source.src)
+    'type' in source && script.setAttribute('type', source.type)
+    document.body.appendChild(script)
+  }
+
+  var attachScripts = function () {
+    var scripts = [
+      { src: 'detect.js' },
+      { type: 'async', src: 'https://www.googletagmanager.com/gtag/js?id=UA-71959023-1' }
+    ]
+
+    scripts.map(attachScript)
+  }
+
+  var setupGTag = function () {
     window.dataLayer = window.dataLayer || []
     function gtag () { window.dataLayer.push(arguments) }
     gtag('js', new Date())
     gtag('config', 'UA-71959023-1')
+  }
+
+  var init = function () {
     if (raf) raf(function () { window.setTimeout(loadDeferredStyles, 0) })
     else window.addEventListener('load', loadDeferredStyles)
+    setupGTag()
     lazyLoadImages()
+    attachScripts()
   }
 
   document.addEventListener('DOMContentLoaded', init)
