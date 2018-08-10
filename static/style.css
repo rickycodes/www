@@ -150,17 +150,13 @@ footer {
   transition: transform .3s ease-out;
 }
 
-.link:hover,
-.link:focus,
-.link:active {
+.link:hover {
   color: white;
   border: 2px solid black;
   animation: visible 0.2s, rgbshift 3s infinite;
 }
 
-.link:hover:before,
-.link:focus:before,
-.link:active:before {
+.link:hover:before {
   transform: scaleX(1);
 }
 
