@@ -10,6 +10,39 @@ use stdweb::web::event::{
 
 pub fn initialize() {
   let info = qs(".info");
+
+  let cursor = qs(".cursor");
+  let close = qs(".close");
+
+  close.add_event_listener(enclose!( (cursor) move |_event: MouseOverEvent| {
+    cursor.class_list().add( "close" ).unwrap();
+  }));
+
+  close.add_event_listener(enclose!( (cursor) move |_event: MouseOutEvent| {
+    cursor.class_list().remove( "close" ).unwrap();
+  }));
+
+  for prev in nl(".slideshow .prev") {
+    console!(log, &prev);
+    prev.add_event_listener(enclose!( (cursor) move |_event: MouseOverEvent| {
+      cursor.class_list().add( "prev" ).unwrap();
+    }));
+
+    prev.add_event_listener(enclose!( (cursor) move |_event: MouseOutEvent| {
+      cursor.class_list().remove( "prev" ).unwrap();
+    }));
+  }
+
+  for next in nl(".slideshow .next") {
+    next.add_event_listener(enclose!( (cursor) move |_event: MouseOverEvent| {
+      cursor.class_list().add( "next" ).unwrap();
+    }));
+
+    next.add_event_listener(enclose!( (cursor) move |_event: MouseOutEvent| {
+      cursor.class_list().remove( "next" ).unwrap();
+    }));
+  }
+
   for link in nl(".content a:not(.project)") {
     let el: HtmlElement = link.clone().try_into().unwrap();
     el.set_attribute("target", "_blank").unwrap();

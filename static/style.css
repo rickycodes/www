@@ -191,6 +191,30 @@ code {
   content: '-';
 }
 
+.cursor {
+  width: 200px;
+  height: 200px;
+  position: fixed;
+  z-index: 4;
+  pointer-events: none;
+  background-image: none;
+  background-size: cover;
+}
+
+.cursor.close {
+  background-image: url('images/close.svg');
+}
+
+.cursor.prev {
+  background-image: url('images/prev.svg');
+  background-position-x: -40px;
+}
+
+.cursor.next {
+  background-image: url('images/next.svg');
+  background-position-x: 40px;
+}
+
 @media (max-width: 720px) {
   .content, .projects .project {
     width: 100%;

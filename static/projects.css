@@ -48,7 +48,7 @@
   height: 40px;
   text-indent: -999999%;
   overflow: hidden;
-  background: url("images/close.png") center;
+  background: url("images/close.svg") center;
   background-size: contain;
   background-repeat: no-repeat;
   border: none;
@@ -75,10 +75,7 @@
 
 [data-project] .close {
   visibility: visible;
-}
-
-.projects .close:hover {
-  cursor: url("images/close.png") 50 50, pointer;
+  cursor: none;
 }
 
 .projects .close.hidden {
@@ -99,20 +96,19 @@
 .slideshow .next {
   position: absolute;
   top: 0;
-  width: 30%;
+  width: 40%;
   background: transparent;
   border: none;
   height: 100%;
-  z-index: 2;
+  z-index: 3;
+  cursor: none;
 }
 
 .slideshow .prev {
   left: 0;
-  cursor: url("images/prev.png") 30 50, pointer;
 }
 .slideshow .next {
   right: 0;
-  cursor: url("images/next.png") 30 50, pointer;
 }
 
 .slideshow div {
