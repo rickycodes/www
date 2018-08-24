@@ -97,12 +97,12 @@
   display: block;
   top: 0;
   right: 0;
-  transform: translate3d(0,0,0) rotateX(0);
+  transform: translate3d(0,0,0);
   transition: transform .3s ease-out;
 }
 
 .info.hidden {
-  transform: translate3d(0,-100%,0) rotateX(0);
+  transform: translate3d(0,-100%,0);
 }
 
 ul {
