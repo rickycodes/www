@@ -73,6 +73,11 @@
   opacity: .4;
 }
 
+.projects .close div {
+  width: 4em;
+  height: 100%;
+}
+
 [data-project] .close {
   visibility: visible;
   cursor: none;

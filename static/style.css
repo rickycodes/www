@@ -228,7 +228,7 @@ code {
     height: 260px;
   }
 
-  .info, .coord, .x, .y {
+  .cursor, .info, .coord, .x, .y {
     display: none;
   }
 
