@@ -13,6 +13,14 @@ use stdweb::web::event::{
   ResizeEvent
 };
 
+macro_rules! cursor {
+  ($el:expr, $x:expr, $y:expr) => {
+    $el.set_attribute("style", &format!(
+      "transform: translate3d({},{},0);", $x, $y
+    )).unwrap();
+  }
+}
+
 fn rect(context: &CanvasRenderingContext2d, x: f64, y: f64) {
   let width = get_range(4.0, 40.0);
   let height = get_range(4.0, 80.0);
@@ -59,11 +67,9 @@ pub fn initialize () {
     }
 
     qs(".coord").set_text_content(&format!("_x: {}, _y: {}", x, y));
-    qs(".x").set_attribute("style", &format!("left: {}px", x)).unwrap();
-    qs(".y").set_attribute("style", &format!("top: {}px", y)).unwrap();
-    qs(".cursor").set_attribute("style", &format!(
-      "left: {}px; top: {}px", x - offset, y - offset
-    )).unwrap();
+    cursor!(qs(".x"), &format!("{}px", x), 0);
+    cursor!(qs(".y"), 0, &format!("{}px", y));
+    cursor!(qs(".cursor"), &format!("{}px", x - offset), &format!("{}px", y - offset));
   };
 
   window().add_event_listener(resize_event);
