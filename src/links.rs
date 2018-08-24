@@ -8,39 +8,33 @@ use stdweb::web::event::{
   MouseOutEvent
 };
 
+macro_rules! cursor_hover_events {
+  ($el:expr, $cursor:expr, $class:expr) => {
+    let c = $cursor;
+    $el.add_event_listener(enclose!( (c) move |_event: MouseOverEvent| {
+      c.class_list().add( $class ).unwrap();
+    }));
+
+    $el.add_event_listener(enclose!( (c) move |_event: MouseOutEvent| {
+      c.class_list().remove( $class ).unwrap();
+    }));
+  }
+}
+
 pub fn initialize() {
   let info = qs(".info");
 
   let cursor = qs(".cursor");
-  let close = qs(".close");
+  let close = qs(".close div");
 
-  close.add_event_listener(enclose!( (cursor) move |_event: MouseOverEvent| {
-    cursor.class_list().add( "close" ).unwrap();
-  }));
-
-  close.add_event_listener(enclose!( (cursor) move |_event: MouseOutEvent| {
-    cursor.class_list().remove( "close" ).unwrap();
-  }));
+  cursor_hover_events!(close, &cursor, "close");
 
   for prev in nl(".slideshow .prev") {
-    console!(log, &prev);
-    prev.add_event_listener(enclose!( (cursor) move |_event: MouseOverEvent| {
-      cursor.class_list().add( "prev" ).unwrap();
-    }));
-
-    prev.add_event_listener(enclose!( (cursor) move |_event: MouseOutEvent| {
-      cursor.class_list().remove( "prev" ).unwrap();
-    }));
+    cursor_hover_events!(prev, &cursor, "prev");
   }
 
   for next in nl(".slideshow .next") {
-    next.add_event_listener(enclose!( (cursor) move |_event: MouseOverEvent| {
-      cursor.class_list().add( "next" ).unwrap();
-    }));
-
-    next.add_event_listener(enclose!( (cursor) move |_event: MouseOutEvent| {
-      cursor.class_list().remove( "next" ).unwrap();
-    }));
+    cursor_hover_events!(next, &cursor, "next");
   }
 
   for link in nl(".content a:not(.project)") {
