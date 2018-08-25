@@ -29,6 +29,10 @@ pub fn initialize() {
 
   cursor_hover_events!(close, &cursor, "close");
 
+  for project in nl("._projects .project") {
+    cursor_hover_events!(project, &cursor, "zoom");
+  }
+
   for prev in nl(".slideshow .prev") {
     cursor_hover_events!(prev, &cursor, "prev");
   }

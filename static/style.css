@@ -120,7 +120,6 @@ footer {
 
 .link {
   font-family: 'Roboto Mono', monospace;
-  cursor: zoom-in;
   display: inline-block;
   vertical-align: middle;
   transform: perspective(1px) translateZ(0);
@@ -160,6 +159,14 @@ footer {
   transform: scaleX(1);
 }
 
+.link.project {
+  cursor: none;
+}
+
+.link.cv {
+  cursor: pointer;
+}
+
 code {
   padding: 0.2em 0.4em;
   background-color: rgba(27,31,35,0.05);
@@ -181,10 +188,6 @@ code {
 
 #work-history input#cv-toggle:checked + .cv.link + .cv-content {
   display: block;
-}
-
-#work-history input#cv-toggle:checked + .cv.link {
-  cursor: zoom-out;
 }
 
 #work-history input#cv-toggle:checked + .cv.link span::after {
@@ -214,7 +217,8 @@ code {
 
 .cursor.close .cursor-close,
 .cursor.prev .cursor-prev,
-.cursor.next .cursor-next {
+.cursor.next .cursor-next,
+.cursor.zoom .cursor-zoom {
   display: block;
 }
 
