@@ -21,6 +21,7 @@
 
     <link rel='icon' href='favicon.png'>
     <style>
+    .cursor svg { display: none; }
     ._container {
       position: fixed;
       z-index: 1;
@@ -101,7 +102,11 @@
     <noscript class='wat'>
       y u no JavaScript!? (屮ಠ益ಠ)屮
     </noscript>
-    <div class='cursor'></div>
+    <div class='cursor'>
+      <svg class='cursor-close' fill="none" height="300" stroke-width="5" width="300" xmlns="http://www.w3.org/2000/svg"><path d="m60 60 180 180m0-180-180 180" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="27"/></svg>
+      <svg class='cursor-prev' fill="none" height="300" stroke-width="5" width="300" xmlns="http://www.w3.org/2000/svg"><path d="m240 60-90 90 90 90" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="27"/></svg>
+      <svg class='cursor-next' fill="none" height="300" stroke-width="5" width="300" xmlns="http://www.w3.org/2000/svg"><path d="m60 60 90 90-90 90" fill="none" stroke="#000" stroke-linejoin="round" stroke-width="27"/></svg>
+    </div>
     <div class='_container'>
       <div class='x'></div>
       <div class='y'></div>

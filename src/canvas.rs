@@ -58,7 +58,6 @@ pub fn initialize () {
   let mouse_move_event = move |event: MouseMoveEvent| {
     let x = f64::from(event.client_x());
     let y = f64::from(event.client_y());
-    let offset = f64::from(200/2);
 
     throttle_count += 1;
     if throttle_count == throttle_every {
@@ -69,7 +68,7 @@ pub fn initialize () {
     qs(".coord").set_text_content(&format!("_x: {}, _y: {}", x, y));
     cursor!(qs(".x"), &format!("{}px", x), 0);
     cursor!(qs(".y"), 0, &format!("{}px", y));
-    cursor!(qs(".cursor"), &format!("{}px", x - offset), &format!("{}px", y - offset));
+    cursor!(qs(".cursor"), &format!("{}px", x), &format!("{}px", y));
   };
 
   window().add_event_listener(resize_event);

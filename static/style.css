@@ -192,27 +192,30 @@ code {
 }
 
 .cursor {
-  width: 200px;
-  height: 200px;
   position: fixed;
   z-index: 4;
   pointer-events: none;
-  background-image: none;
-  background-size: cover;
 }
 
-.cursor.close {
-  background-image: url('images/close.svg');
+.cursor svg {
+  position: absolute;
+  top: -150px;
+  left: -150px;
+  display: none;
 }
 
-.cursor.prev {
-  background-image: url('images/prev.svg');
-  background-position-x: -40px;
+.cursor.prev .cursor-prev {
+  left: -200px;
 }
 
-.cursor.next {
-  background-image: url('images/next.svg');
-  background-position-x: 40px;
+.cursor.next .cursor-next {
+  left: -100px;
+}
+
+.cursor.close .cursor-close,
+.cursor.prev .cursor-prev,
+.cursor.next .cursor-next {
+  display: block;
 }
 
 @media (max-width: 720px) {
