@@ -227,6 +227,11 @@ code {
 }
 
 @media (max-width: 720px) {
+  a.webring {
+    display: block;
+    float: none;
+  }
+
   .content, .projects .project {
     width: 100%;
   }
