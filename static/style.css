@@ -200,6 +200,10 @@ code {
   pointer-events: none;
 }
 
+.cursor > div {
+  transform: scale(0.5);
+}
+
 .cursor svg {
   position: absolute;
   top: -150px;
