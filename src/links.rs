@@ -42,9 +42,13 @@ pub fn initialize() {
   }
 
   for link in nl(".content a:not(.project)") {
-    let el: HtmlElement = link.clone().try_into().unwrap();
+    let el: HtmlElement = link.try_into().unwrap();
     el.set_attribute("target", "_blank").unwrap();
     el.set_attribute("rel", "noopener").unwrap();
+  }
+
+  for link in nl(".content a[title]") {
+    let el: HtmlElement = link.clone().try_into().unwrap();
     link.add_event_listener(enclose!( (el, info) move |_event: MouseOverEvent| {
       let title = el.get_attribute("title");
       if title != None {
