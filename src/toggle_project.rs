@@ -21,6 +21,7 @@ pub fn toggle(scrolls: &mut Vec<f64>) {
     body.remove_attribute("data-project");
     let top = *scrolls.last().unwrap_or(&0.00);
     document().document_element().unwrap().set_scroll_top(top);
+    document().body().unwrap().set_scroll_top(top);
     body.remove_attribute("data-scroll")
   }
 }
