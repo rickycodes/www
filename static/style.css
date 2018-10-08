@@ -191,6 +191,15 @@ code {
   display: block;
 }
 
+#work-history input#cv-toggle:checked + .cv.link {
+  animation: none;
+  color: black;
+}
+
+#work-history input#cv-toggle:checked + .cv.link:before {
+  background: white;
+}
+
 #work-history input#cv-toggle:checked + .cv.link span::after {
   content: '-';
 }
