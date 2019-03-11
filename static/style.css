@@ -171,6 +171,7 @@ code {
   padding: 0.2em 0.4em;
   background-color: rgba(27,31,35,0.05);
   border-radius: 3px;
+  text-transform: none;
 }
 
 #work-history .cv.link span::after {
