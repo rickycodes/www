@@ -118,7 +118,7 @@ footer {
   font-family: 'Roboto Mono', monospace;
 }
 
-.link {
+.link, .content .meta a {
   font-family: 'Roboto Mono', monospace;
   display: inline-block;
   vertical-align: middle;
@@ -233,6 +233,16 @@ code {
 .cursor.prev .cursor-prev,
 .cursor.next .cursor-next,
 .cursor.zoom .cursor-zoom {
+  display: block;
+}
+
+.content .meta {}
+.content .meta a {
+  display: inline-block;
+  padding: 0 1em 0 1em;
+  margin-right: 1em;
+  font-size: .6em;
+  cursor: pointer;
   display: block;
 }
 
