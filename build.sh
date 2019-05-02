@@ -4,7 +4,7 @@ PARTIALS='src/partials'
 PROJECTS=$PARTIALS/projects/
 
 echo "Generate & minify HTML..."
-cat ${PARTIALS}/header.html \
+{ cat ${PARTIALS}/sig.html & cat ${PARTIALS}/header.html \
     ${PARTIALS}/main.html \
     ${PROJECTS}* \
     ${PARTIALS}/footer.html | npx html-minifier \
@@ -15,7 +15,7 @@ cat ${PARTIALS}/header.html \
 --remove-script-type-attributes \
 --remove-tag-whitespace \
 --use-short-doctype \
---minify-css > static/index.html
+--minify-css; } > static/index.html
 
 # build
 echo "Building..."
