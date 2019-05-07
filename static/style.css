@@ -236,7 +236,9 @@ code {
 .cursor.close .cursor-close,
 .cursor.prev .cursor-prev,
 .cursor.next .cursor-next,
-.cursor.zoom .cursor-zoom {
+.cursor.zoom .cursor-zoom,
+.cursor.tw .cursor-tw,
+.cursor.gh .cursor-gh {
   display: block;
 }
 

@@ -29,6 +29,14 @@ pub fn initialize() {
 
   cursor_hover_events!(close, &cursor, "close");
 
+  for gh in nl(".github.link") {
+    cursor_hover_events!(gh, &cursor, "gh");
+  }
+
+  for tw in nl(".twitter.link") {
+    cursor_hover_events!(tw, &cursor, "tw");
+  }
+
   for project in nl("._projects .project") {
     cursor_hover_events!(project, &cursor, "zoom");
   }
