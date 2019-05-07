@@ -221,6 +221,8 @@ code {
   top: -150px;
   left: -150px;
   display: none;
+  filter: drop-shadow( 0 0 6px rgba(255, 255, 255, 1))
+    drop-shadow( 0 0 10px rgba(255, 255, 255, .5));
 }
 
 .cursor.prev .cursor-prev {
