@@ -118,7 +118,7 @@ footer {
   font-family: 'Roboto Mono', monospace;
 }
 
-.link {
+.link, .content .meta a {
   font-family: 'Roboto Mono', monospace;
   display: inline-block;
   vertical-align: middle;
@@ -127,12 +127,14 @@ footer {
   position: relative;
   transition-property: color;
   transition-duration: .3s;
-  padding: 0 .5em;
-  margin: 0 .5rem .5rem 0;
+  padding: 0 1em;
+  margin: 0 .5em .5em 0;
   border: 2px solid black;
-  border-radius: 4px;
+  border-radius: 100px;
+  overflow: hidden;
   background: white;
   text-shadow: none;
+  font-size: .8em;
 }
 
 .link:before {
@@ -191,6 +193,15 @@ code {
   display: block;
 }
 
+#work-history input#cv-toggle:checked + .cv.link {
+  animation: none;
+  color: black;
+}
+
+#work-history input#cv-toggle:checked + .cv.link:before {
+  background: white;
+}
+
 #work-history input#cv-toggle:checked + .cv.link span::after {
   content: '-';
 }
@@ -210,6 +221,8 @@ code {
   top: -150px;
   left: -150px;
   display: none;
+  filter: drop-shadow( 0 0 6px rgba(255, 255, 255, 1))
+    drop-shadow( 0 0 10px rgba(255, 255, 255, .5));
 }
 
 .cursor.prev .cursor-prev {
@@ -223,7 +236,19 @@ code {
 .cursor.close .cursor-close,
 .cursor.prev .cursor-prev,
 .cursor.next .cursor-next,
-.cursor.zoom .cursor-zoom {
+.cursor.zoom .cursor-zoom,
+.cursor.tw .cursor-tw,
+.cursor.gh .cursor-gh {
+  display: block;
+}
+
+.content .meta {}
+.content .meta a {
+  display: inline-block;
+  padding: 0 1em 0 1em;
+  margin-right: 1em;
+  font-size: .6em;
+  cursor: pointer;
   display: block;
 }
 
