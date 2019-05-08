@@ -19,9 +19,20 @@ echo "Generate & minify HTML..."
 
 # build
 echo "Building..."
-cargo web deploy --target=wasm32-unknown-unknown
+cargo web deploy --target=wasm32-unknown-unknown --release
+
+# minify gen and static js files
+jsFiles="target/deploy/*.js"
+for f in $jsFiles; do
+    npx uglify-es $f \
+        --compress \
+        --mangle \
+        --output $f
+done
+
+# build my blog https://github.com/rickycodes/blog
 hugo --source ~/projects/blog/
 
 # combine website and blog
 echo "Combine website and blog..."
-mv ~/projects/blog/public/ ./target/deploy/blog/
+cp -r ~/projects/blog/public/ ./target/deploy/blog/
