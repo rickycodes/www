@@ -252,6 +252,10 @@ code {
   display: block;
 }
 
+.content .meta a.github, .content .meta a.twitter {
+  cursor: none;
+}
+
 @media (max-width: 720px) {
   a.webring {
     display: block;
