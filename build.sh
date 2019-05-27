@@ -3,7 +3,7 @@
 PARTIALS='src/partials'
 PROJECTS=$PARTIALS/projects/
 
-echo "Generate & minify HTML..."
+echo 'Generate & minify HTML...'
 { cat ${PARTIALS}/sig.html & cat ${PARTIALS}/header.html \
     ${PARTIALS}/main.html \
     ${PROJECTS}* \
@@ -18,11 +18,11 @@ echo "Generate & minify HTML..."
 --minify-css; } > static/index.html
 
 # build
-echo "Building..."
+echo 'Building...'
 cargo web deploy --target=wasm32-unknown-unknown --release
 
 # minify gen and static js files
-jsFiles="target/deploy/*.js"
+jsFiles='target/deploy/*.js'
 for f in $jsFiles; do
     npx uglify-es $f \
         --compress \
@@ -34,5 +34,5 @@ done
 hugo --source ~/projects/blog/
 
 # combine website and blog
-echo "Combine website and blog..."
+echo 'Combine website and blog...'
 cp -r ~/projects/blog/public/ ./target/deploy/blog/
