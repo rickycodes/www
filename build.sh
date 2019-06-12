@@ -29,10 +29,3 @@ for f in $jsFiles; do
         --mangle \
         --output $f
 done
-
-# build my blog https://github.com/rickycodes/blog
-hugo --source ~/projects/blog/
-
-# combine website and blog
-echo 'Combine website and blog...'
-cp -r ~/projects/blog/public/ ./target/deploy/blog/
