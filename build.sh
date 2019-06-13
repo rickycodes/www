@@ -31,10 +31,10 @@ min() {
     echo 'Minify...'
     jsFiles='target/deploy/*.js'
     for f in $jsFiles; do
-        npx uglify-es $f \
+        npx uglify-es "$f" \
             --compress \
             --mangle \
-            --output $f
+            --output "$f"
     done
 }
 
