@@ -59,11 +59,12 @@ fn main() {
     toggle(&mut scrolls)
   };
 
-  qs(".coord").add_event_listener(|event: DragOverEvent| {
+  let coord = qs(".coord");
+  coord.add_event_listener(|event: DragOverEvent| {
     event.prevent_default();
   });
 
-  qs(".coord").add_event_listener(|event: DragDropEvent| {
+  coord.add_event_listener(|event: DragDropEvent| {
     event.prevent_default();
     console!(log, "drop!");
     let del = || {
@@ -93,30 +94,32 @@ fn main() {
     };
 
     link.add_event_listener(enclose!( (el) move |_event: DragStartEvent| {
-      qs(".coord").set_text_content("🗑️");
-      qs(".coord").set_attribute("style", "font-size: 60px;").unwrap();
+      let coord = qs(".coord");
+      coord.set_text_content("🗑️");
+      coord.set_attribute("style", "font-size: 60px;").unwrap();
       let cursor = qs(".cursor");
       cursor.class_list().remove("zoom").unwrap();
       let clone = el.clone_node(CloneKind::Deep).unwrap();
       el.set_attribute("data-dragging", "true").unwrap();
       cursor.append_child(&clone);
-      console!(log, qs(".coord"));
+      console!(log, coord);
     }));
 
     link.add_event_listener(drag_event);
 
     link.add_event_listener(|event: DragEndEvent| {
+      let coord = qs(".coord");
       let x = f64::from(event.client_x());
       let y = f64::from(event.client_y());
 
-      qs(".coord").set_text_content(&format!("_x: {}, _y: {}", x, y));
+      coord.set_text_content(&format!("_x: {}, _y: {}", x, y));
       // el.set_attribute("style", "").unwrap();
       let cursor = qs(".cursor");
       let project = qs(".cursor .project");
 
       let projects = qs("._projects");
       projects.remove_attribute("style");
-      qs(".coord").remove_attribute("style");
+      coord.remove_attribute("style");
       cursor.remove_child(&project).unwrap();
     });
   }
