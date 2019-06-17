@@ -4,4 +4,4 @@ version = "0.0.1"
 authors = ["Ricky Miller"]
 
 [dependencies]
-stdweb = "0.4.6"
+stdweb = "^0.4.17"

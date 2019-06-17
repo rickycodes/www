@@ -214,6 +214,14 @@ code {
 
 .cursor > div {
   transform: scale(0.6);
+  position: absolute;
+}
+
+.cursor .link.project {
+  pointer-events: none;
+  position: relative;
+  left: -50%;
+  top: -26px;
 }
 
 .cursor svg {
