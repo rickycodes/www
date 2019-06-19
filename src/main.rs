@@ -95,8 +95,7 @@ fn main() {
 
     link.add_event_listener(enclose!( (el) move |_event: DragStartEvent| {
       let coord = qs(".coord");
-      coord.set_text_content("🗑️");
-      coord.set_attribute("style", "font-size: 60px;").unwrap();
+      coord.class_list().add("trash").unwrap();
       let cursor = qs(".cursor");
       cursor.class_list().remove("zoom").unwrap();
       let clone = el.clone_node(CloneKind::Deep).unwrap();
@@ -107,13 +106,9 @@ fn main() {
 
     link.add_event_listener(drag_event);
 
-    link.add_event_listener(|event: DragEndEvent| {
+    link.add_event_listener(|_event: DragEndEvent| {
       let coord = qs(".coord");
-      let x = f64::from(event.client_x());
-      let y = f64::from(event.client_y());
-
-      coord.set_text_content(&format!("_x: {}, _y: {}", x, y));
-      // el.set_attribute("style", "").unwrap();
+      coord.class_list().remove("trash").unwrap();
       let cursor = qs(".cursor");
       let project = qs(".cursor .project");
 

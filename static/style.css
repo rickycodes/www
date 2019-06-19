@@ -93,6 +93,22 @@
   right: 0;
 }
 
+.coord .can {
+  display: none;
+}
+
+.coord.trash {
+  font-size: 60px;
+}
+
+.coord.trash > div {
+  display: none;
+}
+
+.coord.trash .can {
+  display: block;
+}
+
 .info {
   display: block;
   top: 0;
