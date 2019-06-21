@@ -23,6 +23,7 @@ use util::{
 use stdweb::traits::*;
 use stdweb::web::{
   CloneKind,
+  document,
   window,
   Date
 };
@@ -33,8 +34,9 @@ use stdweb::web::event::{
   DragEndEvent,
   DragEvent,
   DragDropEvent,
-  DragOverEvent
-  // DragEnterEvent
+  DragOverEvent,
+  DragEnterEvent,
+  DragLeaveEvent
 };
 
 use stdweb::unstable::TryInto;
@@ -64,20 +66,48 @@ fn main() {
     event.prevent_default();
   });
 
+  coord.add_event_listener(|event: DragEnterEvent| {
+    event.prevent_default();
+    let coord = qs(".coord");
+    coord.class_list().add("dragenter").unwrap();
+  });
+
+  coord.add_event_listener(|event: DragLeaveEvent| {
+    event.prevent_default();
+    let coord = qs(".coord");
+    coord.class_list().remove("dragenter").unwrap();
+  });
+
+  pub fn reset() -> () {
+    let coord = qs(".coord");
+    coord.class_list().remove("dragenter").unwrap();
+    coord.class_list().remove("trash").unwrap();
+
+    let drag = document().query_selector(".drag").unwrap();
+    if drag.is_some() {
+      js!( document.querySelector(".drag").classList.remove("drag"); ).try_into().unwrap()
+    }
+  };
+
+  pub fn del() -> () {
+    let drag = qs(".drag");
+    drag.set_attribute("style", "display: none;").unwrap();
+    reset();
+  };
+
   coord.add_event_listener(|event: DragDropEvent| {
     event.prevent_default();
     console!(log, "drop!");
-    let del = || {
-      let el = qs("[data-dragging='true']");
-      el.set_attribute("style", "display: none;").unwrap();
-      el.set_attribute("data-dragging", "false").unwrap();
-    };
 
     js! {
       var del = @{del};
+      var reset = @{reset};
       if (window.confirm("U sure?")) {
         del();
-        del.drop();
+        del.drop()
+      } else {
+        reset();
+        reset.drop()
       }
     }
   });
@@ -99,7 +129,7 @@ fn main() {
       let cursor = qs(".cursor");
       cursor.class_list().remove("zoom").unwrap();
       let clone = el.clone_node(CloneKind::Deep).unwrap();
-      el.set_attribute("data-dragging", "true").unwrap();
+      el.class_list().add("drag").unwrap();
       cursor.append_child(&clone);
       console!(log, coord);
     }));
@@ -107,14 +137,12 @@ fn main() {
     link.add_event_listener(drag_event);
 
     link.add_event_listener(|_event: DragEndEvent| {
-      let coord = qs(".coord");
-      coord.class_list().remove("trash").unwrap();
+      reset();
       let cursor = qs(".cursor");
       let project = qs(".cursor .project");
 
       let projects = qs("._projects");
       projects.remove_attribute("style");
-      coord.remove_attribute("style");
       cursor.remove_child(&project).unwrap();
     });
   }
