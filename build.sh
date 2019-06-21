@@ -47,4 +47,5 @@ else
     [ "$ARG" == "gen" ] && gen
     [ "$ARG" == "min" ] && min
     [ "$ARG" == "build" ] && build
+    exit 0
 fi

@@ -65,7 +65,7 @@ pub fn initialize () {
       throttle_count = 0;
     }
 
-    qs(".coord").set_text_content(&format!("_x: {}, _y: {}", x, y));
+    qs(".coord > div").set_text_content(&format!("_x: {}, _y: {}", x, y));
     cursor!(qs(".x"), &format!("{}px", x), 0);
     cursor!(qs(".y"), 0, &format!("{}px", y));
     cursor!(qs(".cursor"), &format!("{}px", x), &format!("{}px", y));

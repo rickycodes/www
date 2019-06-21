@@ -91,6 +91,30 @@
 .coord {
   bottom: 0;
   right: 0;
+  transition: all .3s ease-out;
+}
+
+.coord .can {
+  display: none;
+  pointer-events: none;
+}
+
+.coord.trash {
+  font-size: 60px;
+}
+
+.coord.dragenter {
+  background: lightgrey;
+  font-size: 80px;
+}
+
+.coord.trash > div {
+  display: none;
+  pointer-events: none;
+}
+
+.coord.trash .can {
+  display: block;
 }
 
 .info {
@@ -214,6 +238,14 @@ code {
 
 .cursor > div {
   transform: scale(0.6);
+  position: absolute;
+}
+
+.cursor .link.project {
+  pointer-events: none;
+  position: relative;
+  left: -50%;
+  top: -26px;
 }
 
 .cursor svg {
