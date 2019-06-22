@@ -10,6 +10,24 @@ use util::{nl, qs};
 use stdweb::unstable::TryInto;
 use stdweb::web::HtmlElement;
 
+pub fn reset() -> () {
+    let coord = qs(".coord");
+    coord.class_list().remove("dragenter").unwrap();
+    coord.class_list().remove("trash").unwrap();
+    let drag = document().query_selector(".drag").unwrap();
+    if drag.is_some() {
+        js!( document.querySelector(".drag").classList.remove("drag"); )
+            .try_into()
+            .unwrap()
+    }
+}
+
+pub fn del() -> () {
+    let drag = qs(".drag");
+    drag.set_attribute("style", "display: none;").unwrap();
+    reset();
+}
+
 pub fn initialize() {
     let coord = qs(".coord");
 
@@ -29,24 +47,6 @@ pub fn initialize() {
         let coord = qs(".coord");
         coord.class_list().remove("dragenter").unwrap();
     });
-
-    pub fn reset() -> () {
-        let coord = qs(".coord");
-        coord.class_list().remove("dragenter").unwrap();
-        coord.class_list().remove("trash").unwrap();
-        let drag = document().query_selector(".drag").unwrap();
-        if drag.is_some() {
-            js!( document.querySelector(".drag").classList.remove("drag"); )
-                .try_into()
-                .unwrap()
-        }
-    };
-
-    pub fn del() -> () {
-        let drag = qs(".drag");
-        drag.set_attribute("style", "display: none;").unwrap();
-        reset();
-    };
 
     coord.add_event_listener(|event: DragDropEvent| {
         event.prevent_default();
@@ -77,6 +77,7 @@ pub fn initialize() {
                 )
                 .unwrap();
         };
+
         link.add_event_listener(enclose!( (el) move |_event: DragStartEvent| {
           let coord = qs(".coord");
           coord.class_list().add("trash").unwrap();
@@ -87,7 +88,9 @@ pub fn initialize() {
           cursor.append_child(&clone);
           console!(log, coord);
         }));
+
         link.add_event_listener(drag_event);
+
         link.add_event_listener(|_event: DragEndEvent| {
             reset();
             let cursor = qs(".cursor");
