@@ -9,7 +9,7 @@ gen() {
     { cat ${PARTIALS}/sig.html & cat ${PARTIALS}/header.html \
         ${PARTIALS}/main.html \
         ${PROJECTS}* \
-        ${PARTIALS}/footer.html | npx html-minifier \
+        ${PARTIALS}/footer.html | html-minifier \
     --collapse-whitespace \
     --remove-comments \
     --remove-optional-tags \
@@ -20,10 +20,14 @@ gen() {
     --minify-css; } > static/index.html
 }
 
+check() {
+    cargo clean && cargo check
+}
+
 build() {
     # build
     echo 'Building...'
-    cargo web deploy --target=wasm32-unknown-unknown --release
+    cargo web deploy --target=wasm32-unknown-unknown
 }
 
 min() {
@@ -31,7 +35,7 @@ min() {
     echo 'Minify...'
     jsFiles='target/deploy/*.js'
     for f in $jsFiles; do
-        npx uglify-es "$f" \
+        uglifyjs "$f" \
             --compress \
             --mangle \
             --output "$f"
@@ -44,8 +48,9 @@ then
     build
     min
 else
-    [ "$ARG" == "gen" ] && gen
-    [ "$ARG" == "min" ] && min
-    [ "$ARG" == "build" ] && build
+    [ "$ARG" == "--gen" ] && gen
+    [ "$ARG" == "--min" ] && min
+    [ "$ARG" == "--build" ] && build
+    [ "$ARG" == "--check" ] && check
     exit 0
 fi
