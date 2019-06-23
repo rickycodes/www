@@ -48,9 +48,9 @@ then
     build
     min
 else
-    [ "$ARG" == "gen" ] && gen
-    [ "$ARG" == "min" ] && min
-    [ "$ARG" == "build" ] && build
-    [ "$ARG" == "check" ] && check
+    [ "$ARG" == "--gen" ] && gen
+    [ "$ARG" == "--min" ] && min
+    [ "$ARG" == "--build" ] && build
+    [ "$ARG" == "--check" ] && check
     exit 0
 fi

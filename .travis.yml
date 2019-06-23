@@ -5,4 +5,4 @@ rust:
   - nightly
 
 script:
-  - bash build.sh check
+  - bash build.sh --check
