@@ -21,7 +21,7 @@ fn is_checked(el: Element) -> bool {
     js!( return @{el}.checked; ).try_into().unwrap()
 }
 
-pub fn scroll_to() {
+fn scroll_to() {
     // scroll to #work-history and expand
     let hash = get_hash();
     if hash == "work-history" {
@@ -34,7 +34,7 @@ pub fn scroll_to() {
     }
 }
 
-pub fn bind_work_toggle() {
+fn bind_work_toggle() {
     let input_el = document().query_selector("#cv-toggle").unwrap().unwrap();
     let click_event = enclose!( (input_el) move |_: ClickEvent| {
       if is_checked(input_el.clone()) {
@@ -44,4 +44,15 @@ pub fn bind_work_toggle() {
     });
 
     input_el.add_event_listener(click_event);
+}
+
+pub struct WorkHistory();
+
+impl WorkHistory {
+  pub fn new() -> WorkHistory {
+    scroll_to();
+    bind_work_toggle();
+
+    WorkHistory()
+  }
 }

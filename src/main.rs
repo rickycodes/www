@@ -16,7 +16,7 @@ use stdweb::web::event::HashChangeEvent;
 use stdweb::web::{window, Date};
 use toggle_project::toggle;
 use util::qs;
-use work_history::{bind_work_toggle, scroll_to};
+use work_history::{WorkHistory};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Website();
@@ -32,11 +32,11 @@ impl Website {
         let mut scrolls = Vec::new();
 
         qs(".date").set_text_content(&Date::new().get_full_year().to_string());
-        toggle(&mut scrolls);
-        scroll_to();
-        bind_work_toggle();
-        let toggle_project_event = move |_event: HashChangeEvent| toggle(&mut scrolls);
 
+        WorkHistory::new();
+
+        toggle(&mut scrolls);
+        let toggle_project_event = move |_event: HashChangeEvent| toggle(&mut scrolls);
         window().add_event_listener(toggle_project_event);
 
         stdweb::event_loop();
