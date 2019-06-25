@@ -49,10 +49,10 @@ fn bind_work_toggle() {
 pub struct WorkHistory();
 
 impl WorkHistory {
-  pub fn new() -> WorkHistory {
-    scroll_to();
-    bind_work_toggle();
+    pub fn new() -> WorkHistory {
+        scroll_to();
+        bind_work_toggle();
 
-    WorkHistory()
-  }
+        WorkHistory()
+    }
 }

@@ -1,8 +1,9 @@
 use stdweb::traits::*;
+use stdweb::web::event::HashChangeEvent;
 use stdweb::web::{document, window};
 use util::{get_hash, qs};
 
-pub fn toggle(scrolls: &mut Vec<f64>) {
+fn toggle(scrolls: &mut Vec<f64>) {
     let hash = get_hash();
     let body = document().body().unwrap();
     if hash != "" {
@@ -20,5 +21,18 @@ pub fn toggle(scrolls: &mut Vec<f64>) {
         document().document_element().unwrap().set_scroll_top(top);
         document().body().unwrap().set_scroll_top(top);
         body.remove_attribute("data-scroll")
+    }
+}
+
+pub struct ToggleProject();
+
+impl ToggleProject {
+    pub fn new() -> ToggleProject {
+        let mut scrolls = Vec::new();
+        toggle(&mut scrolls);
+        let toggle_project_event = move |_event: HashChangeEvent| toggle(&mut scrolls);
+        window().add_event_listener(toggle_project_event);
+
+        ToggleProject()
     }
 }

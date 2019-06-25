@@ -11,33 +11,29 @@ mod trash;
 mod util;
 mod work_history;
 
-use stdweb::traits::*;
-use stdweb::web::event::HashChangeEvent;
-use stdweb::web::{window, Date};
-use toggle_project::toggle;
-use util::qs;
-use work_history::{WorkHistory};
+use links::Links;
+use slideshows::SlideShows;
+use toggle_project::ToggleProject;
+use trash::Trash;
+use util::set_date;
+use work_history::WorkHistory;
+use canvas::Canvas;
 
 #[derive(Debug, Clone, Copy)]
-pub struct Website();
+struct Website();
 
 impl Website {
     fn new() -> Website {
         stdweb::initialize();
-        slideshows::initialize();
-        links::initialize();
-        canvas::initialize();
-        trash::initialize();
 
-        let mut scrolls = Vec::new();
-
-        qs(".date").set_text_content(&Date::new().get_full_year().to_string());
-
+        SlideShows::new();
+        Links::new();
+        Canvas::new();
+        Trash::new();
         WorkHistory::new();
+        ToggleProject::new();
 
-        toggle(&mut scrolls);
-        let toggle_project_event = move |_event: HashChangeEvent| toggle(&mut scrolls);
-        window().add_event_listener(toggle_project_event);
+        set_date();
 
         stdweb::event_loop();
 

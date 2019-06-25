@@ -34,8 +34,11 @@ fn rect(context: &CanvasRenderingContext2d, x: f64, y: f64) {
     context.stroke();
 }
 
-pub fn initialize() {
-    let canvas: CanvasElement = document()
+pub struct Canvas();
+
+impl Canvas {
+    pub fn new() -> Canvas {
+            let canvas: CanvasElement = document()
         .query_selector(".canvas")
         .unwrap()
         .unwrap()
@@ -72,4 +75,7 @@ pub fn initialize() {
 
     window().add_event_listener(resize_event);
     window().add_event_listener(mouse_move_event);
+
+        Canvas()
+    }
 }

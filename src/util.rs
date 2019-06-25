@@ -1,5 +1,5 @@
 use stdweb::traits::*;
-use stdweb::web::{document, HtmlElement, NodeList};
+use stdweb::web::{document, HtmlElement, NodeList, Date};
 
 use stdweb::unstable::TryInto;
 
@@ -39,4 +39,8 @@ pub fn get_range(a: f64, b: f64) -> f64 {
     )
     .try_into()
     .unwrap()
+}
+
+pub fn set_date() {
+    qs(".year").set_text_content(&Date::new().get_full_year().to_string());
 }

@@ -18,53 +18,59 @@ macro_rules! cursor_hover_events {
   }
 }
 
-pub fn initialize() {
-    let info = qs(".info");
+pub struct Links();
 
-    let cursor = qs(".cursor");
-    let close = qs(".close div");
+impl Links {
+    pub fn new() -> Links {
+        let info = qs(".info");
 
-    cursor_hover_events!(close, &cursor, "close");
+        let cursor = qs(".cursor");
+        let close = qs(".close div");
 
-    for gh in nl(".github.link") {
-        cursor_hover_events!(gh, &cursor, "gh");
-    }
+        cursor_hover_events!(close, &cursor, "close");
 
-    for tw in nl(".twitter.link") {
-        cursor_hover_events!(tw, &cursor, "tw");
-    }
+        for gh in nl(".github.link") {
+            cursor_hover_events!(gh, &cursor, "gh");
+        }
 
-    for project in nl("._projects .project") {
-        cursor_hover_events!(project, &cursor, "zoom");
-    }
+        for tw in nl(".twitter.link") {
+            cursor_hover_events!(tw, &cursor, "tw");
+        }
 
-    for prev in nl(".slideshow .prev") {
-        cursor_hover_events!(prev, &cursor, "prev");
-    }
+        for project in nl("._projects .project") {
+            cursor_hover_events!(project, &cursor, "zoom");
+        }
 
-    for next in nl(".slideshow .next") {
-        cursor_hover_events!(next, &cursor, "next");
-    }
+        for prev in nl(".slideshow .prev") {
+            cursor_hover_events!(prev, &cursor, "prev");
+        }
 
-    for link in nl(".content a:not(.project)") {
-        let el: HtmlElement = link.try_into().unwrap();
-        el.set_attribute("target", "_blank").unwrap();
-        el.set_attribute("rel", "noopener").unwrap();
-    }
+        for next in nl(".slideshow .next") {
+            cursor_hover_events!(next, &cursor, "next");
+        }
 
-    for link in nl(".content a[title]") {
-        let el: HtmlElement = link.clone().try_into().unwrap();
-        link.add_event_listener(enclose!( (el, info) move |_event: MouseOverEvent| {
-          let title = el.get_attribute("title");
-          if title != None {
-            let title_str = title.unwrap();
-            info.set_text_content(&title_str);
-            info.class_list().remove( "hidden" ).unwrap();
-          }
-        }));
+        for link in nl(".content a:not(.project)") {
+            let el: HtmlElement = link.try_into().unwrap();
+            el.set_attribute("target", "_blank").unwrap();
+            el.set_attribute("rel", "noopener").unwrap();
+        }
 
-        link.add_event_listener(enclose!( (info) move |_event: MouseOutEvent| {
-          info.class_list().add( "hidden" ).unwrap();
-        }));
+        for link in nl(".content a[title]") {
+            let el: HtmlElement = link.clone().try_into().unwrap();
+            link.add_event_listener(enclose!( (el, info) move |_event: MouseOverEvent| {
+              let title = el.get_attribute("title");
+              if title != None {
+                let title_str = title.unwrap();
+                info.set_text_content(&title_str);
+                info.class_list().remove( "hidden" ).unwrap();
+              }
+            }));
+
+            link.add_event_listener(enclose!( (info) move |_event: MouseOutEvent| {
+              info.class_list().add( "hidden" ).unwrap();
+            }));
+        }
+
+        Links()
     }
 }
