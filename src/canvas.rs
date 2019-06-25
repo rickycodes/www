@@ -38,43 +38,43 @@ pub struct Canvas();
 
 impl Canvas {
     pub fn new() -> Canvas {
-            let canvas: CanvasElement = document()
-        .query_selector(".canvas")
-        .unwrap()
-        .unwrap()
-        .try_into()
-        .unwrap();
-    let context: CanvasRenderingContext2d = canvas.get_context().unwrap();
+        let canvas: CanvasElement = document()
+            .query_selector(".canvas")
+            .unwrap()
+            .unwrap()
+            .try_into()
+            .unwrap();
+        let context: CanvasRenderingContext2d = canvas.get_context().unwrap();
 
-    canvas.set_width(canvas.offset_width() as u32);
-    canvas.set_height(canvas.offset_height() as u32);
-
-    let resize_event = move |_: ResizeEvent| {
         canvas.set_width(canvas.offset_width() as u32);
         canvas.set_height(canvas.offset_height() as u32);
-    };
 
-    let mut throttle_count = 0;
-    let throttle_every = 6;
+        let resize_event = move |_: ResizeEvent| {
+            canvas.set_width(canvas.offset_width() as u32);
+            canvas.set_height(canvas.offset_height() as u32);
+        };
 
-    let mouse_move_event = move |event: MouseMoveEvent| {
-        let x = f64::from(event.client_x());
-        let y = f64::from(event.client_y());
+        let mut throttle_count = 0;
+        let throttle_every = 6;
 
-        throttle_count += 1;
-        if throttle_count == throttle_every {
-            rect(&context, x, y);
-            throttle_count = 0;
-        }
+        let mouse_move_event = move |event: MouseMoveEvent| {
+            let x = f64::from(event.client_x());
+            let y = f64::from(event.client_y());
 
-        qs(".coord > div").set_text_content(&format!("_x: {}, _y: {}", x, y));
-        cursor!(qs(".x"), &format!("{}px", x), 0);
-        cursor!(qs(".y"), 0, &format!("{}px", y));
-        cursor!(qs(".cursor"), &format!("{}px", x), &format!("{}px", y));
-    };
+            throttle_count += 1;
+            if throttle_count == throttle_every {
+                rect(&context, x, y);
+                throttle_count = 0;
+            }
 
-    window().add_event_listener(resize_event);
-    window().add_event_listener(mouse_move_event);
+            qs(".coord > div").set_text_content(&format!("_x: {}, _y: {}", x, y));
+            cursor!(qs(".x"), &format!("{}px", x), 0);
+            cursor!(qs(".y"), 0, &format!("{}px", y));
+            cursor!(qs(".cursor"), &format!("{}px", x), &format!("{}px", y));
+        };
+
+        window().add_event_listener(resize_event);
+        window().add_event_listener(mouse_move_event);
 
         Canvas()
     }

@@ -1,5 +1,5 @@
 use stdweb::traits::*;
-use stdweb::web::{document, HtmlElement, NodeList, Date};
+use stdweb::web::{document, Date, HtmlElement, NodeList};
 
 use stdweb::unstable::TryInto;
 
