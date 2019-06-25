@@ -30,10 +30,7 @@ impl Website {
 
     pub fn initialize(self) -> Self {
         stdweb::initialize();
-        self
-    }
 
-    pub fn setup(self) -> Self {
         SlideShows::new();
         Links::new();
         Canvas::new();
@@ -54,5 +51,5 @@ impl Website {
 }
 
 fn main() {
-    Website::new().initialize().setup().set_date().event_loop();
+    Website::new().initialize().set_date().event_loop();
 }
