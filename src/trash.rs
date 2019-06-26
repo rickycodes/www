@@ -23,8 +23,10 @@ fn reset() -> () {
 }
 
 fn del() -> () {
-    let drag = qs(".drag");
-    drag.set_attribute("style", "display: none;").unwrap();
+    let drag = document().query_selector(".drag").unwrap();
+    if drag.is_some() {
+        drag.unwrap().set_attribute("style", "display: none;").unwrap()
+    }
     reset();
 }
 
@@ -94,7 +96,13 @@ impl Trash {
             link.add_event_listener(drag_event);
 
             link.add_event_listener(|_event: DragEndEvent| {
-                reset();
+                js! {
+                  var reset = @{reset};
+                  window.setTimeout(reset, 1000);
+                }
+                let coord = qs(".coord");
+                coord.class_list().remove("dragenter").unwrap();
+                coord.class_list().remove("trash").unwrap();
                 let cursor = qs(".cursor");
                 let project = qs(".cursor .project");
                 let projects = qs("._projects");
