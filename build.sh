@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 PARTIALS='src/partials'
 PROJECTS=$PARTIALS/projects/
@@ -64,7 +64,7 @@ min() {
 
 tests() {
     # test this script
-    HELP=$(sh build.sh --help)
+    HELP=$(bash build.sh --help)
     if [[ ! $HELP == *"ricky.codes build tool"* ]]; then
         echo "build.sh --help failed (unexpected text) $LINENO"
         exit $E_ASSERT_FAILED
@@ -73,7 +73,7 @@ tests() {
     if [[ -f "$HTML" ]]; then
         rm "$HTML"
     fi
-    sh build.sh --gen
+    bash build.sh --gen
     if [[ ! -f "$HTML" ]]; then
         echo "build.sh --gen failed (no HTML file) $LINENO"
         exit $E_ASSERT_FAILED
