@@ -4,6 +4,27 @@ PARTIALS='src/partials'
 PROJECTS=$PARTIALS/projects/
 ARG=$1
 
+HELP="$(cat <<-EOF
+ricky.codes build tool
+
+USAGE:
+    bash build.sh [OPTIONS]
+
+OPTIONS:
+    --help              Prints help information
+    --gen               Generate + minify HTML...
+    --build             Runs cargo web deploy --target=wasm32-unknown-unknown
+    --min               Minify deployed *.js files with uglify
+
+Running "bash build.sh" with zero options will --gen --build and --min (in that order)
+This is not a sophisticated script, one [OPTION] (singular) at a time or None() only pls k thnx.
+EOF
+)"
+
+_help() {
+    echo "$HELP"
+}
+
 gen() {
     echo 'Generate + minify HTML...'
     { cat ${PARTIALS}/sig.html & cat ${PARTIALS}/header.html \
@@ -48,6 +69,7 @@ then
     build
     min
 else
+    [ "$ARG" == "--help" ] && _help
     [ "$ARG" == "--gen" ] && gen
     [ "$ARG" == "--min" ] && min
     [ "$ARG" == "--build" ] && build
