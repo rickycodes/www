@@ -78,7 +78,7 @@ tests() {
         echo "build.sh --gen failed (no HTML file) $LINENO"
         exit $E_ASSERT_FAILED
     fi
-    # cargo clean && cargo check
+    cargo clean && cargo check
 }
 
 if [ -z "$ARG" ]
