@@ -4,5 +4,10 @@ sudo: false
 rust:
   - nightly
 
+node_js: "8.10"
+
 script:
-  - bash build.sh --check
+  - sh build.sh --test
+
+before_install:
+  - npm i -g npx

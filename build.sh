@@ -1,8 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 
 PARTIALS='src/partials'
 PROJECTS=$PARTIALS/projects/
 ARG=$1
+HTML=static/index.html
+E_ASSERT_FAILED=99
 
 HELP="$(cat <<-EOF
 ricky.codes build tool
@@ -15,6 +17,7 @@ OPTIONS:
     --gen               Generate + minify HTML...
     --build             Runs cargo web deploy --target=wasm32-unknown-unknown
     --min               Minify deployed *.js files with uglify
+    --test              Run tests
 
 Running "bash build.sh" with zero options will --gen --build and --min (in that order)
 This is not a sophisticated script, one [OPTION] (singular) at a time or None() only pls k thnx.
@@ -30,7 +33,7 @@ gen() {
     { cat ${PARTIALS}/sig.html & cat ${PARTIALS}/header.html \
         ${PARTIALS}/main.html \
         ${PROJECTS}* \
-        ${PARTIALS}/footer.html | html-minifier \
+        ${PARTIALS}/footer.html | npx html-minifier \
     --collapse-whitespace \
     --remove-comments \
     --remove-optional-tags \
@@ -38,11 +41,7 @@ gen() {
     --remove-script-type-attributes \
     --remove-tag-whitespace \
     --use-short-doctype \
-    --minify-css; } > static/index.html
-}
-
-check() {
-    cargo clean && cargo check
+    --minify-css; } > $HTML
 }
 
 build() {
@@ -56,11 +55,30 @@ min() {
     echo 'Minify...'
     jsFiles='target/deploy/*.js'
     for f in $jsFiles; do
-        uglifyjs "$f" \
+        npx uglify-es "$f" \
             --compress \
             --mangle \
             --output "$f"
     done
+}
+
+tests() {
+    # test this script
+    HELP=$(sh build.sh --help)
+    if [[ ! $HELP == *"ricky.codes build tool"* ]]; then
+        echo "build.sh --help failed (unexpected text) $LINENO"
+        exit $E_ASSERT_FAILED
+    fi
+    # test gen
+    if [[ -f "$HTML" ]]; then
+        rm "$HTML"
+    fi
+    sh build.sh --gen
+    if [[ ! -f "$HTML" ]]; then
+        echo "build.sh --gen failed (no HTML file) $LINENO"
+        exit $E_ASSERT_FAILED
+    fi
+    # cargo clean && cargo check
 }
 
 if [ -z "$ARG" ]
@@ -69,10 +87,10 @@ then
     build
     min
 else
+    [ "$ARG" == "--test" ] && tests
     [ "$ARG" == "--help" ] && _help
     [ "$ARG" == "--gen" ] && gen
     [ "$ARG" == "--min" ] && min
     [ "$ARG" == "--build" ] && build
-    [ "$ARG" == "--check" ] && check
     exit 0
 fi
