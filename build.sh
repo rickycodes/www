@@ -19,8 +19,8 @@ OPTIONS:
     --min               Minify deployed *.js files with uglify
     --test              Run tests
 
-Running "bash build.sh" with zero options will --gen --build and --min (in that order)
-This is not a sophisticated script, one [OPTION] (singular) at a time or None() only pls k thnx.
+Running "bash build.sh" (with zero options) will --gen --build and --min (in that order)
+This is not a sophisticated script, one [OPTION] (singular) at a time or none.
 EOF
 )"
 
@@ -63,10 +63,10 @@ min() {
 }
 
 tests() {
-    # test this script
+    # test help
     HELP=$(bash build.sh --help)
     if [[ ! $HELP == *"ricky.codes build tool"* ]]; then
-        echo "build.sh --help failed (unexpected text) $LINENO"
+        echo "build.sh --help test failed (unexpected text) $LINENO"
         exit $E_ASSERT_FAILED
     fi
     # test gen
@@ -75,7 +75,7 @@ tests() {
     fi
     bash build.sh --gen
     if [[ ! -f "$HTML" ]]; then
-        echo "build.sh --gen failed (no HTML file) $LINENO"
+        echo "build.sh --gen test failed (no HTML file) $LINENO"
         exit $E_ASSERT_FAILED
     fi
     cargo clean && cargo check
