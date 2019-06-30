@@ -3,6 +3,16 @@ use stdweb::web::{document, Date, HtmlElement, NodeList};
 
 use stdweb::unstable::TryInto;
 
+pub fn confirm(wat: String, a: fn(), b: fn()) {
+    js! {
+      var a = @{a};
+      var b = @{b};
+      var say = @{wat};
+      var call_drop = fn => fn() && fn.drop();
+      window.confirm(say) ? call_drop(a) : call_drop(b);
+    }
+}
+
 pub fn nl(selector: &str) -> NodeList {
     document().query_selector_all(selector).unwrap()
 }

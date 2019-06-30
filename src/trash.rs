@@ -5,15 +5,20 @@ use stdweb::web::event::{
 
 use stdweb::traits::*;
 use stdweb::web::{document, CloneKind};
-use util::{nl, qs};
+use util::{nl, qs, confirm};
 
 use stdweb::unstable::TryInto;
-use stdweb::web::HtmlElement;
+use stdweb::web::{HtmlElement, Node};
 
-fn reset() -> () {
+fn remove_drag_enter() {
     let coord = qs(".coord");
     coord.class_list().remove("dragenter").unwrap();
     coord.class_list().remove("trash").unwrap();
+}
+
+fn reset() {
+    remove_drag_enter();
+
     let drag = document().query_selector(".drag").unwrap();
     if drag.is_some() {
         js!( document.querySelector(".drag").classList.remove("drag"); )
@@ -22,12 +27,14 @@ fn reset() -> () {
     }
 }
 
-fn del() -> () {
+fn del() {
     let drag = document().query_selector(".drag").unwrap();
     if drag.is_some() {
-        drag.unwrap().set_attribute("style", "display: none;").unwrap()
+        drag.unwrap()
+            .set_attribute("style", "display: none;")
+            .unwrap()
     }
-    reset();
+    reset()
 }
 
 pub struct Trash();
@@ -36,7 +43,6 @@ impl Trash {
     pub fn new() -> Trash {
         let coord = qs(".coord");
 
-        /* drag and drop stuffs */
         coord.add_event_listener(|event: DragOverEvent| {
             event.prevent_default();
         });
@@ -55,21 +61,10 @@ impl Trash {
 
         coord.add_event_listener(|event: DragDropEvent| {
             event.prevent_default();
-
-            js! {
-              var del = @{del};
-              var reset = @{reset};
-              if (window.confirm("U sure?")) {
-                del();
-                del.drop()
-              } else {
-                reset();
-                reset.drop()
-              }
-            }
+            confirm("U sure?".to_string(), del, reset)
         });
 
-        for link in nl(".project.link, .cv.link") {
+        fn bind_link(link: Node) {
             let el: HtmlElement = link.clone().try_into().unwrap();
             let drag_event = |event: DragEvent| {
                 let cursor = qs(".cursor");
@@ -97,18 +92,19 @@ impl Trash {
 
             link.add_event_listener(|_event: DragEndEvent| {
                 js! {
+                  /* TODO: fix this hack! */
                   var reset = @{reset};
-                  window.setTimeout(reset, 1000);
+                  window.setTimeout(reset, 100);
                 }
-                let coord = qs(".coord");
-                coord.class_list().remove("dragenter").unwrap();
-                coord.class_list().remove("trash").unwrap();
+                remove_drag_enter();
                 let cursor = qs(".cursor");
                 let project = qs(".cursor .project");
-                let projects = qs("._projects");
-                projects.remove_attribute("style");
                 cursor.remove_child(&project).unwrap();
             });
+        }
+
+        for link in nl(".project.link, .cv.link") {
+            bind_link(link)
         }
 
         Trash()

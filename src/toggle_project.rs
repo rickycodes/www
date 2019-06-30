@@ -10,7 +10,7 @@ fn toggle(scrolls: &mut Vec<f64>) {
         let selector = &format!(".projects .project.{}", hash);
         if document().query_selector(selector).unwrap().is_some() {
             let top = Some(window().page_y_offset())
-                .unwrap_or(document().document_element().unwrap().scroll_top());
+                .unwrap_or_else(|| document().document_element().unwrap().scroll_top());
             body.set_attribute("data-project", &hash).unwrap();
             scrolls.push(top);
             qs("[data-project] > .content").set_scroll_top(top)
