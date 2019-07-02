@@ -78,7 +78,14 @@ tests() {
         echo "build.sh --gen test failed (no HTML file) $LINENO"
         exit $E_ASSERT_FAILED
     fi
+    # nothing in life is simple
+    SIMPLE=$(grep -ir 'simple' src/)
+    if [[ -n $SIMPLE ]]; then
+        echo "'Nothing in life is simple' test failed $LINENO"
+        exit $E_ASSERT_FAILED
+    fi
     cargo clean && cargo check
+    echo "tests passed!"
 }
 
 if [ -z "$ARG" ]

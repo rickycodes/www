@@ -3,13 +3,13 @@ use stdweb::web::{document, Date, HtmlElement, NodeList};
 
 use stdweb::unstable::TryInto;
 
-pub fn confirm(wat: String, a: fn(), b: fn()) {
+pub fn confirm(msg: String, a: fn(), b: fn()) {
     js! {
       var a = @{a};
       var b = @{b};
-      var say = @{wat};
+      var msg = @{msg};
       var call_drop = fn => fn() && fn.drop();
-      window.confirm(say) ? call_drop(a) : call_drop(b);
+      window.confirm(msg) ? call_drop(a) : call_drop(b);
     }
 }
 
