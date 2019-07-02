@@ -62,12 +62,16 @@ min() {
     done
 }
 
+fail() {
+    echo "$1 $2"
+    exit $E_ASSERT_FAILED
+}
+
 tests() {
     # test help
     HELP=$(bash build.sh --help)
     if [[ ! $HELP == *"ricky.codes build tool"* ]]; then
-        echo "build.sh --help test failed (unexpected text) $LINENO"
-        exit $E_ASSERT_FAILED
+        fail "build.sh --help test failed (unexpected text)" $LINENO
     fi
     # test gen
     if [[ -f "$HTML" ]]; then
@@ -75,17 +79,15 @@ tests() {
     fi
     bash build.sh --gen
     if [[ ! -f "$HTML" ]]; then
-        echo "build.sh --gen test failed (no HTML file) $LINENO"
-        exit $E_ASSERT_FAILED
+        fail "build.sh --gen test failed (no HTML file)" $LINENO
     fi
     # nothing in life is simple
     SIMPLE=$(grep -ir 'simple' src/)
     if [[ -n $SIMPLE ]]; then
-        echo "'Nothing in life is simple' test failed $LINENO"
-        exit $E_ASSERT_FAILED
+        fail "'Nothing in life is simple' test failed" $LINENO
     fi
     cargo clean && cargo check
-    echo "tests passed!"
+    echo "all tests passed!"
 }
 
 if [ -z "$ARG" ]
