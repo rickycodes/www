@@ -82,9 +82,9 @@ tests() {
         fail "build.sh --gen test failed (no HTML file)" $LINENO
     fi
     # nothing in life is simple
-    SIMPLE=$(grep -ir 'simple' src/)
+    SIMPLE=$(grep -ir 'simple\|simply' src/)
     if [[ -n $SIMPLE ]]; then
-        fail "'Nothing in life is simple' test failed" $LINENO
+        fail "'Nothing in life is simple' test failed $SIMPLE" $LINENO
     fi
     cargo clean && cargo check
     echo "all tests passed!"
