@@ -5,7 +5,7 @@ use stdweb::web::event::{
 
 use stdweb::traits::*;
 use stdweb::web::{document, CloneKind};
-use util::{nl, qs, confirm};
+use util::{confirm, nl, qs};
 
 use stdweb::unstable::TryInto;
 use stdweb::web::{HtmlElement, Node};

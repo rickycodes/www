@@ -58,7 +58,7 @@ impl SlideShows {
 
                 let controls_el = create_el("div", "controls");
 
-                for (index, _slide) in slides.iter().enumerate() {
+                let control_setup = |index: usize| {
                     let control_el = create_el("a", "link");
                     control_el.set_text_content(&(index + 1).to_string());
                     control_el.add_event_listener(
@@ -67,6 +67,10 @@ impl SlideShows {
                         }),
                     );
                     controls_el.append_child(&control_el);
+                };
+
+                for (index, _slide) in slides.iter().enumerate() {
+                    control_setup(index)
                 }
 
                 slideshow_el
