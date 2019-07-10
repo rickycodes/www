@@ -39,7 +39,6 @@ gen() {
     --remove-optional-tags \
     --remove-redundant-attributes \
     --remove-script-type-attributes \
-    --remove-tag-whitespace \
     --use-short-doctype \
     --minify-css; } > $HTML
 }
