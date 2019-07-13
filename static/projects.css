@@ -44,8 +44,6 @@
 .projects .project .close-link {
   display: block;
   z-index: 3;
-  width: 100px;
-  height: 100px;
   text-indent: -999999%;
   overflow: hidden;
   background: url("images/close.svg") center;
