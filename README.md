@@ -1,30 +1,32 @@
-### my website <a href='https://ricky.codes'>ricky.codes</a>  
 [![Build Status](https://travis-ci.org/rickycodes/www.svg?branch=master)](https://travis-ci.org/rickycodes/www) [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
+
+# <a href='https://ricky.codes'>ricky.codes</a>  
+
 
 My personal website built with <a href='http://rust-lang.org/'>Rust</a> using <a href='https://github.com/koute/cargo-web'>cargo-web</a> and <a href='https://github.com/koute/stdweb'>stdweb</a>
 
 <img src='screenshot.png' />
 
-### build:  
+## Build
 you will need <a href='https://github.com/koute/cargo-web'>`cargo web`</a>
 
-```sh
+```
 cargo web build --target=wasm32-unknown-unknown
 ```
 I haven't tested other targets
 
-### you should see something like:  
-```sh
+You should see something like:  
+```
 warning: debug builds on the wasm32-unknown-unknown are currently totally broken
          forcing a release build
     Finished release [optimized] target(s) in 0.0 secs
 ```
-### web server:
-```sh
+## Running local web server
+```
 cargo web start --target=wasm32-unknown-unknown
 ```
-### you should see something like:  
-```sh
+You should see something like:  
+```
 warning: debug builds on the wasm32-unknown-unknown are currently totally broken
          forcing a release build
     Finished release [optimized] target(s) in 0.0 secs
@@ -38,3 +40,8 @@ rebuilt if you make any changes in your code.
 
 You can access the web server at `http://[::1]:8000`.
 ```
+## License
+
+Licensed under
+
+  * MIT license ([LICENSE](LICENSE) or http://opensource.org/licenses/MIT)
