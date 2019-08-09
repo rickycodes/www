@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 PARTIALS='src/partials'
 PROJECTS=$PARTIALS/projects/
@@ -10,7 +10,7 @@ HELP="$(cat <<-EOF
 ricky.codes build tool
 
 USAGE:
-    bash build.sh [OPTIONS]
+    sh build.sh [OPTIONS]
 
 OPTIONS:
     --help              Prints help information
@@ -19,7 +19,7 @@ OPTIONS:
     --min               Minify deployed *.js files with uglify
     --test              Run tests
 
-Running "bash build.sh" (with zero options) will --gen --build and --min (in that order)
+Running "sh build.sh" (with zero options) will --gen --build and --min (in that order)
 This is not a sophisticated script, one [OPTION] (singular) at a time or none.
 EOF
 )"
@@ -68,22 +68,23 @@ fail() {
 
 tests() {
     # test help
-    HELP=$(bash build.sh --help)
-    if [[ ! $HELP == *"ricky.codes build tool"* ]]; then
-        fail "build.sh --help test failed (unexpected text)" $LINENO
+    HELP=$(sh build.sh --help)
+    CHECK_HELP=$(echo "$HELP" | grep "ricky.codes build tool")
+    if [ -z "$CHECK_HELP" ]; then
+        fail "build.sh --help test failed (unexpected text)"
     fi
     # test gen
-    if [[ -f "$HTML" ]]; then
+    if [ -f "$HTML" ]; then
         rm "$HTML"
     fi
-    bash build.sh --gen
-    if [[ ! -f "$HTML" ]]; then
-        fail "build.sh --gen test failed (no HTML file)" $LINENO
+    sh build.sh --gen
+    if [ ! -f "$HTML" ]; then
+        fail "build.sh --gen test failed (no HTML file)"
     fi
     # nothing in life is simple
     SIMPLE=$(grep -ir 'simple\|simply' src/)
-    if [[ -n $SIMPLE ]]; then
-        fail "'Nothing in life is simple' test failed $SIMPLE" $LINENO
+    if [ -n "$SIMPLE" ]; then
+        fail "'Nothing in life is simple' test failed $SIMPLE"
     fi
     cargo clean && cargo check
     echo "all tests passed!"
@@ -95,10 +96,10 @@ then
     build
     min
 else
-    [ "$ARG" == "--test" ] && tests
-    [ "$ARG" == "--help" ] && _help
-    [ "$ARG" == "--gen" ] && gen
-    [ "$ARG" == "--min" ] && min
-    [ "$ARG" == "--build" ] && build
+    [ "$ARG" = "--test" ] && tests
+    [ "$ARG" = "--help" ] && _help
+    [ "$ARG" = "--gen" ] && gen
+    [ "$ARG" = "--min" ] && min
+    [ "$ARG" = "--build" ] && build
     exit 0
 fi
