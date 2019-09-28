@@ -5,7 +5,7 @@ use stdweb::web::event::{
 
 use stdweb::traits::*;
 use stdweb::web::{document, CloneKind};
-use util::{confirm, nl, qs};
+use util::{confirm, get_range, nl, qs};
 
 use stdweb::unstable::TryInto;
 use stdweb::web::{HtmlElement, Node};
@@ -42,6 +42,13 @@ pub struct Trash();
 impl Trash {
     pub fn new() -> Trash {
         let coord = qs(".coord");
+        let cries: [&'static str; 5] = [
+            "U sure?",
+            "Really?",
+            "Y u gotta be this way?",
+            "Come on?",
+            "Please no",
+        ];
 
         coord.add_event_listener(|event: DragOverEvent| {
             event.prevent_default();
@@ -59,10 +66,11 @@ impl Trash {
             coord.class_list().remove("dragenter").unwrap();
         });
 
-        coord.add_event_listener(|event: DragDropEvent| {
+        coord.add_event_listener(enclose!((cries) move |event: DragDropEvent| {
             event.prevent_default();
-            confirm("U sure?".to_string(), del, reset)
-        });
+            let index = get_range(0 as f64, cries.len() as f64) as usize;
+            confirm(cries[index].to_string(), del, reset)
+        }));
 
         fn bind_link(link: Node) {
             let el: HtmlElement = link.clone().try_into().unwrap();
