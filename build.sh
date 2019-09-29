@@ -16,6 +16,7 @@ OPTIONS:
     --help              Prints help information
     --gen               Generate + minify HTML...
     --build             Runs cargo web deploy --target=wasm32-unknown-unknown
+    --serve             Runs cargo web start --target=wasm32-unknown-unknown
     --min               Minify deployed *.js files with uglify
     --test              Run tests
 
@@ -47,6 +48,12 @@ build() {
     # build
     echo 'Building...'
     cargo web deploy --target=wasm32-unknown-unknown
+}
+
+serve() {
+    # build
+    echo 'Starting up local server...'
+    cargo web start --target=wasm32-unknown-unknown
 }
 
 min() {
@@ -86,7 +93,14 @@ tests() {
     if [ -n "$SIMPLE" ]; then
         fail "'Nothing in life is simple' test failed $SIMPLE"
     fi
+    echo "Running cargo clean and cargo check"
     cargo clean && cargo check
+    # test the full build
+    # build
+    # ex=$?
+    # if [ $ex -gt 0 ]; then
+    #    fail "The build failed :("
+    # fi
     echo "all tests passed!"
 }
 
@@ -101,5 +115,6 @@ else
     [ "$ARG" = "--gen" ] && gen
     [ "$ARG" = "--min" ] && min
     [ "$ARG" = "--build" ] && build
+    [ "$ARG" = "--serve" ] && serve
     exit 0
 fi
