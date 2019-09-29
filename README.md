@@ -13,7 +13,11 @@ you will need <a href='https://github.com/koute/cargo-web'>`cargo web`</a>
 ```
 cargo web build --target=wasm32-unknown-unknown
 ```
-I haven't tested other targets
+or you can use the handy <a href='./build.sh'>build script</a>:
+```
+sh build.sh
+```
+I haven't tested other targets, but i am sure emcripten work also work
 
 You should see something like:  
 ```
@@ -24,6 +28,10 @@ warning: debug builds on the wasm32-unknown-unknown are currently totally broken
 ## Running local web server
 ```
 cargo web start --target=wasm32-unknown-unknown
+```
+or you can use the handy <a href='./build.sh'>build script</a>:
+```
+sh build.sh --serve
 ```
 You should see something like:  
 ```
