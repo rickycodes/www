@@ -3,10 +3,10 @@ use stdweb::web::{document, Date, HtmlElement, NodeList};
 
 use stdweb::unstable::TryInto;
 
-pub fn confirm(msg: String, a: fn(), b: fn()) {
+pub fn confirm(msg: String, ok: fn(), cancel: fn()) {
     js! {
       var call_drop = fn => fn() && fn.drop();
-      window.confirm(@{msg}) ? call_drop(@{a}) : call_drop(@{b});
+      window.confirm(@{msg}) ? call_drop(@{ok}) : call_drop(@{cancel});
     }
 }
 
@@ -40,9 +40,9 @@ pub fn qs(selector: &str) -> HtmlElement {
     t.unwrap().try_into().unwrap()
 }
 
-pub fn get_range(a: f64, b: f64) -> f64 {
+pub fn get_range(start: f64, end: f64) -> f64 {
     js! (
-      return (Math.random() * @{b}) + @{a};
+      return (Math.random() * @{end}) + @{start};
     )
     .try_into()
     .unwrap()
