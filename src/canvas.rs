@@ -16,7 +16,7 @@ macro_rules! cursor {
 }
 
 fn rect(context: &CanvasRenderingContext2d, x: f64, y: f64) {
-    let width = get_range(4.0, 40.0);
+    let width = get_range(1.0, 1100.00);
     let height = get_range(4.0, 80.0);
     let alpha = get_range(0.001, 0.1);
 
@@ -45,13 +45,15 @@ impl Canvas {
             .try_into()
             .unwrap();
         let context: CanvasRenderingContext2d = canvas.get_context().unwrap();
+        let width = canvas.offset_width() as u32;
+        let height = canvas.offset_height() as u32;
 
-        canvas.set_width(canvas.offset_width() as u32);
-        canvas.set_height(canvas.offset_height() as u32);
+        canvas.set_width(width);
+        canvas.set_height(height);
 
         let resize_event = move |_: ResizeEvent| {
-            canvas.set_width(canvas.offset_width() as u32);
-            canvas.set_height(canvas.offset_height() as u32);
+            canvas.set_width(width);
+            canvas.set_height(height);
         };
 
         let mut throttle_count = 0;
@@ -64,6 +66,11 @@ impl Canvas {
             throttle_count += 1;
             if throttle_count == throttle_every {
                 rect(&context, x, y);
+                let rotation = get_range(0.0, 360.0);
+                let pi = std::f32::consts::PI;
+                // context.translate(x + f64::from(width) / 2.0, y + f64::from(height) / 2.0);
+                context.rotate((rotation * f64::from(pi)) / 180.0);
+
                 throttle_count = 0;
             }
 
