@@ -60,6 +60,21 @@
   opacity: .3;
 }
 
+.projects .project .content h2 {
+  margin-top: 1em;
+  padding: 0.4em;
+  background: black;
+  color: white;
+  text-shadow: none;
+  display: inline-block;
+  font-size: 1em;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.projects .project .content {
+  padding-top: 0;
+}
+
 .projects .close {
   visibility: hidden;
   position: fixed;
@@ -90,7 +105,8 @@
 .slideshow {
   position: relative;
   height: 380px;
-  border: 2px solid lightgrey;
+  border-top: 2px solid lightgrey;
+  border-bottom: 2px solid lightgrey;
   overflow: hidden;
   background: radial-gradient(white, rgb(0,0,0,.1));
 }
@@ -140,7 +156,7 @@
 }
 
 .slideshow-container .controls {
-  margin: 1em 0;
+  margin: 2em 2em 0 2em;
 }
 
 .slideshow-container .controls .link {
@@ -164,4 +180,10 @@
 .slideshow-container .slideshow div img {
   object-fit: contain;
   max-width: 100%;
+}
+
+@media (max-width: 720px) {
+  .projects .project .close-link {
+    display: none;
+  }
 }
