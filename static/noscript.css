@@ -1,0 +1,12 @@
+._projects, .projects, .coord {
+  display: none;
+}
+
+.wat {
+  padding: 1em;
+  background: red;
+  color: white;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
