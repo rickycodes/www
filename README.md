@@ -15,7 +15,7 @@ cargo web build --target=wasm32-unknown-unknown
 ```
 or you can use the handy <a href='./build.sh'>build script</a>:
 ```
-sh build.sh
+bash build.sh
 ```
 I haven't tested other targets, but i am sure emcripten work also work
 
@@ -31,7 +31,7 @@ cargo web start --target=wasm32-unknown-unknown
 ```
 or you can use the handy <a href='./build.sh'>build script</a>:
 ```
-sh build.sh --serve
+bash build.sh --serve
 ```
 You should see something like:  
 ```

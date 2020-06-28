@@ -16,11 +16,13 @@ OPTIONS:
     --help              Prints help information
     --gen               Generate + minify HTML...
     --build             Runs cargo web deploy --target=wasm32-unknown-unknown
+                        (deploys site to ./target/deploy)
     --serve             Runs cargo web start --target=wasm32-unknown-unknown
+                        (serve the application locally)
     --min               Minify deployed *.js files with uglify
     --test              Run tests
 
-Running "sh build.sh" (with zero options) will --gen --build and --min (in that order)
+Running "bash build.sh" (with zero options) will --gen --build and --min (in that order)
 This is not a sophisticated script, one [OPTION] (singular) at a time or none.
 EOF
 )"
