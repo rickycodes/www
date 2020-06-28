@@ -111,6 +111,7 @@ then
     gen
     build
     min
+    echo 'Done.'
 else
     [ "$ARG" = "--test" ] && tests
     [ "$ARG" = "--help" ] && _help
