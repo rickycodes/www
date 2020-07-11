@@ -20,6 +20,19 @@ macro_rules! cursor_hover_events {
 
 pub struct Links();
 
+pub fn show_info(str: &str, el: HtmlElement, info: HtmlElement) {
+  let attr = el.get_attribute(str);
+  if attr != None {
+    let attr_str = attr.unwrap();
+    info.set_text_content(&attr_str);
+    info.class_list().remove( "hidden" ).unwrap();
+  }
+}
+
+pub fn hide_info(info: HtmlElement) {
+  info.class_list().add( "hidden" ).unwrap();
+}
+
 impl Links {
     pub fn new() -> Links {
         let info = qs(".info");
@@ -58,22 +71,12 @@ impl Links {
         for link in nl(".content a[title], .content label[name]") {
             let el: HtmlElement = link.clone().try_into().unwrap();
             link.add_event_listener(enclose!( (el, info) move |_event: MouseOverEvent| {
-              let name = el.get_attribute("name");
-              let title = el.get_attribute("title");
-              if title != None {
-                let title_str = title.unwrap();
-                info.set_text_content(&title_str);
-                info.class_list().remove( "hidden" ).unwrap();
-              }
-              if name != None {
-                let name_str = name.unwrap();
-                info.set_text_content(&name_str);
-                info.class_list().remove( "hidden" ).unwrap();
-              }
+              show_info("name", el.clone(), info.clone());
+              show_info("title", el.clone(), info.clone());
             }));
 
             link.add_event_listener(enclose!( (info) move |_event: MouseOutEvent| {
-              info.class_list().add( "hidden" ).unwrap();
+              hide_info(info.clone());
             }));
         }
 
