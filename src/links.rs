@@ -55,13 +55,19 @@ impl Links {
             el.set_attribute("rel", "noopener").unwrap();
         }
 
-        for link in nl(".content a[title]") {
+        for link in nl(".content a[title], .content label[name]") {
             let el: HtmlElement = link.clone().try_into().unwrap();
             link.add_event_listener(enclose!( (el, info) move |_event: MouseOverEvent| {
+              let name = el.get_attribute("name");
               let title = el.get_attribute("title");
               if title != None {
                 let title_str = title.unwrap();
                 info.set_text_content(&title_str);
+                info.class_list().remove( "hidden" ).unwrap();
+              }
+              if name != None {
+                let name_str = name.unwrap();
+                info.set_text_content(&name_str);
                 info.class_list().remove( "hidden" ).unwrap();
               }
             }));
