@@ -3,7 +3,7 @@
 PARTIALS='src/partials'
 PROJECTS=$PARTIALS/projects/
 ARG=$1
-HTML=static/index.html
+OUTPUT=static/index.html
 E_ASSERT_FAILED=99
 
 HELP="$(cat <<-EOF
@@ -34,16 +34,18 @@ _help() {
 gen() {
     echo 'Generate + minify HTML...'
     { cat ${PARTIALS}/sig.html & cat ${PARTIALS}/header.html \
-        ${PARTIALS}/main.html \
+        ${PARTIALS}/about.html \
+        ${PARTIALS}/cv.html \
+        ${PARTIALS}/footer.html \
         ${PROJECTS}* \
-        ${PARTIALS}/footer.html | npx html-minifier \
+        ${PARTIALS}/end.html | npx html-minifier \
     --collapse-whitespace \
     --remove-comments \
     --remove-optional-tags \
     --remove-redundant-attributes \
     --remove-script-type-attributes \
     --use-short-doctype \
-    --minify-css; } > $HTML
+    --minify-css; } > $OUTPUT
 }
 
 build() {
@@ -83,11 +85,11 @@ tests() {
         fail "build.sh --help test failed (unexpected text)"
     fi
     # test gen
-    if [ -f "$HTML" ]; then
-        rm "$HTML"
+    if [ -f "$OUTPUT" ]; then
+        rm "$OUTPUT"
     fi
     sh build.sh --gen
-    if [ ! -f "$HTML" ]; then
+    if [ ! -f "$OUTPUT" ]; then
         fail "build.sh --gen test failed (no HTML file)"
     fi
     # nothing in life is simple
