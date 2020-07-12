@@ -60,17 +60,6 @@
   opacity: .3;
 }
 
-.projects .project .content h2 {
-  margin-top: 1em;
-  padding: 0.4em;
-  background: black;
-  color: white;
-  text-shadow: none;
-  display: inline-block;
-  font-size: 1em;
-  font-family: 'Roboto Mono', monospace;
-}
-
 .projects .project .content {
   padding-top: 0;
 }
