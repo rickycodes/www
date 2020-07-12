@@ -121,5 +121,6 @@ else
     [ "$ARG" = "--min" ] && min
     [ "$ARG" = "--build" ] && build
     [ "$ARG" = "--serve" ] && serve
+    [ "$ARG" ] && echo "Invalid option."
     exit 0
 fi
