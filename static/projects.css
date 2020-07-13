@@ -47,8 +47,8 @@
   overflow: hidden;
   border: none;
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
   top: 0;
   right: 0;
   transition: opacity .3s ease-out;
