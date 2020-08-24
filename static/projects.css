@@ -51,8 +51,8 @@
   height: 60px;
   top: 0;
   right: 0;
-  transition: opacity .3s ease-out;
-  background: black;
+  transition: background-color .3s ease-out;
+  background-color: black;
 }
 
 .projects .project .close-link img {
@@ -61,7 +61,7 @@
 }
 
 .projects .project .close-link:hover {
-  opacity: .3;
+  background-color: dimgrey;
 }
 
 .projects .project .content {
@@ -97,7 +97,7 @@
 
 .slideshow {
   position: relative;
-  height: 380px;
+  height: 520px;
   border-top: 2px solid lightgrey;
   border-bottom: 2px solid lightgrey;
   overflow: hidden;
@@ -149,7 +149,11 @@
 }
 
 .slideshow-container .controls {
-  margin: 2em 2em 0 2em;
+  margin: 2em 2em 0 0;
+}
+
+.project > .slideshow-container .controls {
+  margin-left: 2em;
 }
 
 .slideshow-container .controls .link {
