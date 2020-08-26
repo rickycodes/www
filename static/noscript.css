@@ -2,6 +2,15 @@
   display: none;
 }
 
+@keyframes wat {
+  0% {
+    transform: translate3d(0,-100%,0);
+  }
+  100% {
+    transform: translate3d(0,0,0);
+  }
+}
+
 .wat {
   padding: 1em;
   background: red;
@@ -9,4 +18,5 @@
   display: block;
   width: 100%;
   text-align: center;
+  animation: wat .6s ease-out;
 }
