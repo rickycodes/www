@@ -200,34 +200,27 @@ code {
   text-transform: none;
 }
 
-#work-history .cv.link span::after {
+.work-history ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.work-history summary {
+  list-style: none;
+}
+
+.work-history summary::after {
   content: '+';
-  display: block;
   margin: 0 0 0 10px;
-  float: right;
 }
 
-#work-history input#cv-toggle { display: none; }
-
-#work-history input#cv-toggle + .cv.link + .cv-content {
-  display: none;
-}
-
-#work-history input#cv-toggle:checked + .cv.link + .cv-content {
-  display: block;
-}
-
-#work-history input#cv-toggle:checked + .cv.link {
-  animation: none;
-  color: black;
-}
-
-#work-history input#cv-toggle:checked + .cv.link:before {
-  background: white;
-}
-
-#work-history input#cv-toggle:checked + .cv.link span::after {
+.work-history[open] summary::after {
   content: '-';
+}
+
+.work-history summary::-webkit-details-marker {
+  display: none;
 }
 
 .cursor {

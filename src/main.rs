@@ -35,7 +35,7 @@ impl Website {
         Links::new();
         Canvas::new();
         Trash::new();
-        WorkHistory::new().scroll_to().bind_work_toggle();
+        WorkHistory::new();
         ToggleProject::new();
         self
     }
