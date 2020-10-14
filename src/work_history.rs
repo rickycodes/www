@@ -1,7 +1,6 @@
 use stdweb::traits::*;
-use stdweb::unstable::TryInto;
 use stdweb::web::{document, Element};
-use util::get_hash;
+use stdweb::unstable::TryInto;
 
 use stdweb::web::event::ClickEvent;
 
@@ -18,13 +17,13 @@ impl WorkHistory {
         let details = document().query_selector(".work-history").unwrap().unwrap();
         let click_event = enclose!( (details) move |_: ClickEvent| {
             let clone = details.clone();
-            js!{
-                const details = @{clone};
-                const scroll_into_view = @{scroll_into_view};
-                if (!details.open) {
-                    scroll_into_view(details);
-                }
-            };
+            let is_open: bool = js!( return @{&details}.open; )
+                .try_into()
+                .unwrap();
+
+            if !is_open {
+                scroll_into_view(clone)
+            }
         });
         details.add_event_listener(click_event);
         WorkHistory()

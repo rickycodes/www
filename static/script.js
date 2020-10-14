@@ -59,7 +59,7 @@
     gtag('config', 'UA-71959023-1')
   }
 
-  var init = function () {
+  var initialize = function () {
     if (raf) raf(function () { window.setTimeout(loadDeferredStyles, 0) })
     else window.addEventListener('load', loadDeferredStyles)
     setupGTag()
@@ -67,5 +67,5 @@
     attachScripts()
   }
 
-  document.addEventListener('DOMContentLoaded', init)
+  document.addEventListener('DOMContentLoaded', initialize)
 })()
