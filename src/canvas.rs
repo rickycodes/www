@@ -30,7 +30,7 @@ fn rect(context: &CanvasRenderingContext2d, x: f64, y: f64) {
         height,
     );
 
-    context.set_stroke_style_color(&stroke_style_color.to_string());
+    context.set_stroke_style_color(&stroke_style_color);
     context.stroke();
 }
 

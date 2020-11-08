@@ -29,8 +29,8 @@ fn reset() {
 
 fn del() {
     let drag = document().query_selector(".drag").unwrap();
-    if drag.is_some() {
-        drag.unwrap()
+    if let Some(drag) = drag {
+        drag
             .set_attribute("style", "display: none;")
             .unwrap()
     }

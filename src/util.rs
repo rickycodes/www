@@ -20,7 +20,6 @@ pub fn get_hash() -> String {
         .hash()
         .unwrap()
         .replace("#", "")
-        .to_string()
 }
 
 pub fn qs(selector: &str) -> HtmlElement {
