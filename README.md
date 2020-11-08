@@ -17,7 +17,7 @@ or you can use the handy <a href='./build.sh'>build script</a>:
 ```
 bash build.sh
 ```
-I haven't tested other targets, but i am sure emcripten work also work
+I haven't tested other targets, but <a href='https://emscripten.org'>emscripten</a> should work
 
 You should see something like:  
 ```
