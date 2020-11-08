@@ -4,8 +4,8 @@ use stdweb::web::event::{
 };
 
 use stdweb::traits::*;
-use stdweb::web::{document, CloneKind};
-use util::{confirm, get_range, nl, qs};
+use stdweb::web::{document, CloneKind, confirm};
+use util::{get_range, nl, qs};
 
 use stdweb::unstable::TryInto;
 use stdweb::web::{HtmlElement, Node};
@@ -69,7 +69,12 @@ impl Trash {
         coord.add_event_listener(enclose!((cries) move |event: DragDropEvent| {
             event.prevent_default();
             let index = get_range(0 as f64, cries.len() as f64) as usize;
-            confirm(cries[index].to_string(), del, reset)
+            let okay = confirm(&cries[index].to_string());
+            if okay {
+                del()
+            } else {
+                reset()
+            }
         }));
 
         fn bind_link(link: Node) {
