@@ -94,6 +94,7 @@
   transition: all .3s ease-out;
 }
 
+/* put me in the trash */
 .coord .can {
   display: none;
   pointer-events: none;

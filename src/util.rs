@@ -32,6 +32,8 @@ pub fn qs(selector: &str) -> HtmlElement {
     t.unwrap().try_into().unwrap()
 }
 
+// TODO:
+// replace this with something that works without using js!
 pub fn get_range(start: f64, end: f64) -> f64 {
     js! (
       return (Math.random() * @{end}) + @{start};

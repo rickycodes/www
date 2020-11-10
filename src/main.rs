@@ -10,6 +10,7 @@ mod toggle_project;
 mod trash;
 mod util;
 mod work_history;
+mod constants;
 
 use canvas::Canvas;
 use links::Links;

@@ -10,28 +10,39 @@ use util::{get_range, nl, qs};
 use stdweb::unstable::TryInto;
 use stdweb::web::{HtmlElement, Node};
 
+use crate::constants::{
+    CRIES,
+    CURSOR_SELECTOR,
+    CURSOR_PROJECT_SELECTOR,
+    DRAG_ENTER,
+    DRAG_SELECTOR,
+    COORDINATE_SELECTOR,
+    LINK_SELECTOR,
+    TRASH,
+    DRAG,
+    STYLE,
+    ZOOM
+  };
+
 fn remove_drag_enter() {
-    let coord = qs(".coord");
-    coord.class_list().remove("dragenter").unwrap();
-    coord.class_list().remove("trash").unwrap();
+    let coord = qs(COORDINATE_SELECTOR);
+    coord.class_list().remove(DRAG_ENTER).unwrap();
+    coord.class_list().remove(TRASH).unwrap();
 }
 
 fn reset() {
     remove_drag_enter();
-
-    let drag = document().query_selector(".drag").unwrap();
-    if drag.is_some() {
-        js!( document.querySelector(".drag").classList.remove("drag"); )
-            .try_into()
-            .unwrap()
+    let drag = document().query_selector(DRAG_SELECTOR).unwrap();
+    if let Some(drag) = drag {
+        drag.class_list().remove(DRAG).unwrap();
     }
 }
 
-fn del() {
-    let drag = document().query_selector(".drag").unwrap();
+fn delete() {
+    let drag = document().query_selector(DRAG_SELECTOR).unwrap();
     if let Some(drag) = drag {
         drag
-            .set_attribute("style", "display: none;")
+            .set_attribute(STYLE, "display: none;")
             .unwrap()
     }
     reset()
@@ -41,14 +52,8 @@ pub struct Trash();
 
 impl Trash {
     pub fn new() -> Trash {
-        let coord = qs(".coord");
-        let cries: [&'static str; 5] = [
-            "U sure?",
-            "Really?",
-            "Y u gotta be this way?",
-            "Come on?",
-            "Please no",
-        ];
+        let coord = qs(COORDINATE_SELECTOR);
+        let cries = CRIES;
 
         coord.add_event_listener(|event: DragOverEvent| {
             event.prevent_default();
@@ -56,14 +61,14 @@ impl Trash {
 
         coord.add_event_listener(|event: DragEnterEvent| {
             event.prevent_default();
-            let coord = qs(".coord");
-            coord.class_list().add("dragenter").unwrap();
+            let coord = qs(COORDINATE_SELECTOR);
+            coord.class_list().add(DRAG_ENTER).unwrap();
         });
 
         coord.add_event_listener(|event: DragLeaveEvent| {
             event.prevent_default();
-            let coord = qs(".coord");
-            coord.class_list().remove("dragenter").unwrap();
+            let coord = qs(COORDINATE_SELECTOR);
+            coord.class_list().remove(DRAG_ENTER).unwrap();
         });
 
         coord.add_event_listener(enclose!((cries) move |event: DragDropEvent| {
@@ -71,7 +76,7 @@ impl Trash {
             let index = get_range(0 as f64, cries.len() as f64) as usize;
             let okay = confirm(&cries[index].to_string());
             if okay {
-                del()
+                delete()
             } else {
                 reset()
             }
@@ -80,24 +85,24 @@ impl Trash {
         fn bind_link(link: Node) {
             let el: HtmlElement = link.clone().try_into().unwrap();
             let drag_event = |event: DragEvent| {
-                let cursor = qs(".cursor");
+                let cursor = qs(CURSOR_SELECTOR);
                 let x = f64::from(event.client_x());
                 let y = f64::from(event.client_y());
                 cursor
                     .set_attribute(
-                        "style",
+                        STYLE,
                         &format!("transform: translate3d({}px,{}px,0);", x, y),
                     )
                     .unwrap();
             };
 
             link.add_event_listener(enclose!( (el) move |_event: DragStartEvent| {
-              let coord = qs(".coord");
-              coord.class_list().add("trash").unwrap();
-              let cursor = qs(".cursor");
-              cursor.class_list().remove("zoom").unwrap();
+              let coord = qs(COORDINATE_SELECTOR);
+              coord.class_list().add(TRASH).unwrap();
+              let cursor = qs(CURSOR_SELECTOR);
+              cursor.class_list().remove(ZOOM).unwrap();
               let clone = el.clone_node(CloneKind::Deep).unwrap();
-              el.class_list().add("drag").unwrap();
+              el.class_list().add(DRAG).unwrap();
               cursor.append_child(&clone);
             }));
 
@@ -110,13 +115,13 @@ impl Trash {
                   window.setTimeout(reset, 100);
                 }
                 remove_drag_enter();
-                let cursor = qs(".cursor");
-                let project = qs(".cursor .project");
+                let cursor = qs(CURSOR_SELECTOR);
+                let project = qs(CURSOR_PROJECT_SELECTOR);
                 cursor.remove_child(&project).unwrap();
             });
         }
 
-        for link in nl(".project.link, .cv.link") {
+        for link in nl(LINK_SELECTOR) {
             bind_link(link)
         }
 

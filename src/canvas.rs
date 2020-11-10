@@ -4,6 +4,10 @@ use stdweb::web::{document, html_element::CanvasElement, window, CanvasRendering
 use util::{get_range, qs};
 
 use stdweb::web::event::{MouseMoveEvent, ResizeEvent};
+use crate::constants::{
+    CANVAS_SELECTOR,
+    CURSOR_SELECTOR
+};
 
 macro_rules! cursor {
     ($el:expr, $x:expr, $y:expr) => {
@@ -39,7 +43,7 @@ pub struct Canvas();
 impl Canvas {
     pub fn new() -> Canvas {
         let canvas: CanvasElement = document()
-            .query_selector(".canvas")
+            .query_selector(CANVAS_SELECTOR)
             .unwrap()
             .unwrap()
             .try_into()
@@ -77,7 +81,7 @@ impl Canvas {
             qs(".coord > div").set_text_content(&format!("_x: {}, _y: {}", x, y));
             cursor!(qs(".x"), &format!("{}px", x), 0);
             cursor!(qs(".y"), 0, &format!("{}px", y));
-            cursor!(qs(".cursor"), &format!("{}px", x), &format!("{}px", y));
+            cursor!(qs(CURSOR_SELECTOR), &format!("{}px", x), &format!("{}px", y));
         };
 
         window().add_event_listener(resize_event);

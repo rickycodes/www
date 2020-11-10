@@ -38,7 +38,7 @@ gen() {
         ${PARTIALS}/cv.html \
         ${PARTIALS}/footer.html \
         ${PROJECTS}* \
-        ${PARTIALS}/end.html | npx html-minifier \
+        ${PARTIALS}/end.html | html-minifier \
     --collapse-whitespace \
     --remove-comments \
     --remove-optional-tags \
