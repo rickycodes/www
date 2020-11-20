@@ -70,11 +70,6 @@ impl Canvas {
             throttle_count += 1;
             if throttle_count == throttle_every {
                 rect(&context, x, y);
-                let rotation = get_range(0.0, 360.0);
-                let pi = std::f32::consts::PI;
-                // context.translate(x + f64::from(width) / 2.0, y + f64::from(height) / 2.0);
-                context.rotate((rotation * f64::from(pi)) / 180.0);
-
                 throttle_count = 0;
             }
 
