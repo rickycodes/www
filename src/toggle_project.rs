@@ -1,7 +1,7 @@
 use stdweb::traits::*;
 use stdweb::web::event::HashChangeEvent;
 use stdweb::web::{document, window};
-use util::{get_hash, qs};
+use util::{get_hash, query_selector};
 
 use constants::{DATA_PROJECT, DATA_SCROLL};
 
@@ -17,7 +17,7 @@ fn toggle(scrolls: &mut Vec<f64>) {
                 .unwrap_or_else(|| document_element.unwrap().scroll_top());
             body.set_attribute(DATA_PROJECT, &hash).unwrap();
             scrolls.push(top);
-            qs("[data-project] > .content").set_scroll_top(top)
+            query_selector("[data-project] > .content").set_scroll_top(top)
         }
     } else {
         body.remove_attribute(DATA_PROJECT);

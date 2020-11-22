@@ -5,7 +5,7 @@ use stdweb::web::event::{
 
 use stdweb::traits::*;
 use stdweb::web::{confirm, document, CloneKind};
-use util::{get_range, nl, qs};
+use util::{get_range, node_list, query_selector};
 
 use stdweb::unstable::TryInto;
 use stdweb::web::{HtmlElement, Node};
@@ -16,7 +16,7 @@ use crate::constants::{
 };
 
 fn remove_drag_enter() {
-    let coord = qs(COORDINATE_SELECTOR);
+    let coord = query_selector(COORDINATE_SELECTOR);
     coord.class_list().remove(DRAG_ENTER).unwrap();
     coord.class_list().remove(TRASH).unwrap();
 }
@@ -41,7 +41,7 @@ pub struct Trash();
 
 impl Trash {
     pub fn new() -> Trash {
-        let coord = qs(COORDINATE_SELECTOR);
+        let coord = query_selector(COORDINATE_SELECTOR);
         let cries = CRIES;
 
         coord.add_event_listener(|event: DragOverEvent| {
@@ -50,13 +50,13 @@ impl Trash {
 
         coord.add_event_listener(|event: DragEnterEvent| {
             event.prevent_default();
-            let coord = qs(COORDINATE_SELECTOR);
+            let coord = query_selector(COORDINATE_SELECTOR);
             coord.class_list().add(DRAG_ENTER).unwrap();
         });
 
         coord.add_event_listener(|event: DragLeaveEvent| {
             event.prevent_default();
-            let coord = qs(COORDINATE_SELECTOR);
+            let coord = query_selector(COORDINATE_SELECTOR);
             coord.class_list().remove(DRAG_ENTER).unwrap();
         });
 
@@ -74,7 +74,7 @@ impl Trash {
         fn bind_link(link: Node) {
             let el: HtmlElement = link.clone().try_into().unwrap();
             let drag_event = |event: DragEvent| {
-                let cursor = qs(CURSOR_SELECTOR);
+                let cursor = query_selector(CURSOR_SELECTOR);
                 let x = f64::from(event.client_x());
                 let y = f64::from(event.client_y());
                 cursor
@@ -86,9 +86,9 @@ impl Trash {
             };
 
             link.add_event_listener(enclose!( (el) move |_event: DragStartEvent| {
-              let coord = qs(COORDINATE_SELECTOR);
+              let coord = query_selector(COORDINATE_SELECTOR);
               coord.class_list().add(TRASH).unwrap();
-              let cursor = qs(CURSOR_SELECTOR);
+              let cursor = query_selector(CURSOR_SELECTOR);
               cursor.class_list().remove(ZOOM).unwrap();
               let clone = el.clone_node(CloneKind::Deep).unwrap();
               el.class_list().add(DRAG).unwrap();
@@ -104,13 +104,13 @@ impl Trash {
                   window.setTimeout(reset, 100);
                 }
                 remove_drag_enter();
-                let cursor = qs(CURSOR_SELECTOR);
-                let project = qs(CURSOR_PROJECT_SELECTOR);
+                let cursor = query_selector(CURSOR_SELECTOR);
+                let project = query_selector(CURSOR_PROJECT_SELECTOR);
                 cursor.remove_child(&project).unwrap();
             });
         }
 
-        for link in nl(LINK_SELECTOR) {
+        for link in node_list(LINK_SELECTOR) {
             bind_link(link)
         }
 

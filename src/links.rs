@@ -1,7 +1,7 @@
 use stdweb::traits::*;
 use stdweb::unstable::TryInto;
 use stdweb::web::HtmlElement;
-use util::{nl, qs};
+use util::{node_list, query_selector};
 
 use stdweb::web::event::{MouseOutEvent, MouseOverEvent};
 
@@ -22,9 +22,9 @@ pub fn hide_info(info: HtmlElement) {
 
 impl Links {
     pub fn new() -> Links {
-        let info = qs(".info");
+        let info = query_selector(".info");
 
-        for link in nl(".content a[title], .content label[name]") {
+        for link in node_list(".content a[title], .content label[name]") {
             let el: HtmlElement = link.clone().try_into().unwrap();
             link.add_event_listener(enclose!( (el, info) move |_event: MouseOverEvent| {
               show_info("name", el.clone(), info.clone());

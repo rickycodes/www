@@ -2,7 +2,7 @@ use stdweb::traits::*;
 use stdweb::unstable::TryInto;
 use stdweb::web::event::{ClickEvent, KeyUpEvent};
 use stdweb::web::{document, window, HtmlElement};
-use util::{create_el, nl};
+use util::{create_element, node_list};
 
 use constants::{DATA_INDEX, DATA_PROJECT, ESC, NEXT, PREV};
 
@@ -38,7 +38,7 @@ pub struct SlideShows();
 impl SlideShows {
     pub fn new() -> SlideShows {
         // setup all slideshows
-        for slideshow in nl(".slideshow") {
+        for slideshow in node_list(".slideshow") {
             // collect slides
             let slides: Vec<HtmlElement> = slideshow
                 .child_nodes()
@@ -54,16 +54,16 @@ impl SlideShows {
             if slides.len() > 1 {
                 let slideshow_el: HtmlElement = slideshow.try_into().unwrap();
 
-                let slideshow_prev = create_el("a", PREV);
+                let slideshow_prev = create_element("a", PREV);
                 slideshow_el.append_child(&slideshow_prev);
 
-                let slideshow_next = create_el("a", NEXT);
+                let slideshow_next = create_element("a", NEXT);
                 slideshow_el.append_child(&slideshow_next);
 
-                let controls_el = create_el("div", "controls");
+                let controls_el = create_element("div", "controls");
 
                 let control_setup = |index: usize| {
-                    let control_el = create_el("a", "link");
+                    let control_el = create_element("a", "link");
                     control_el.set_text_content(&(index + 1).to_string());
                     control_el.add_event_listener(
                         enclose!( (slideshow_el, index) move |_:ClickEvent| {
