@@ -36,6 +36,7 @@
 [data-project='retrorecord'] .projects .project.retrorecord,
 [data-project='emoji-picker'] .projects .project.emoji-picker,
 [data-project='android-drag-and-drop'] .projects .project.android-drag-and-drop,
+[data-project='winamp-skins'] .projects .project.winamp-skins,
 [data-project='audio-visualizer'] .projects .project.audio-visualizer {
   transform: translate3d(0%,0,0) rotateX(0);
 }
