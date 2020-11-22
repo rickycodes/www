@@ -5,6 +5,7 @@ extern crate rand;
 
 #[macro_use]
 mod enclose;
+mod constants;
 mod coordinates;
 mod cursors;
 mod links;
@@ -13,7 +14,6 @@ mod toggle_project;
 mod trash;
 mod util;
 mod work_history;
-mod constants;
 
 use coordinates::Coordinates;
 use cursors::Cursors;

@@ -1,6 +1,6 @@
 use stdweb::traits::*;
-use stdweb::web::{document, Element};
 use stdweb::unstable::TryInto;
+use stdweb::web::{document, Element};
 
 use stdweb::web::event::ClickEvent;
 

@@ -1,8 +1,8 @@
 use stdweb::traits::*;
 use stdweb::web::{document, Date, HtmlElement, NodeList};
 
-use stdweb::unstable::TryInto;
 use rand::Rng;
+use stdweb::unstable::TryInto;
 
 pub fn nl(selector: &str) -> NodeList {
     document().query_selector_all(selector).unwrap()

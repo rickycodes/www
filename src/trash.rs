@@ -4,25 +4,16 @@ use stdweb::web::event::{
 };
 
 use stdweb::traits::*;
-use stdweb::web::{document, CloneKind, confirm};
+use stdweb::web::{confirm, document, CloneKind};
 use util::{get_range, nl, qs};
 
 use stdweb::unstable::TryInto;
 use stdweb::web::{HtmlElement, Node};
 
 use crate::constants::{
-    CRIES,
-    CURSOR_SELECTOR,
-    CURSOR_PROJECT_SELECTOR,
-    DRAG_ENTER,
-    DRAG_SELECTOR,
-    COORDINATE_SELECTOR,
-    LINK_SELECTOR,
-    TRASH,
-    DRAG,
-    STYLE,
-    ZOOM
-  };
+    COORDINATE_SELECTOR, CRIES, CURSOR_PROJECT_SELECTOR, CURSOR_SELECTOR, DRAG, DRAG_ENTER,
+    DRAG_SELECTOR, LINK_SELECTOR, STYLE, TRASH, ZOOM,
+};
 
 fn remove_drag_enter() {
     let coord = qs(COORDINATE_SELECTOR);
@@ -41,9 +32,7 @@ fn reset() {
 fn delete() {
     let drag = document().query_selector(DRAG_SELECTOR).unwrap();
     if let Some(drag) = drag {
-        drag
-            .set_attribute(STYLE, "display: none;")
-            .unwrap()
+        drag.set_attribute(STYLE, "display: none;").unwrap()
     }
     reset()
 }

@@ -3,10 +3,7 @@ use stdweb::web::event::HashChangeEvent;
 use stdweb::web::{document, window};
 use util::{get_hash, qs};
 
-use constants::{
-    DATA_PROJECT,
-    DATA_SCROLL
-};
+use constants::{DATA_PROJECT, DATA_SCROLL};
 
 fn toggle(scrolls: &mut Vec<f64>) {
     let hash = get_hash();

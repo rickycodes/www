@@ -1,8 +1,8 @@
 use stdweb::traits::*;
-use stdweb::web::{window};
-use util::{qs};
+use stdweb::web::window;
+use util::qs;
 
-use stdweb::web::event::{MouseMoveEvent};
+use stdweb::web::event::MouseMoveEvent;
 
 pub struct Coordinates();
 

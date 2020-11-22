@@ -4,13 +4,7 @@ use stdweb::web::event::{ClickEvent, KeyUpEvent};
 use stdweb::web::{document, window, HtmlElement};
 use util::{create_el, nl};
 
-use constants::{
-    NEXT,
-    PREV,
-    ESC,
-    DATA_INDEX,
-    DATA_PROJECT
-};
+use constants::{DATA_INDEX, DATA_PROJECT, ESC, NEXT, PREV};
 
 macro_rules! prev_next {
     ($slideshow:expr, $slides:expr, $dir:expr) => {
