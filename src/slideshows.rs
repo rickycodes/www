@@ -39,18 +39,19 @@ impl SlideShows {
     pub fn new() -> SlideShows {
         // setup all slideshows
         for slideshow in nl(".slideshow") {
-            let mut slides = Vec::new();
-
             // collect slides
-            for child in slideshow.child_nodes() {
-                if child.node_name() == "DIV" {
-                    let el: HtmlElement = child.try_into().unwrap();
-                    slides.push(el);
-                }
-            }
+            let slides: Vec<HtmlElement> = slideshow
+                .child_nodes()
+                .into_iter()
+                .filter(|item| item.node_name() == "DIV")
+                .map(|item| {
+                    let el: HtmlElement = item.try_into().unwrap();
+                    el
+                })
+                .collect();
 
+            // only setup slideshow if there is more than one slide!
             if slides.len() > 1 {
-                // only setup slideshow if there is more than one slide!
                 let slideshow_el: HtmlElement = slideshow.try_into().unwrap();
 
                 let slideshow_prev = create_el("a", PREV);
