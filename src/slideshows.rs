@@ -4,28 +4,37 @@ use stdweb::web::event::{ClickEvent, KeyUpEvent};
 use stdweb::web::{document, window, HtmlElement};
 use util::{create_el, nl};
 
+use constants::{
+    NEXT,
+    PREV,
+    ESC,
+    DATA_INDEX,
+    DATA_PROJECT
+};
+
 macro_rules! prev_next {
     ($slideshow:expr, $slides:expr, $dir:expr) => {
+        let last = $slides.len() - 1;
         let data_index: usize = $slideshow
-            .get_attribute("data-index")
+            .get_attribute(DATA_INDEX)
             .unwrap()
             .parse()
             .unwrap();
-        let inc: usize = if $dir == "next" {
-            if data_index == $slides.len() - 1 {
+        let inc: usize = if $dir == NEXT {
+            if data_index == last {
                 0
             } else {
                 data_index + 1
             }
         } else {
             if data_index == 0 {
-                $slides.len() - 1
+                last
             } else {
                 data_index - 1
             }
         };
         $slideshow
-            .set_attribute("data-index", &inc.to_string())
+            .set_attribute(DATA_INDEX, &inc.to_string())
             .unwrap();
     };
 }
@@ -50,10 +59,10 @@ impl SlideShows {
                 // only setup slideshow if there is more than one slide!
                 let slideshow_el: HtmlElement = slideshow.try_into().unwrap();
 
-                let slideshow_prev = create_el("a", "prev");
+                let slideshow_prev = create_el("a", PREV);
                 slideshow_el.append_child(&slideshow_prev);
 
-                let slideshow_next = create_el("a", "next");
+                let slideshow_next = create_el("a", NEXT);
                 slideshow_el.append_child(&slideshow_next);
 
                 let controls_el = create_el("div", "controls");
@@ -63,7 +72,7 @@ impl SlideShows {
                     control_el.set_text_content(&(index + 1).to_string());
                     control_el.add_event_listener(
                         enclose!( (slideshow_el, index) move |_:ClickEvent| {
-                          slideshow_el.set_attribute("data-index", &index.to_string()).unwrap();
+                          slideshow_el.set_attribute(DATA_INDEX, &index.to_string()).unwrap();
                         }),
                     );
                     controls_el.append_child(&control_el);
@@ -79,11 +88,11 @@ impl SlideShows {
                     .append_child(&controls_el);
 
                 let slideshow_prev_event = enclose!( (slideshow_el, slides) move |_: ClickEvent| {
-                  prev_next!(slideshow_el, slides, "prev");
+                  prev_next!(slideshow_el, slides, PREV);
                 });
 
                 let slideshow_next_event = enclose!( (slideshow_el, slides) move |_: ClickEvent| {
-                  prev_next!(slideshow_el, slides, "next");
+                  prev_next!(slideshow_el, slides, NEXT);
                 });
 
                 slideshow_prev.add_event_listener(slideshow_prev_event);
@@ -99,16 +108,16 @@ impl SlideShows {
         };
 
         let determine_key = |key: String| match key.as_ref() {
-            "ArrowLeft" => "prev",
-            "ArrowRight" => "next",
+            "ArrowLeft" => PREV,
+            "ArrowRight" => NEXT,
             _ => "_",
         };
 
         let keyup_event = move |event: KeyUpEvent| {
-            let data_project = document().body().unwrap().get_attribute("data-project");
+            let data_project = document().body().unwrap().get_attribute(DATA_PROJECT);
             if data_project.is_some() {
                 let key = event.key();
-                if key == "Escape" {
+                if key == ESC {
                     js!( window.location.hash = ""; );
                 } else {
                     let next_prev = determine_key(key);

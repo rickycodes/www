@@ -5,3 +5,4 @@ authors = ["Ricky Miller"]
 
 [dependencies]
 stdweb = "^0.4.20"
+rand = { version = "^0.7.3", features = [ "stdweb" ] }
