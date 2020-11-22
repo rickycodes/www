@@ -11,7 +11,6 @@ pub const DRAG: &str = "drag";
 pub const STYLE: &str = "style";
 pub const ZOOM: &str = "zoom";
 
-pub const CANVAS_SELECTOR: &str = ".canvas";
 pub const CURSOR_SELECTOR: &str = ".cursor";
 pub const CURSOR_PROJECT_SELECTOR: &str = ".cursor .project";
 pub const DRAG_ENTER: &str = "dragenter";

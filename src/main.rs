@@ -3,7 +3,8 @@ extern crate stdweb;
 
 #[macro_use]
 mod enclose;
-mod canvas;
+mod coordinates;
+mod cursors;
 mod links;
 mod slideshows;
 mod toggle_project;
@@ -12,7 +13,8 @@ mod util;
 mod work_history;
 mod constants;
 
-use canvas::Canvas;
+use coordinates::Coordinates;
+use cursors::Cursors;
 use links::Links;
 use slideshows::SlideShows;
 use toggle_project::ToggleProject;
@@ -34,7 +36,8 @@ impl Website {
 
         SlideShows::new();
         Links::new();
-        Canvas::new();
+        Coordinates::new();
+        Cursors::new();
         Trash::new();
         WorkHistory::new();
         ToggleProject::new();
