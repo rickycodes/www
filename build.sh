@@ -10,7 +10,7 @@ HELP="$(cat <<-EOF
 ricky.codes build tool
 
 USAGE:
-    sh build.sh [OPTIONS]
+    bash build.sh [OPTIONS]
 
 OPTIONS:
     --help              Prints help information
@@ -38,7 +38,7 @@ gen() {
         ${PARTIALS}/cv.html \
         ${PARTIALS}/footer.html \
         ${PROJECTS}* \
-        ${PARTIALS}/end.html | html-minifier \
+        ${PARTIALS}/end.html | npx html-minifier \
     --collapse-whitespace \
     --remove-comments \
     --remove-optional-tags \
@@ -65,7 +65,7 @@ min() {
     echo 'Minify...'
     jsFiles='target/deploy/*.js'
     for f in $jsFiles; do
-        uglifyjs "$f" \
+        npx uglifyjs "$f" \
             --compress \
             --mangle \
             --output "$f"
@@ -79,7 +79,7 @@ fail() {
 
 tests() {
     # test help
-    HELP=$(sh build.sh --help)
+    HELP=$(bash build.sh --help)
     CHECK_HELP=$(echo "$HELP" | grep "ricky.codes build tool")
     if [ -z "$CHECK_HELP" ]; then
         fail "build.sh --help test failed (unexpected text)"
@@ -88,7 +88,7 @@ tests() {
     if [ -f "$OUTPUT" ]; then
         rm "$OUTPUT"
     fi
-    sh build.sh --gen
+    bash build.sh --gen
     if [ ! -f "$OUTPUT" ]; then
         fail "build.sh --gen test failed (no HTML file)"
     fi
@@ -121,6 +121,5 @@ else
     [ "$ARG" = "--min" ] && min
     [ "$ARG" = "--build" ] && build
     [ "$ARG" = "--serve" ] && serve
-    [ "$ARG" ] && echo "Invalid option."
     exit 0
 fi

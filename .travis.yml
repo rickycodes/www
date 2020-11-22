@@ -8,7 +8,7 @@ node_js: "8.10"
 
 script:
   - shellcheck *.sh
-  - sh build.sh --test
+  - bash build.sh --test
 
 before_install:
   - npm i -g npx
