@@ -9,17 +9,11 @@ use constants::{DATA_INDEX, DATA_PROJECT, ESC, NEXT, PREV};
 pub struct SlideShows();
 
 fn set_attribute(element: &HtmlElement, attribute: &str) {
-    element
-        .set_attribute(DATA_INDEX, attribute)
-        .unwrap();
+    element.set_attribute(DATA_INDEX, attribute).unwrap();
 }
 
 fn get_data_index(element: &HtmlElement) -> usize {
-    element
-        .get_attribute(DATA_INDEX)
-        .unwrap()
-        .parse()
-        .unwrap()
+    element.get_attribute(DATA_INDEX).unwrap().parse().unwrap()
 }
 
 impl SlideShows {

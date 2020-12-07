@@ -1,9 +1,9 @@
 use stdweb::traits::*;
 use stdweb::unstable::TryInto;
+use stdweb::web::event::{MouseMoveEvent, MouseOutEvent, MouseOverEvent};
 use stdweb::web::window;
 use stdweb::web::HtmlElement;
 use util::{node_list, query_selector};
-use stdweb::web::event::{MouseMoveEvent, MouseOutEvent, MouseOverEvent};
 
 use crate::constants::CURSOR_SELECTOR;
 
@@ -11,15 +11,17 @@ struct Cursor;
 
 struct CursorAttributes {
     selector: &'static str,
-    classname: &'static str
+    classname: &'static str,
 }
 
 impl Cursor {
     pub fn new(el: HtmlElement, cursor: &HtmlElement, classname: &'static str) -> Self {
-        el.add_event_listener(enclose!( (cursor, classname) move |_event: MouseOverEvent| {
-            cursor.class_list().add( classname ).unwrap();
-        }));
-    
+        el.add_event_listener(
+            enclose!( (cursor, classname) move |_event: MouseOverEvent| {
+                cursor.class_list().add( classname ).unwrap();
+            }),
+        );
+
         el.add_event_listener(enclose!( (cursor, classname) move |_event: MouseOutEvent| {
             cursor.class_list().remove( classname ).unwrap();
         }));
@@ -43,11 +45,26 @@ impl Cursors {
         Cursor::new(close, &cursor_element, "close");
 
         let cursors = [
-            CursorAttributes { selector: ".github.link", classname: "gh" },
-            CursorAttributes { selector: ".twitter.link", classname: "tw" },
-            CursorAttributes { selector: "._projects .project", classname: "zoom" },
-            CursorAttributes { selector: ".slideshow .prev", classname: "prev" },
-            CursorAttributes { selector: ".slideshow .next", classname: "next" },
+            CursorAttributes {
+                selector: ".github.link",
+                classname: "gh",
+            },
+            CursorAttributes {
+                selector: ".twitter.link",
+                classname: "tw",
+            },
+            CursorAttributes {
+                selector: "._projects .project",
+                classname: "zoom",
+            },
+            CursorAttributes {
+                selector: ".slideshow .prev",
+                classname: "prev",
+            },
+            CursorAttributes {
+                selector: ".slideshow .next",
+                classname: "next",
+            },
         ];
 
         for cursor in &cursors {
@@ -71,7 +88,7 @@ impl Cursors {
             set_cursor_coordinates(
                 query_selector(CURSOR_SELECTOR),
                 &format!("{}px", x),
-                &format!("{}px", y)
+                &format!("{}px", y),
             );
         };
 
