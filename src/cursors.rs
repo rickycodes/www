@@ -3,21 +3,25 @@ use stdweb::unstable::TryInto;
 use stdweb::web::window;
 use stdweb::web::HtmlElement;
 use util::{node_list, query_selector};
-
 use stdweb::web::event::{MouseMoveEvent, MouseOutEvent, MouseOverEvent};
 
 use crate::constants::CURSOR_SELECTOR;
 
 struct Cursor;
 
+struct CursorAttributes {
+    selector: &'static str,
+    classname: &'static str
+}
+
 impl Cursor {
-    pub fn new(el: HtmlElement, cursor: &HtmlElement, class: &'static str) {
-        el.add_event_listener(enclose!( (cursor, class) move |_event: MouseOverEvent| {
-            cursor.class_list().add( class ).unwrap();
+    pub fn new(el: HtmlElement, cursor: &HtmlElement, classname: &'static str) {
+        el.add_event_listener(enclose!( (cursor, classname) move |_event: MouseOverEvent| {
+            cursor.class_list().add( classname ).unwrap();
         }));
     
-        el.add_event_listener(enclose!( (cursor, class) move |_event: MouseOutEvent| {
-            cursor.class_list().remove( class ).unwrap();
+        el.add_event_listener(enclose!( (cursor, classname) move |_event: MouseOutEvent| {
+            cursor.class_list().remove( classname ).unwrap();
         }));
     }
 }
@@ -31,29 +35,23 @@ pub struct Cursors();
 
 impl Cursors {
     pub fn new() -> Cursors {
-        let cursor = query_selector(".cursor");
+        let cursor_element = query_selector(".cursor");
         let close = query_selector(".close div");
 
-        Cursor::new(close, &cursor, "close");
+        Cursor::new(close, &cursor_element, "close");
 
-        for gh in node_list(".github.link") {
-            Cursor::new(gh.try_into().unwrap(), &cursor, "gh");
-        }
+        let cursors = [
+            CursorAttributes { selector: ".github.link", classname: "gh" },
+            CursorAttributes { selector: ".twitter.link", classname: "tw" },
+            CursorAttributes { selector: "._projects .project", classname: "zoom" },
+            CursorAttributes { selector: ".slideshow .prev", classname: "prev" },
+            CursorAttributes { selector: ".slideshow .next", classname: "next" },
+        ];
 
-        for tw in node_list(".twitter.link") {
-            Cursor::new(tw.try_into().unwrap(), &cursor, "tw");
-        }
-
-        for project in node_list("._projects .project") {
-            Cursor::new(project.try_into().unwrap(), &cursor, "zoom");
-        }
-
-        for prev in node_list(".slideshow .prev") {
-            Cursor::new(prev.try_into().unwrap(), &cursor, "prev");
-        }
-
-        for next in node_list(".slideshow .next") {
-            Cursor::new(next.try_into().unwrap(), &cursor, "next");
+        for cursor in &cursors {
+            for c in node_list(cursor.selector) {
+                Cursor::new(c.try_into().unwrap(), &cursor_element, cursor.classname);
+            }
         }
 
         for link in node_list(".content a:not(.project)") {
