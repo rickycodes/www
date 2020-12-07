@@ -15,7 +15,7 @@ struct CursorAttributes {
 }
 
 impl Cursor {
-    pub fn new(el: HtmlElement, cursor: &HtmlElement, classname: &'static str) {
+    pub fn new(el: HtmlElement, cursor: &HtmlElement, classname: &'static str) -> Self {
         el.add_event_listener(enclose!( (cursor, classname) move |_event: MouseOverEvent| {
             cursor.class_list().add( classname ).unwrap();
         }));
@@ -23,6 +23,8 @@ impl Cursor {
         el.add_event_listener(enclose!( (cursor, classname) move |_event: MouseOutEvent| {
             cursor.class_list().remove( classname ).unwrap();
         }));
+
+        Cursor
     }
 }
 
