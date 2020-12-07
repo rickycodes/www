@@ -6,34 +6,21 @@ use util::{create_element, node_list};
 
 use constants::{DATA_INDEX, DATA_PROJECT, ESC, NEXT, PREV};
 
-macro_rules! prev_next {
-    ($slideshow:expr, $slides:expr, $dir:expr) => {
-        let last = $slides.len() - 1;
-        let data_index: usize = $slideshow
-            .get_attribute(DATA_INDEX)
-            .unwrap()
-            .parse()
-            .unwrap();
-        let inc: usize = if $dir == NEXT {
-            if data_index == last {
-                0
-            } else {
-                data_index + 1
-            }
-        } else {
-            if data_index == 0 {
-                last
-            } else {
-                data_index - 1
-            }
-        };
-        $slideshow
-            .set_attribute(DATA_INDEX, &inc.to_string())
-            .unwrap();
-    };
+pub struct SlideShows();
+
+fn set_attribute(element: &HtmlElement, attribute: &str) {
+    element
+        .set_attribute(DATA_INDEX, attribute)
+        .unwrap();
 }
 
-pub struct SlideShows();
+fn get_data_index(element: &HtmlElement) -> usize {
+    element
+        .get_attribute(DATA_INDEX)
+        .unwrap()
+        .parse()
+        .unwrap()
+}
 
 impl SlideShows {
     pub fn new() -> SlideShows {
@@ -82,12 +69,30 @@ impl SlideShows {
                     .unwrap()
                     .append_child(&controls_el);
 
-                let slideshow_prev_event = enclose!( (slideshow_el, slides) move |_: ClickEvent| {
-                  prev_next!(slideshow_el, slides, PREV);
+                let last = slides.len() - 1;
+
+                let slideshow_prev_event = enclose!( (slideshow_el) move |_: ClickEvent| {
+                    let data_index: usize = get_data_index(&slideshow_el);
+
+                    let inc = if data_index == 0 {
+                        last
+                    } else {
+                        data_index - 1
+                    };
+
+                    set_attribute(&slideshow_el, &inc.to_string())
                 });
 
-                let slideshow_next_event = enclose!( (slideshow_el, slides) move |_: ClickEvent| {
-                  prev_next!(slideshow_el, slides, NEXT);
+                let slideshow_next_event = enclose!( (slideshow_el) move |_: ClickEvent| {
+                    let data_index: usize = get_data_index(&slideshow_el);
+
+                    let inc = if data_index == last {
+                        0
+                    } else {
+                        data_index + 1
+                    };
+
+                    set_attribute(&slideshow_el, &inc.to_string())
                 });
 
                 slideshow_prev.add_event_listener(slideshow_prev_event);
