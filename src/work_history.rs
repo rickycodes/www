@@ -4,6 +4,8 @@ use stdweb::web::{document, Element};
 
 use stdweb::web::event::ClickEvent;
 
+use crate::constants::WORK_HISTORY_SELECTOR;
+
 fn scroll_into_view(el: Element) {
     js! { @(no_return)
       @{el}.scrollIntoView();
@@ -14,7 +16,10 @@ pub struct WorkHistory();
 
 impl WorkHistory {
     pub fn new() -> WorkHistory {
-        let details = document().query_selector(".work-history").unwrap().unwrap();
+        let details = document()
+            .query_selector(WORK_HISTORY_SELECTOR)
+            .unwrap()
+            .unwrap();
         let click_event = enclose!( (details) move |_: ClickEvent| {
             let clone = details.clone();
             let is_open: bool = js!( return @{&details}.open; )

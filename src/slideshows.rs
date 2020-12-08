@@ -4,7 +4,10 @@ use stdweb::web::event::{ClickEvent, KeyUpEvent};
 use stdweb::web::{document, window, HtmlElement};
 use util::{create_element, node_list};
 
-use constants::{DATA_INDEX, DATA_PROJECT, ESC, NEXT, PREV};
+use constants::{
+    A, ARROW_LEFT, ARROW_RIGHT, CONTROLS, DATA_INDEX, DATA_PROJECT, DIV, EMPTY, ESC, LINK, NEXT,
+    PREV, SLIDESHOW_SELECTOR, UNDERSCORE,
+};
 
 pub struct SlideShows();
 
@@ -19,12 +22,12 @@ fn get_data_index(element: &HtmlElement) -> usize {
 impl SlideShows {
     pub fn new() -> SlideShows {
         // setup all slideshows
-        for slideshow in node_list(".slideshow") {
+        for slideshow in node_list(SLIDESHOW_SELECTOR) {
             // collect slides
             let slides: Vec<HtmlElement> = slideshow
                 .child_nodes()
                 .into_iter()
-                .filter(|item| item.node_name() == "DIV")
+                .filter(|item| item.node_name() == DIV.to_uppercase())
                 .map(|item| {
                     let el: HtmlElement = item.try_into().unwrap();
                     el
@@ -35,16 +38,16 @@ impl SlideShows {
             if slides.len() > 1 {
                 let slideshow_el: HtmlElement = slideshow.try_into().unwrap();
 
-                let slideshow_prev = create_element("a", PREV);
+                let slideshow_prev = create_element(A, PREV);
                 slideshow_el.append_child(&slideshow_prev);
 
-                let slideshow_next = create_element("a", NEXT);
+                let slideshow_next = create_element(A, NEXT);
                 slideshow_el.append_child(&slideshow_next);
 
-                let controls_el = create_element("div", "controls");
+                let controls_el = create_element(DIV, CONTROLS);
 
                 let control_setup = |index: usize| {
-                    let control_el = create_element("a", "link");
+                    let control_el = create_element(A, LINK);
                     control_el.set_text_content(&(index + 1).to_string());
                     control_el.add_event_listener(
                         enclose!( (slideshow_el, index) move |_:ClickEvent| {
@@ -102,9 +105,9 @@ impl SlideShows {
         };
 
         let determine_key = |key: String| match key.as_ref() {
-            "ArrowLeft" => PREV,
-            "ArrowRight" => NEXT,
-            _ => "_",
+            ARROW_LEFT => PREV,
+            ARROW_RIGHT => NEXT,
+            _ => UNDERSCORE,
         };
 
         let keyup_event = move |event: KeyUpEvent| {
@@ -112,12 +115,12 @@ impl SlideShows {
             if data_project.is_some() {
                 let key = event.key();
                 if key == ESC {
-                    js!( window.location.hash = ""; );
+                    js!( window.location.hash = @{EMPTY}; );
                 } else {
-                    let next_prev = determine_key(key);
-                    if next_prev != "_" {
+                    let next_prev_key = determine_key(key);
+                    if next_prev_key != UNDERSCORE {
                         let selector =
-                            &format!(".project.{} .{}", data_project.unwrap(), next_prev);
+                            &format!(".project.{} .{}", data_project.unwrap(), next_prev_key);
                         next_prev_click(selector)
                     }
                 }

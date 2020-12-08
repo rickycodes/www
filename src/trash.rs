@@ -11,8 +11,8 @@ use stdweb::unstable::TryInto;
 use stdweb::web::{HtmlElement, Node};
 
 use crate::constants::{
-    COORDINATE_SELECTOR, CRIES, CURSOR_PROJECT_SELECTOR, CURSOR_SELECTOR, DRAG, DRAG_ENTER,
-    DRAG_SELECTOR, LINK_SELECTOR, STYLE, TRASH, ZOOM,
+    COORDINATE_SELECTOR, CRIES, CURSOR_PROJECT_SELECTOR, CURSOR_SELECTOR, DISPLAY_NONE, DRAG,
+    DRAG_ENTER, DRAG_SELECTOR, LINK_SELECTOR, STYLE, TRASH, ZOOM,
 };
 
 fn remove_drag_enter() {
@@ -32,7 +32,7 @@ fn reset() {
 fn delete() {
     let drag = document().query_selector(DRAG_SELECTOR).unwrap();
     if let Some(drag) = drag {
-        drag.set_attribute(STYLE, "display: none;").unwrap()
+        drag.set_attribute(STYLE, DISPLAY_NONE).unwrap()
     }
     reset()
 }

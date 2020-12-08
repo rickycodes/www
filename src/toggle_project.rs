@@ -3,13 +3,13 @@ use stdweb::web::event::HashChangeEvent;
 use stdweb::web::{document, window};
 use util::{get_hash, query_selector};
 
-use constants::{DATA_PROJECT, DATA_SCROLL};
+use constants::{DATA_PROJECT, DATA_SCROLL, EMPTY, PROJECT_SELECTOR};
 
 fn toggle(scrolls: &mut Vec<f64>) {
     let hash = get_hash();
     let body = document().body().unwrap();
     let document_element = document().document_element();
-    if hash != "" {
+    if hash != EMPTY {
         let selector = &format!(".projects .project.{}", hash);
         let query = document().query_selector(selector).unwrap();
         if query.is_some() {
@@ -17,7 +17,7 @@ fn toggle(scrolls: &mut Vec<f64>) {
                 .unwrap_or_else(|| document_element.unwrap().scroll_top());
             body.set_attribute(DATA_PROJECT, &hash).unwrap();
             scrolls.push(top);
-            query_selector("[data-project] > .content").set_scroll_top(top)
+            query_selector(PROJECT_SELECTOR).set_scroll_top(top)
         }
     } else {
         body.remove_attribute(DATA_PROJECT);

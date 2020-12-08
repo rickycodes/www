@@ -4,6 +4,8 @@ use util::query_selector;
 
 use stdweb::web::event::MouseMoveEvent;
 
+use crate::constants::COORDINATES_SELECTOR;
+
 pub struct Coordinates();
 
 impl Coordinates {
@@ -12,7 +14,7 @@ impl Coordinates {
             let x = f64::from(event.client_x());
             let y = f64::from(event.client_y());
 
-            query_selector(".coord > div").set_text_content(&format!("_x: {}, _y: {}", x, y));
+            query_selector(COORDINATES_SELECTOR).set_text_content(&format!("_x: {}, _y: {}", x, y));
         };
 
         window().add_event_listener(mouse_move_event);
