@@ -1,7 +1,7 @@
 use stdweb::traits::*;
 use stdweb::unstable::TryInto;
 use stdweb::web::event::{ClickEvent, KeyUpEvent};
-use stdweb::web::{document, window, HtmlElement};
+use stdweb::web::{document, window, HtmlElement, Node};
 use util::{create_element, node_list};
 
 use constants::{
@@ -9,15 +9,51 @@ use constants::{
     PREV, SLIDESHOW_SELECTOR, UNDERSCORE,
 };
 
-pub struct SlideShows();
-
-fn set_attribute(element: &HtmlElement, attribute: &str) {
-    element.set_attribute(DATA_INDEX, attribute).unwrap();
-}
-
 fn get_data_index(element: &HtmlElement) -> usize {
     element.get_attribute(DATA_INDEX).unwrap().parse().unwrap()
 }
+
+fn set_data_index_attribute(element: &HtmlElement, attribute: &str) {
+    element.set_attribute(DATA_INDEX, attribute).unwrap();
+}
+
+pub struct Controls();
+
+impl Controls {
+    pub fn new(slideshow_el: &HtmlElement, slides: &Vec<HtmlElement>) -> Controls {
+        let controls_el = create_element(DIV, CONTROLS);
+
+        let control_setup = |index: usize| {
+            let control_el = create_element(A, LINK);
+            control_el.set_text_content(&(index + 1).to_string());
+            control_el.add_event_listener(enclose!( (slideshow_el, index) move |_:ClickEvent| {
+              slideshow_el.set_attribute(DATA_INDEX, &index.to_string()).unwrap();
+            }));
+            controls_el.append_child(&control_el);
+        };
+
+        for (index, _slide) in slides.iter().enumerate() {
+            control_setup(index)
+        }
+
+        slideshow_el
+            .parent_node()
+            .unwrap()
+            .append_child(&controls_el);
+
+        Controls()
+    }
+}
+
+pub struct Slide();
+
+impl Slide {
+    pub fn new(node: Node) -> HtmlElement {
+        node.try_into().unwrap()
+    }
+}
+
+pub struct SlideShows();
 
 impl SlideShows {
     pub fn new() -> SlideShows {
@@ -28,10 +64,7 @@ impl SlideShows {
                 .child_nodes()
                 .into_iter()
                 .filter(|item| item.node_name() == DIV.to_uppercase())
-                .map(|item| {
-                    let el: HtmlElement = item.try_into().unwrap();
-                    el
-                })
+                .map(Slide::new)
                 .collect();
 
             // only setup slideshow if there is more than one slide!
@@ -44,27 +77,7 @@ impl SlideShows {
                 let slideshow_next = create_element(A, NEXT);
                 slideshow_el.append_child(&slideshow_next);
 
-                let controls_el = create_element(DIV, CONTROLS);
-
-                let control_setup = |index: usize| {
-                    let control_el = create_element(A, LINK);
-                    control_el.set_text_content(&(index + 1).to_string());
-                    control_el.add_event_listener(
-                        enclose!( (slideshow_el, index) move |_:ClickEvent| {
-                          slideshow_el.set_attribute(DATA_INDEX, &index.to_string()).unwrap();
-                        }),
-                    );
-                    controls_el.append_child(&control_el);
-                };
-
-                for (index, _slide) in slides.iter().enumerate() {
-                    control_setup(index)
-                }
-
-                slideshow_el
-                    .parent_node()
-                    .unwrap()
-                    .append_child(&controls_el);
+                Controls::new(&slideshow_el, &slides);
 
                 let last = slides.len() - 1;
 
@@ -77,7 +90,7 @@ impl SlideShows {
                         data_index - 1
                     };
 
-                    set_attribute(&slideshow_el, &inc.to_string())
+                    set_data_index_attribute(&slideshow_el, &inc.to_string())
                 });
 
                 let slideshow_next_event = enclose!( (slideshow_el) move |_: ClickEvent| {
@@ -89,7 +102,7 @@ impl SlideShows {
                         data_index + 1
                     };
 
-                    set_attribute(&slideshow_el, &inc.to_string())
+                    set_data_index_attribute(&slideshow_el, &inc.to_string())
                 });
 
                 slideshow_prev.add_event_listener(slideshow_prev_event);
