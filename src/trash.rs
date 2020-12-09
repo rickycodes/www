@@ -22,7 +22,7 @@ fn remove_drag_enter() {
 }
 
 fn reset() {
-    remove_drag_enter();
+    self::remove_drag_enter();
     let drag = document().query_selector(DRAG_SELECTOR).unwrap();
     if let Some(drag) = drag {
         drag.class_list().remove(DRAG).unwrap();
@@ -65,9 +65,9 @@ impl Trash {
             let index = get_range(0 as f64, cries.len() as f64) as usize;
             let okay = confirm(&cries[index].to_string());
             if okay {
-                delete()
+                self::delete()
             } else {
-                reset()
+                self::reset()
             }
         }));
 
@@ -103,7 +103,7 @@ impl Trash {
                   var reset = @{reset};
                   window.setTimeout(reset, 100);
                 }
-                remove_drag_enter();
+                self::remove_drag_enter();
                 let cursor = query_selector(CURSOR_SELECTOR);
                 let project = query_selector(CURSOR_PROJECT_SELECTOR);
                 cursor.remove_child(&project).unwrap();

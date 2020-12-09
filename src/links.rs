@@ -32,12 +32,12 @@ impl Links {
         for link in node_list(INFO_LINKS_SELECTOR) {
             let el: HtmlElement = link.clone().try_into().unwrap();
             link.add_event_listener(enclose!( (el, info) move |_event: MouseOverEvent| {
-              show_info(NAME, el.clone(), info.clone());
-              show_info(TITLE, el.clone(), info.clone());
+              self::show_info(NAME, el.clone(), info.clone());
+              self::show_info(TITLE, el.clone(), info.clone());
             }));
 
             link.add_event_listener(enclose!( (info) move |_event: MouseOutEvent| {
-              hide_info(info.clone());
+              self::hide_info(info.clone());
             }));
         }
 

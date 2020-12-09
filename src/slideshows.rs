@@ -82,7 +82,7 @@ impl SlideShows {
                 let last = slides.len() - 1;
 
                 let slideshow_prev_event = enclose!( (slideshow_el) move |_: ClickEvent| {
-                    let data_index: usize = get_data_index(&slideshow_el);
+                    let data_index: usize = self::get_data_index(&slideshow_el);
 
                     let inc = if data_index == 0 {
                         last
@@ -90,11 +90,11 @@ impl SlideShows {
                         data_index - 1
                     };
 
-                    set_data_index_attribute(&slideshow_el, &inc.to_string())
+                    self::set_data_index_attribute(&slideshow_el, &inc.to_string())
                 });
 
                 let slideshow_next_event = enclose!( (slideshow_el) move |_: ClickEvent| {
-                    let data_index: usize = get_data_index(&slideshow_el);
+                    let data_index: usize = self::get_data_index(&slideshow_el);
 
                     let inc = if data_index == last {
                         0
@@ -102,7 +102,7 @@ impl SlideShows {
                         data_index + 1
                     };
 
-                    set_data_index_attribute(&slideshow_el, &inc.to_string())
+                    self::set_data_index_attribute(&slideshow_el, &inc.to_string())
                 });
 
                 slideshow_prev.add_event_listener(slideshow_prev_event);

@@ -27,7 +27,7 @@ impl WorkHistory {
                 .unwrap();
 
             if !is_open {
-                scroll_into_view(clone)
+                self::scroll_into_view(clone)
             }
         });
         details.add_event_listener(click_event);
