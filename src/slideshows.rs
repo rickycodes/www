@@ -17,6 +17,24 @@ fn set_data_index_attribute(element: &HtmlElement, attribute: &str) {
     element.set_attribute(DATA_INDEX, attribute).unwrap();
 }
 
+fn get_increment(direction: &str, data_index: usize, last: usize) -> usize {
+    let increment = if direction == PREV {
+        if data_index == 0 {
+            last
+        } else {
+            data_index - 1
+        }
+    } else {
+        if data_index == last {
+            0
+        } else {
+            data_index + 1
+        }
+    };
+
+    increment
+}
+
 pub struct Controls();
 
 impl Controls {
@@ -79,30 +97,22 @@ impl SlideShows {
 
                 Controls::new(&slideshow_el, &slides);
 
-                let last = slides.len() - 1;
-
-                let slideshow_prev_event = enclose!( (slideshow_el) move |_: ClickEvent| {
-                    let data_index: usize = self::get_data_index(&slideshow_el);
-
-                    let inc = if data_index == 0 {
-                        last
-                    } else {
-                        data_index - 1
+                let prev_next_click =
+                    |direction: &str, slideshow_el: &HtmlElement, slides: &Vec<HtmlElement>| {
+                        let increment = self::get_increment(
+                            direction,
+                            self::get_data_index(&slideshow_el),
+                            slides.len() - 1,
+                        );
+                        self::set_data_index_attribute(&slideshow_el, &increment.to_string())
                     };
 
-                    self::set_data_index_attribute(&slideshow_el, &inc.to_string())
+                let slideshow_prev_event = enclose!( (slideshow_el, slides) move |_: ClickEvent| {
+                    prev_next_click(&PREV, &slideshow_el, &slides)
                 });
 
-                let slideshow_next_event = enclose!( (slideshow_el) move |_: ClickEvent| {
-                    let data_index: usize = self::get_data_index(&slideshow_el);
-
-                    let inc = if data_index == last {
-                        0
-                    } else {
-                        data_index + 1
-                    };
-
-                    self::set_data_index_attribute(&slideshow_el, &inc.to_string())
+                let slideshow_next_event = enclose!( (slideshow_el, slides) move |_: ClickEvent| {
+                    prev_next_click(&NEXT, &slideshow_el, &slides)
                 });
 
                 slideshow_prev.add_event_listener(slideshow_prev_event);

@@ -1,3 +1,11 @@
+pub const CRIES: [&str; 5] = [
+    "U sure?",
+    "Really?",
+    "Y u gotta be this way?",
+    "Come on?",
+    "Please no",
+];
+
 pub const TARGET: &str = "target";
 pub const BLANK: &str = "_blank";
 pub const REL: &str = "rel";
@@ -52,14 +60,6 @@ pub struct CursorAttributes {
     pub selector: &'static str,
     pub classname: &'static str,
 }
-
-pub const CRIES: [&str; 5] = [
-    "U sure?",
-    "Really?",
-    "Y u gotta be this way?",
-    "Come on?",
-    "Please no",
-];
 
 pub const CURSORS_ATTRIBUTES: [CursorAttributes; 5] = [
     CursorAttributes {
