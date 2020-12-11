@@ -26,7 +26,6 @@ use trash::Trash;
 use util::set_date;
 use work_history::WorkHistory;
 
-#[derive(Debug, Clone, Copy)]
 struct Website();
 
 impl Website {
