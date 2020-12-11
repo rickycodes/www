@@ -26,13 +26,13 @@ pub fn get_hash() -> String {
 }
 
 pub fn query_selector(selector: &str) -> HtmlElement {
-    let t = document().query_selector(selector).unwrap();
+    let target = document().query_selector(selector).unwrap();
 
-    if t.is_none() {
+    if target.is_none() {
         panic!(POOP)
     }
 
-    t.unwrap().try_into().unwrap()
+    target.unwrap().try_into().unwrap()
 }
 
 pub fn get_range(start: f64, end: f64) -> f64 {
