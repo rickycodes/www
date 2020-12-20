@@ -1,7 +1,7 @@
 use stdweb::traits::*;
 use stdweb::unstable::TryInto;
 use stdweb::web::HtmlElement;
-use util::{node_list, query_selector};
+use crate::util::{node_list, query_selector};
 
 use stdweb::web::event::{MouseOutEvent, MouseOverEvent};
 
@@ -10,7 +10,7 @@ use crate::constants::{
     TARGET, TITLE,
 };
 
-pub fn show_info(str: &str, el: HtmlElement, info: HtmlElement) {
+pub(crate) fn show_info(str: &str, el: HtmlElement, info: HtmlElement) {
     let attr = el.get_attribute(str);
     if attr != None {
         let attr_str = attr.unwrap();
@@ -19,14 +19,14 @@ pub fn show_info(str: &str, el: HtmlElement, info: HtmlElement) {
     }
 }
 
-pub fn hide_info(info: HtmlElement) {
+pub(crate) fn hide_info(info: HtmlElement) {
     info.class_list().add(HIDDEN).unwrap();
 }
 
-pub struct Links();
+pub(crate) struct Links();
 
 impl Links {
-    pub fn new() -> Links {
+    pub(crate) fn new() -> Links {
         let info = query_selector(INFO_SELECTOR);
 
         for link in node_list(INFO_LINKS_SELECTOR) {

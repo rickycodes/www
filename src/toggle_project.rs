@@ -1,9 +1,9 @@
 use stdweb::traits::*;
 use stdweb::web::event::HashChangeEvent;
 use stdweb::web::{document, window};
-use util::{get_hash, query_selector};
+use crate::util::{get_hash, query_selector};
 
-use constants::{DATA_PROJECT, DATA_SCROLL, EMPTY, PROJECT_SELECTOR};
+use crate::constants::{DATA_PROJECT, DATA_SCROLL, EMPTY, PROJECT_SELECTOR};
 
 fn show(hash: String, scrolls: &mut Vec<f64>) {
     let body = document().body().unwrap();
@@ -38,10 +38,10 @@ fn toggle(scrolls: &mut Vec<f64>) {
     }
 }
 
-pub struct ToggleProject();
+pub(crate) struct ToggleProject();
 
 impl ToggleProject {
-    pub fn new() -> ToggleProject {
+    pub(crate) fn new() -> ToggleProject {
         let mut scrolls = Vec::new();
         self::toggle(&mut scrolls);
         let toggle_project_event = move |_event: HashChangeEvent| self::toggle(&mut scrolls);

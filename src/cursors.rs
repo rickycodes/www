@@ -3,7 +3,7 @@ use stdweb::unstable::TryInto;
 use stdweb::web::event::{MouseMoveEvent, MouseOutEvent, MouseOverEvent};
 use stdweb::web::window;
 use stdweb::web::HtmlElement;
-use util::{node_list, query_selector};
+use crate::util::{node_list, query_selector};
 
 use crate::constants::{
     CLOSE, CLOSE_SELECTOR, CURSORS_ATTRIBUTES, CURSOR_SELECTOR, STYLE, X_SELECTOR, Y_SELECTOR, ZERO,
@@ -12,7 +12,7 @@ use crate::constants::{
 struct Cursor;
 
 impl Cursor {
-    pub fn new(el: HtmlElement, cursor: &HtmlElement, classname: &'static str) -> Self {
+    pub(crate) fn new(el: HtmlElement, cursor: &HtmlElement, classname: &'static str) -> Self {
         el.add_event_listener(
             enclose!( (cursor, classname) move |_event: MouseOverEvent| {
                 cursor.class_list().add( classname ).unwrap();
@@ -32,10 +32,10 @@ fn set_cursor_coordinates(el: HtmlElement, x: &str, y: &str) {
         .unwrap()
 }
 
-pub struct Cursors();
+pub(crate) struct Cursors();
 
 impl Cursors {
-    pub fn new() -> Cursors {
+    pub(crate) fn new() -> Cursors {
         let cursor_element = query_selector(CURSOR_SELECTOR);
         let close = query_selector(CLOSE_SELECTOR);
 

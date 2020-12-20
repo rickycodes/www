@@ -5,7 +5,7 @@ use stdweb::web::event::{
 
 use stdweb::traits::*;
 use stdweb::web::{confirm, document, CloneKind};
-use util::{get_range, node_list, query_selector};
+use crate::util::{get_range, node_list, query_selector};
 
 use stdweb::unstable::TryInto;
 use stdweb::web::{HtmlElement, Node};
@@ -37,10 +37,10 @@ fn delete() {
     reset()
 }
 
-pub struct Trash();
+pub(crate) struct Trash();
 
 impl Trash {
-    pub fn new() -> Trash {
+    pub(crate) fn new() -> Trash {
         let coord = query_selector(COORDINATE_SELECTOR);
         let cries = CRIES;
 

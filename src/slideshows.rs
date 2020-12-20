@@ -2,9 +2,9 @@ use stdweb::traits::*;
 use stdweb::unstable::TryInto;
 use stdweb::web::event::{ClickEvent, KeyUpEvent};
 use stdweb::web::{document, window, HtmlElement, Node};
-use util::{create_element, node_list};
+use crate::util::{create_element, node_list};
 
-use constants::{
+use crate::constants::{
     A, ARROW_LEFT, ARROW_RIGHT, CONTROLS, DATA_INDEX, DATA_PROJECT, DIV, EMPTY, ESC, LINK, NEXT,
     PREV, SLIDESHOW_SELECTOR, UNDERSCORE,
 };
@@ -35,10 +35,10 @@ fn get_increment(direction: &str, data_index: usize, last: usize) -> usize {
     increment
 }
 
-pub struct Controls();
+pub(crate) struct Controls();
 
 impl Controls {
-    pub fn new(slideshow_el: &HtmlElement, slides: &Vec<HtmlElement>) -> Controls {
+    pub(crate) fn new(slideshow_el: &HtmlElement, slides: &Vec<HtmlElement>) -> Controls {
         let controls_el = create_element(DIV, CONTROLS);
 
         let control_setup = |index: usize| {
@@ -63,18 +63,18 @@ impl Controls {
     }
 }
 
-pub struct Slide();
+pub(crate) struct Slide();
 
 impl Slide {
-    pub fn new(node: Node) -> HtmlElement {
+    pub(crate) fn new(node: Node) -> HtmlElement {
         node.try_into().unwrap()
     }
 }
 
-pub struct SlideShows();
+pub(crate) struct SlideShows();
 
 impl SlideShows {
-    pub fn new() -> SlideShows {
+    pub(crate) fn new() -> SlideShows {
         // setup all slideshows
         for slideshow in node_list(SLIDESHOW_SELECTOR) {
             // collect slides

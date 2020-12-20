@@ -1,4 +1,6 @@
 #![forbid(unsafe_code)]
+#![deny(missing_debug_implementations, nonstandard_style)]
+#![warn(unreachable_pub, future_incompatible, rust_2018_idioms)]
 
 #[macro_use]
 extern crate stdweb;
@@ -17,24 +19,24 @@ mod trash;
 mod util;
 mod work_history;
 
-use coordinates::Coordinates;
-use cursors::Cursors;
-use links::Links;
-use slideshows::SlideShows;
-use toggle_project::ToggleProject;
-use trash::Trash;
-use util::set_date;
-use work_history::WorkHistory;
+use crate::coordinates::Coordinates;
+use crate::cursors::Cursors;
+use crate::links::Links;
+use crate::slideshows::SlideShows;
+use crate::toggle_project::ToggleProject;
+use crate::trash::Trash;
+use crate::util::set_date;
+use crate::work_history::WorkHistory;
 
 struct Website();
 
 impl Website {
-    pub fn set_date(self) -> Self {
+    fn set_date(self) -> Self {
         set_date();
         self
     }
 
-    pub fn initialize(self) -> Self {
+    fn initialize(self) -> Self {
         stdweb::initialize();
 
         SlideShows::new();
@@ -47,7 +49,7 @@ impl Website {
         self
     }
 
-    pub fn event_loop(self) -> Self {
+    fn event_loop(self) -> Self {
         stdweb::event_loop();
         self
     }
