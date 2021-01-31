@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/rickycodes/www.svg?branch=master)](https://travis-ci.org/rickycodes/www) [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frickycodes%2Fwww.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frickycodes%2Fwww?ref=badge_shield)
 
 # <a href='https://ricky.codes'>ricky.codes</a>  
 
@@ -53,3 +54,6 @@ You can access the web server at `http://[::1]:8000`.
 Licensed under
 
   * MIT license ([LICENSE](LICENSE) or http://opensource.org/licenses/MIT)
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frickycodes%2Fwww.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frickycodes%2Fwww?ref=badge_large)
