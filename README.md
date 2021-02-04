@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/rickycodes/www.svg?branch=master)](https://travis-ci.org/rickycodes/www) [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frickycodes%2Fwww.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frickycodes%2Fwww?ref=badge_shield)
+[![Build Status](https://travis-ci.org/rickycodes/www.svg?branch=master)](https://travis-ci.org/rickycodes/www) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frickycodes%2Fwww.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frickycodes%2Fwww?ref=badge_shield)
 
 # <a href='https://ricky.codes'>ricky.codes</a>  
 
