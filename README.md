@@ -1,7 +1,22 @@
-[![Build Status](https://travis-ci.org/rickycodes/www.svg?branch=master)](https://travis-ci.org/rickycodes/www) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frickycodes%2Fwww.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frickycodes%2Fwww?ref=badge_shield)
+[![Build Status](https://travis-ci.org/rickycodes/www.svg?branch=master)](https://travis-ci.org/rickycodes/www) ![Shellcheck Status](https://img.shields.io/badge/shellcheck-passing-brightgreen) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frickycodes%2Fwww.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frickycodes%2Fwww?ref=badge_shield)
 
 # <a href='https://ricky.codes'>ricky.codes</a>  
 
+```
+   +---------------+
+   |.-------------.|
+   ||    ricky    ||
+   ||     dot     ||
+   ||    codes    ||
+   ||$ ./build.sh ||
+   |+-------------+|
+   +-..---------..-+
+   .---------------.
+  / /=============\ \
+ / /===============\ \
+/_____________________\
+\_____________________/
+```
 
 My personal website built with <a href='http://rust-lang.org/'>Rust</a> using <a href='https://github.com/koute/cargo-web'>cargo-web</a> and <a href='https://github.com/koute/stdweb'>stdweb</a>
 
