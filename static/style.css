@@ -228,6 +228,7 @@ code {
   position: fixed;
   z-index: 4;
   pointer-events: none;
+  mix-blend-mode: difference;
 }
 
 .cursor > div {
