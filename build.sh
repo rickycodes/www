@@ -31,6 +31,10 @@ _help() {
     echo "$HELP"
 }
 
+msg() {
+    echo "$1 deployed to $2"
+}
+
 gen() {
     echo 'Generate + minify HTML...'
     { cat ${PARTIALS}/sig.html & cat ${PARTIALS}/header.html \
@@ -46,6 +50,7 @@ gen() {
     --remove-script-type-attributes \
     --use-short-doctype \
     --minify-css; } > $OUTPUT
+    msg "HTML" "$OUTPUT"
 }
 
 build() {
@@ -70,6 +75,7 @@ min() {
             --mangle \
             --output "$f"
     done
+    msg "JavaScript" "$jsFiles"
 }
 
 fail() {
