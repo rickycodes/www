@@ -6,23 +6,31 @@ ARG=$1
 OUTPUT=static/index.html
 E_ASSERT_FAILED=99
 
+_HELP="help"
+BUILD="build"
+GEN="gen"
+WATCH="watch"
+MIN="min"
+TEST="test"
+SITE_NAME="ricky.codes"
+
 HELP="$(cat <<-EOF
-ricky.codes build tool
+$SITE_NAME build tool
 
 USAGE:
-    bash build.sh [OPTIONS]
+    ./build.sh [OPTIONS]
 
 OPTIONS:
-    --help              Prints help information
-    --gen               Generate + minify HTML...
-    --build             Runs cargo web deploy --target=wasm32-unknown-unknown
+    --$_HELP              Prints help information
+    --$GEN               Generate + minify HTML...
+    --$BUILD             Runs cargo web deploy --target=wasm32-unknown-unknown
                         (deploys site to ./target/deploy)
-    --serve             Runs cargo web start --target=wasm32-unknown-unknown
-                        (serve the application locally)
-    --min               Minify deployed *.js files with uglify
-    --test              Run tests
+    --$WATCH             Runs cargo web start --target=wasm32-unknown-unknown
+                        (watch the application locally)
+    --$MIN               Minify deployed *.js files with uglify
+    --$TEST              Run tests
 
-Running "bash build.sh" (with zero options) will --gen --build and --min (in that order)
+Running "bash build.sh" (with zero options) will --$GEN --$BUILD and --$MIN (in that order)
 This is not a sophisticated script, one [OPTION] (singular) at a time or none.
 EOF
 )"
@@ -59,7 +67,7 @@ build() {
     cargo web deploy --target=wasm32-unknown-unknown
 }
 
-serve() {
+watch() {
     # build
     echo 'Starting up local server...'
     cargo web start --target=wasm32-unknown-unknown
@@ -84,9 +92,10 @@ fail() {
 }
 
 tests() {
+    echo "warming up $SITE_NAME test suite!"
     # test help
-    HELP=$(bash build.sh --help)
-    CHECK_HELP=$(echo "$HELP" | grep "ricky.codes build tool")
+    HELP=$(./build.sh --help)
+    CHECK_HELP=$(echo "$HELP" | grep "$SITE_NAME build tool")
     if [ -z "$CHECK_HELP" ]; then
         fail "build.sh --help test failed (unexpected text)"
     fi
@@ -96,7 +105,7 @@ tests() {
     fi
     bash build.sh --gen
     if [ ! -f "$OUTPUT" ]; then
-        fail "build.sh --gen test failed (no HTML file)"
+        fail "build.sh --$GEN test failed (no HTML file)"
     fi
     # nothing in life is simple
     SIMPLE=$(grep -ir 'simple\|simply' src/)
@@ -121,11 +130,11 @@ then
     min
     echo 'Done.'
 else
-    [ "$ARG" = "--test" ] && tests
-    [ "$ARG" = "--help" ] && _help
-    [ "$ARG" = "--gen" ] && gen
-    [ "$ARG" = "--min" ] && min
-    [ "$ARG" = "--build" ] && build
-    [ "$ARG" = "--serve" ] && serve
+    [ "$ARG" = "--$TEST" ] || [ "$ARG" = "$TEST" ] && tests
+    [ "$ARG" = "--$_HELP" ] || [ "$ARG" = "$_HELP" ] && _help
+    [ "$ARG" = "--$GEN" ] || [ "$ARG" = "$GEN" ] && gen
+    [ "$ARG" = "--$MIN" ] || [ "$ARG" = "$MIN" ] && min
+    [ "$ARG" = "--$BUILD" ] || [ "$ARG" = "$BUILD" ] && build
+    [ "$ARG" = "--$WATCH" ] || [ "$ARG" = "$WATCH" ] && watch
     exit 0
 fi
