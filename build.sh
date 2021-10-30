@@ -45,7 +45,7 @@ msg() {
 
 gen() {
     echo 'Generate + minify HTML...'
-    { cat ${PARTIALS}/sig.html & cat ${PARTIALS}/header.html \
+    { cat cat.txt & cat ${PARTIALS}/header.html \
         ${PARTIALS}/about.html \
         ${PARTIALS}/cv.html \
         ${PARTIALS}/footer.html \
