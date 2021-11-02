@@ -61,4 +61,14 @@ impl Website {
 
 fn main() {
     Website::new().initialize().set_date().event_loop();
+    let font_style = "font-family: 'Monaco';
+    font-size: 4em;
+    padding: 20px;
+    color: white;
+    text-shadow: 0 0 0.05em #fff, 0 0 0.2em #fe05e1, 0 0 0.3em #fe05e1;
+    transform: rotate(-7deg);";
+    console!(log, "%c welcome to my homepage", font_style);
+    console!(log, "The original Magic Kitty™ is an oracle that lets anyone seek advice about their future!");
+    console!(log, "All you have to do is simply “ask() the kitty” any yes or no question, then wait for your answer to be revealed.");
+    console!(log, "example: ask('will i be pretty?')")
 }

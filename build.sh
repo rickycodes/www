@@ -59,6 +59,8 @@ gen() {
     --use-short-doctype \
     --minify-css; } > $OUTPUT
     msg "HTML" "$OUTPUT"
+    # copy ascii text to static so we can fetch
+    cp cat.txt static/
 }
 
 build() {
@@ -74,6 +76,8 @@ watch() {
 }
 
 min() {
+    # replace console.log before minify
+    sed -i "s/\"Finished loading \Rust wasm module 'rickycodes'\"//g" target/deploy/rickycodes.js
     # minify gen and static js files
     echo 'Minify...'
     jsFiles='target/deploy/*.js'
