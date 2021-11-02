@@ -251,6 +251,12 @@ code {
     drop-shadow( 0 0 10px rgba(255, 255, 255, .5));
 }
 
+.cursor .project {
+  z-index: 4;
+  background-color: white;
+  mix-blend-mode: normal;
+}
+
 .cursor.prev .cursor-prev {
   left: -200px;
 }
