@@ -34,7 +34,3 @@ echo "Building..."
 prompt "Deploy to http?" http
 # this seems busted
 # prompt "Sync to dat?" dat
-
-cat << "eof"
-Hello
-eof▭
