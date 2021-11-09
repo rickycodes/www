@@ -36,7 +36,7 @@ EOF
 )"
 
 _help() {
-    echo "$HELP"
+    echo $HELP
 }
 
 msg() {
