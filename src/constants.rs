@@ -1,9 +1,12 @@
-pub(crate) const CRIES: [&str; 5] = [
+pub(crate) const CRIES: [&str; 8] = [
     "U sure?",
     "Really?",
     "Y u gotta be this way?",
     "Come on?",
     "Please no",
+    "(ಥ﹏ಥ)",
+    "༼ ༎ຶ ෴ ༎ຶ༽",
+    "（>﹏<）"
 ];
 
 pub(crate) const TARGET: &str = "target";
