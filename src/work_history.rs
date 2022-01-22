@@ -7,7 +7,10 @@ use crate::constants::WORK_HISTORY_SELECTOR;
 
 fn scroll_into_view(el: Element) {
     js! { @(no_return)
-      @{el}.scrollIntoView();
+        let el = @{el};
+        setTimeout(() => {
+            el.scrollIntoView();
+        }, 10);
     }
 }
 

@@ -206,6 +206,16 @@ code {
   list-style: none;
 }
 
+.work-history ul li ul {
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+  font-size: 80%;
+}
+
 .work-history summary {
   list-style: none;
 }

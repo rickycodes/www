@@ -22,6 +22,12 @@ My personal website built with <a href='http://rust-lang.org/'>Rust</a> using <a
 
 <img src='screenshot.png' />
 
+## Disclaimer
+
+<a href='https://github.com/koute/stdweb'>stdweb</a> seems to be now defunct (hasn't been updated since 2019). You might be better off exploring alternatives like <a href='https://rustwasm.github.io/wasm-bindgen/'> wasm bingen</a>. That's what everyone else <a href='https://github.com/yewstack/yew/pull/1697'>is doing</a>.
+
+If you still want to play with this I am building it on `nightly-2019-08-01-x86_64-unknown-linux-gnu` re: <a href='https://github.com/rickycodes/www/issues/8#issuecomment-782784044'>#8</a>
+
 ## Build
 you will need <a href='https://github.com/koute/cargo-web'>`cargo web`</a>
 

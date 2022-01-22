@@ -49,9 +49,9 @@ gen() {
         ${PARTIALS}/header.html \
         ${PARTIALS}/about.html \
         ${PARTIALS}/cv.html \
-        ${PARTIALS}/footer.html \
+        ${PARTIALS}/copyright.html \
         ${PROJECTS}* \
-        ${PARTIALS}/end.html | npx html-minifier \
+        ${PARTIALS}/footer.html | npx html-minifier \
     --collapse-whitespace \
     --remove-comments \
     --remove-optional-tags \

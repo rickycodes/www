@@ -83,3 +83,17 @@ pub(crate) const CURSORS_ATTRIBUTES: [CursorAttributes; 5] = [
         classname: NEXT,
     },
 ];
+
+const CONSOLE_STYLE: &'static str = "font-family: 'Monaco';
+font-size: 4em;
+padding: 20px;
+color: white;
+text-shadow: 0 0 0.05em #fff, 0 0 0.2em #fe05e1, 0 0 0.3em #fe05e1;
+transform: rotate(-7deg);";
+
+pub(crate) fn log() {
+    console!(log, "%c welcome to my homepage", CONSOLE_STYLE);
+    console!(log, "The original Magic Kitty™ is an oracle that lets anyone seek advice about their future!");
+    console!(log, "All you have to do is simply “ask() the kitty” any yes or no question, then wait for your answer to be revealed.");
+    console!(log, "example: ask('will i be pretty?')")
+}
