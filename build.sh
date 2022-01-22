@@ -45,7 +45,8 @@ msg() {
 
 gen() {
     echo 'Generate + minify HTML...'
-    { echo '<!--' && cat cat.txt && echo '-->' & cat ${PARTIALS}/header.html \
+    { cat ${PARTIALS}/doctype.html \
+        ${PARTIALS}/header.html \
         ${PARTIALS}/about.html \
         ${PARTIALS}/cv.html \
         ${PARTIALS}/footer.html \
@@ -59,6 +60,14 @@ gen() {
     --use-short-doctype \
     --minify-css; } > $OUTPUT
     msg "HTML" "$OUTPUT"
+    # newline
+    echo "\n" >> "$OUTPUT"
+    # begin html comment
+    echo "<!--" >> "$OUTPUT"
+    # add ascii cat
+    cat cat.txt >> "$OUTPUT"
+    # end html comment
+    echo "-->" >> "$OUTPUT"
     # copy ascii text to static so we can fetch
     cp cat.txt static/
 }
