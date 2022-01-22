@@ -44,7 +44,8 @@ impl Controls {
         let control_setup = |index: usize| {
             let control_el = create_element(A, LINK);
             control_el.set_text_content(&(index + 1).to_string());
-            control_el.add_event_listener(enclose!( (slideshow_el, index) move |_:ClickEvent| {
+            control_el.add_event_listener(enclose!( (slideshow_el, index) move |event:ClickEvent| {
+              event.prevent_default();
               slideshow_el.set_attribute(DATA_INDEX, &index.to_string()).unwrap();
             }));
             controls_el.append_child(&control_el);

@@ -41,6 +41,7 @@ pub(crate) const POOP: &str = "💩";
 pub(crate) const CLASS: &str = "class";
 pub(crate) const HASH: &str = "#";
 pub(crate) const DISPLAY_NONE: &str = "display: none;";
+pub(crate) const HREF: &str = "href";
 
 pub(crate) const CURSOR_SELECTOR: &str = ".cursor";
 pub(crate) const CURSOR_PROJECT_SELECTOR: &str = ".cursor .project";

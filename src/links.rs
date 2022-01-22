@@ -42,6 +42,7 @@ impl Links {
         }
 
         for link in node_list(NOT_PROJECT_SELECTOR) {
+            // console!(log, &link);
             let el: HtmlElement = link.try_into().unwrap();
             el.set_attribute(TARGET, BLANK).unwrap();
             el.set_attribute(REL, NOOPENER).unwrap();

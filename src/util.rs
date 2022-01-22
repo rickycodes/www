@@ -4,14 +4,17 @@ use stdweb::web::{document, Date, HtmlElement, NodeList};
 use rand::Rng;
 use stdweb::unstable::TryInto;
 
-use crate::constants::{CLASS, EMPTY, HASH, POOP, YEAR_SELECTOR};
+use crate::constants::{A, HREF, CLASS, EMPTY, HASH, POOP, YEAR_SELECTOR};
 
 pub(crate) fn node_list(selector: &str) -> NodeList {
     document().query_selector_all(selector).unwrap()
 }
 
-pub(crate) fn create_element(_type: &str, class: &str) -> HtmlElement {
-    let el = document().create_element(_type).unwrap();
+pub(crate) fn create_element(element_type: &str, class: &str) -> HtmlElement {
+    let el = document().create_element(element_type).unwrap();
+    if element_type == A.to_string() {
+        el.set_attribute(HREF, HASH).unwrap();
+    }
     el.set_attribute(CLASS, class).unwrap();
     el.try_into().unwrap()
 }
