@@ -108,11 +108,13 @@ impl SlideShows {
                         self::set_data_index_attribute(&slideshow_el, &increment.to_string())
                     };
 
-                let slideshow_prev_event = enclose!( (slideshow_el, slides) move |_: ClickEvent| {
+                let slideshow_prev_event = enclose!( (slideshow_el, slides) move |event: ClickEvent| {
+                    event.prevent_default();
                     prev_next_click(&PREV, &slideshow_el, &slides)
                 });
 
-                let slideshow_next_event = enclose!( (slideshow_el, slides) move |_: ClickEvent| {
+                let slideshow_next_event = enclose!( (slideshow_el, slides) move |event: ClickEvent| {
+                    event.prevent_default();
                     prev_next_click(&NEXT, &slideshow_el, &slides)
                 });
 
