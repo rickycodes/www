@@ -18,21 +18,12 @@ fn set_data_index_attribute(element: &HtmlElement, attribute: &str) {
 }
 
 fn get_increment(direction: &str, data_index: usize, last: usize) -> usize {
-    let increment = if direction == PREV {
-        if data_index == 0 {
-            last
-        } else {
-            data_index - 1
-        }
+    let len = last + 1;
+    if direction == PREV {
+        (data_index + last) % len
     } else {
-        if data_index == last {
-            0
-        } else {
-            data_index + 1
-        }
-    };
-
-    increment
+        (data_index + 1) % len
+    }
 }
 
 pub(crate) struct Controls();
