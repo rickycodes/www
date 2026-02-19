@@ -12,7 +12,7 @@ pub(crate) fn node_list(selector: &str) -> NodeList {
 
 pub(crate) fn create_element(element_type: &str, class: &str) -> HtmlElement {
     let el = document().create_element(element_type).unwrap();
-    if element_type == A.to_string() {
+    if element_type == A {
         el.set_attribute(HREF, HASH).unwrap();
     }
     el.set_attribute(CLASS, class).unwrap();
@@ -29,13 +29,12 @@ pub(crate) fn get_hash() -> String {
 }
 
 pub(crate) fn query_selector(selector: &str) -> HtmlElement {
-    let target = document().query_selector(selector).unwrap();
-
-    if target.is_none() {
-        panic!(POOP)
-    }
-
-    target.unwrap().try_into().unwrap()
+    document()
+        .query_selector(selector)
+        .unwrap()
+        .expect(POOP)
+        .try_into()
+        .unwrap()
 }
 
 pub(crate) fn get_range(start: f64, end: f64) -> f64 {

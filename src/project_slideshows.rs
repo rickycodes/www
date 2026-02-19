@@ -26,24 +26,20 @@ fn get_increment(direction: &str, data_index: usize, last: usize) -> usize {
     }
 }
 
-pub(crate) struct Controls();
+pub(crate) struct Controls;
 
 impl Controls {
-    pub(crate) fn new(slideshow_el: &HtmlElement, slides: &Vec<HtmlElement>) -> Controls {
+    pub(crate) fn new(slideshow_el: &HtmlElement, slides: &[HtmlElement]) -> Self {
         let controls_el = create_element(DIV, CONTROLS);
 
-        let control_setup = |index: usize| {
+        for (index, _slide) in slides.iter().enumerate() {
             let control_el = create_element(A, LINK);
             control_el.set_text_content(&(index + 1).to_string());
             control_el.add_event_listener(enclose!( (slideshow_el, index) move |event:ClickEvent| {
-              event.prevent_default();
-              slideshow_el.set_attribute(DATA_INDEX, &index.to_string()).unwrap();
+                event.prevent_default();
+                slideshow_el.set_attribute(DATA_INDEX, &index.to_string()).unwrap();
             }));
             controls_el.append_child(&control_el);
-        };
-
-        for (index, _slide) in slides.iter().enumerate() {
-            control_setup(index)
         }
 
         slideshow_el
@@ -51,11 +47,11 @@ impl Controls {
             .unwrap()
             .append_child(&controls_el);
 
-        Controls()
+        Self
     }
 }
 
-pub(crate) struct Slide();
+pub(crate) struct Slide;
 
 impl Slide {
     pub(crate) fn new(node: Node) -> HtmlElement {
@@ -63,17 +59,18 @@ impl Slide {
     }
 }
 
-pub(crate) struct SlideShows();
+pub(crate) struct SlideShows;
 
 impl SlideShows {
-    pub(crate) fn new() -> SlideShows {
+    pub(crate) fn new() -> Self {
         // setup all slideshows
         for slideshow in node_list(SLIDESHOW_SELECTOR) {
             // collect slides
+            let div_tag = DIV.to_uppercase();
             let slides: Vec<HtmlElement> = slideshow
                 .child_nodes()
                 .into_iter()
-                .filter(|item| item.node_name() == DIV.to_uppercase())
+                .filter(|item| item.node_name() == div_tag)
                 .map(Slide::new)
                 .collect();
 
@@ -88,25 +85,21 @@ impl SlideShows {
                 slideshow_el.append_child(&slideshow_next);
 
                 Controls::new(&slideshow_el, &slides);
+                let last = slides.len() - 1;
 
-                let prev_next_click =
-                    |direction: &str, slideshow_el: &HtmlElement, slides: &Vec<HtmlElement>| {
-                        let increment = self::get_increment(
-                            direction,
-                            self::get_data_index(&slideshow_el),
-                            slides.len() - 1,
-                        );
-                        self::set_data_index_attribute(&slideshow_el, &increment.to_string())
-                    };
+                let prev_next_click = move |direction: &str, slideshow_el: &HtmlElement| {
+                    let increment = get_increment(direction, get_data_index(slideshow_el), last);
+                    set_data_index_attribute(slideshow_el, &increment.to_string())
+                };
 
-                let slideshow_prev_event = enclose!( (slideshow_el, slides) move |event: ClickEvent| {
+                let slideshow_prev_event = enclose!( (slideshow_el) move |event: ClickEvent| {
                     event.prevent_default();
-                    prev_next_click(&PREV, &slideshow_el, &slides)
+                    prev_next_click(&PREV, &slideshow_el)
                 });
 
-                let slideshow_next_event = enclose!( (slideshow_el, slides) move |event: ClickEvent| {
+                let slideshow_next_event = enclose!( (slideshow_el) move |event: ClickEvent| {
                     event.prevent_default();
-                    prev_next_click(&NEXT, &slideshow_el, &slides)
+                    prev_next_click(&NEXT, &slideshow_el)
                 });
 
                 slideshow_prev.add_event_listener(slideshow_prev_event);
@@ -116,28 +109,26 @@ impl SlideShows {
 
         // use keyboard to navigate
         let next_prev_click = |selector: &str| {
-            if document().query_selector(selector).unwrap().is_some() {
+            if let Some(_el) = document().query_selector(selector).unwrap() {
                 js!( document.querySelector(@{selector}).click(); );
             }
         };
 
-        let determine_key = |key: String| match key.as_ref() {
+        let determine_key = |key: &str| match key {
             ARROW_LEFT => PREV,
             ARROW_RIGHT => NEXT,
             _ => UNDERSCORE,
         };
 
         let keyup_event = move |event: KeyUpEvent| {
-            let data_project = document().body().unwrap().get_attribute(DATA_PROJECT);
-            if data_project.is_some() {
+            if let Some(data_project) = document().body().unwrap().get_attribute(DATA_PROJECT) {
                 let key = event.key();
                 if key == ESC {
                     js!( window.location.hash = @{EMPTY}; );
                 } else {
-                    let next_prev_key = determine_key(key);
+                    let next_prev_key = determine_key(&key);
                     if next_prev_key != UNDERSCORE {
-                        let selector =
-                            &format!(".project.{} .{}", data_project.unwrap(), next_prev_key);
+                        let selector = &format!(".project.{} .{}", data_project, next_prev_key);
                         next_prev_click(selector)
                     }
                 }
@@ -146,6 +137,6 @@ impl SlideShows {
 
         window().add_event_listener(keyup_event);
 
-        SlideShows()
+        Self
     }
 }

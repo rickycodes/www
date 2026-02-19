@@ -10,34 +10,32 @@ use crate::constants::{
     TARGET, TITLE,
 };
 
-pub(crate) fn show_info(str: &str, el: HtmlElement, info: HtmlElement) {
-    let attr = el.get_attribute(str);
-    if attr != None {
-        let attr_str = attr.unwrap();
-        info.set_text_content(&attr_str);
+pub(crate) fn show_info(attribute: &str, el: &HtmlElement, info: &HtmlElement) {
+    if let Some(attr_value) = el.get_attribute(attribute) {
+        info.set_text_content(&attr_value);
         info.class_list().remove(HIDDEN).unwrap();
     }
 }
 
-pub(crate) fn hide_info(info: HtmlElement) {
+pub(crate) fn hide_info(info: &HtmlElement) {
     info.class_list().add(HIDDEN).unwrap();
 }
 
-pub(crate) struct Links();
+pub(crate) struct Links;
 
 impl Links {
-    pub(crate) fn new() -> Links {
+    pub(crate) fn new() -> Self {
         let info = query_selector(INFO_SELECTOR);
 
         for link in node_list(INFO_LINKS_SELECTOR) {
             let el: HtmlElement = link.clone().try_into().unwrap();
             link.add_event_listener(enclose!( (el, info) move |_event: MouseOverEvent| {
-              self::show_info(NAME, el.clone(), info.clone());
-              self::show_info(TITLE, el.clone(), info.clone());
+              self::show_info(NAME, &el, &info);
+              self::show_info(TITLE, &el, &info);
             }));
 
             link.add_event_listener(enclose!( (info) move |_event: MouseOutEvent| {
-              self::hide_info(info.clone());
+              self::hide_info(&info);
             }));
         }
 
@@ -48,6 +46,6 @@ impl Links {
             el.set_attribute(REL, NOOPENER).unwrap();
         }
 
-        Links()
+        Self
     }
 }
