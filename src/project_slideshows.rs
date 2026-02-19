@@ -54,7 +54,7 @@ impl Controls {
 pub(crate) struct Slide;
 
 impl Slide {
-    pub(crate) fn new(node: Node) -> HtmlElement {
+    pub(crate) fn from_node(node: Node) -> HtmlElement {
         node.try_into().unwrap()
     }
 }
@@ -71,7 +71,7 @@ impl SlideShows {
                 .child_nodes()
                 .into_iter()
                 .filter(|item| item.node_name() == div_tag)
-                .map(Slide::new)
+                .map(Slide::from_node)
                 .collect();
 
             // only setup slideshow if there is more than one slide!
@@ -94,12 +94,12 @@ impl SlideShows {
 
                 let slideshow_prev_event = enclose!( (slideshow_el) move |event: ClickEvent| {
                     event.prevent_default();
-                    prev_next_click(&PREV, &slideshow_el)
+                    prev_next_click(PREV, &slideshow_el)
                 });
 
                 let slideshow_next_event = enclose!( (slideshow_el) move |event: ClickEvent| {
                     event.prevent_default();
-                    prev_next_click(&NEXT, &slideshow_el)
+                    prev_next_click(NEXT, &slideshow_el)
                 });
 
                 slideshow_prev.add_event_listener(slideshow_prev_event);

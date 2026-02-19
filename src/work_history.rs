@@ -14,10 +14,10 @@ fn scroll_into_view(el: Element) {
     }
 }
 
-pub(crate) struct WorkHistory();
+pub(crate) struct WorkHistory;
 
 impl WorkHistory {
-    pub(crate) fn new() -> WorkHistory {
+    pub(crate) fn new() -> Self {
         let details = document()
             .query_selector(WORK_HISTORY_SELECTOR)
             .unwrap()
@@ -33,6 +33,6 @@ impl WorkHistory {
             }
         });
         details.add_event_listener(click_event);
-        WorkHistory()
+        Self
     }
 }

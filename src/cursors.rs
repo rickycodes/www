@@ -27,17 +27,20 @@ impl Cursor {
     }
 }
 
-fn set_cursor_coordinates(el: HtmlElement, x: &str, y: &str) {
+fn set_cursor_coordinates(el: &HtmlElement, x: &str, y: &str) {
     el.set_attribute(STYLE, &format!("transform: translate3d({},{},0);", x, y))
         .unwrap()
 }
 
-pub(crate) struct Cursors();
+pub(crate) struct Cursors;
 
 impl Cursors {
-    pub(crate) fn new() -> Cursors {
+    pub(crate) fn new() -> Self {
         let cursor_element = query_selector(CURSOR_SELECTOR);
         let close = query_selector(CLOSE_SELECTOR);
+        let x_element = query_selector(X_SELECTOR);
+        let y_element = query_selector(Y_SELECTOR);
+        let cursor_for_move = cursor_element.clone();
 
         Cursor::new(close, &cursor_element, CLOSE);
 
@@ -55,10 +58,10 @@ impl Cursors {
             let x = f64::from(event.client_x());
             let y = f64::from(event.client_y());
 
-            self::set_cursor_coordinates(query_selector(X_SELECTOR), &format!("{}px", x), ZERO);
-            self::set_cursor_coordinates(query_selector(Y_SELECTOR), ZERO, &format!("{}px", y));
+            self::set_cursor_coordinates(&x_element, &format!("{}px", x), ZERO);
+            self::set_cursor_coordinates(&y_element, ZERO, &format!("{}px", y));
             self::set_cursor_coordinates(
-                query_selector(CURSOR_SELECTOR),
+                &cursor_for_move,
                 &format!("{}px", x),
                 &format!("{}px", y),
             );
@@ -66,6 +69,6 @@ impl Cursors {
 
         window().add_event_listener(mouse_move_event);
 
-        Cursors()
+        Self
     }
 }

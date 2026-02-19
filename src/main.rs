@@ -29,7 +29,7 @@ use crate::util::set_date;
 use crate::work_history::WorkHistory;
 use crate::constants::log;
 
-struct Website();
+struct Website;
 
 impl Website {
     fn set_date(self) -> Self {
@@ -55,9 +55,9 @@ impl Website {
         self
     }
 
-    fn new() -> Website {
+    fn new() -> Self {
         log();
-        Website()
+        Self
     }
 }
 

@@ -37,10 +37,10 @@ fn delete() {
     reset()
 }
 
-pub(crate) struct Trash();
+pub(crate) struct Trash;
 
 impl Trash {
-    pub(crate) fn new() -> Trash {
+    pub(crate) fn new() -> Self {
         let coord = query_selector(COORDINATE_SELECTOR);
         let cries = CRIES;
 
@@ -62,8 +62,8 @@ impl Trash {
 
         coord.add_event_listener(enclose!((cries) move |event: DragDropEvent| {
             event.prevent_default();
-            let index = get_range(0 as f64, cries.len() as f64) as usize;
-            let okay = confirm(&cries[index].to_string());
+            let index = get_range(0.0, cries.len() as f64) as usize;
+            let okay = confirm(cries[index]);
             if okay {
                 self::delete()
             } else {
@@ -114,6 +114,6 @@ impl Trash {
             bind_link(link)
         }
 
-        Trash()
+        Self
     }
 }

@@ -6,10 +6,10 @@ use stdweb::web::event::MouseMoveEvent;
 
 use crate::constants::COORDINATES_SELECTOR;
 
-pub(crate) struct Coordinates();
+pub(crate) struct Coordinates;
 
 impl Coordinates {
-    pub(crate) fn new() -> Coordinates {
+    pub(crate) fn new() -> Self {
         let mouse_move_event = move |event: MouseMoveEvent| {
             let x = f64::from(event.client_x());
             let y = f64::from(event.client_y());
@@ -19,6 +19,6 @@ impl Coordinates {
 
         window().add_event_listener(mouse_move_event);
 
-        Coordinates()
+        Self
     }
 }

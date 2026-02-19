@@ -88,7 +88,7 @@ pub(crate) const CURSORS_ATTRIBUTES: [CursorAttributes; 5] = [
     },
 ];
 
-const CONSOLE_STYLE: &'static str = "font-family: 'Monaco';
+const CONSOLE_STYLE: &str = "font-family: 'Monaco';
 font-size: 4em;
 padding: 20px;
 color: white;
