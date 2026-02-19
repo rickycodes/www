@@ -31,11 +31,11 @@ const ask = q => console.log(options[Math.floor(Math.random() * options.length)]
 (async function () {
   if (featureKey in window) {
     var script = document.createElement('script')
-    await script.setAttribute('src', src)
+    script.setAttribute('src', src)
     await fetch(ASCII)
       .then(response => response.text())
       .then(data => console.log(data))
-    await document.body.appendChild(script)
+    document.body.appendChild(script)
   } else {
     // womp womp
     var els = ['._projects', '.projects', '.coord']

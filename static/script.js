@@ -49,7 +49,7 @@
       { type: 'async', src: 'https://www.googletagmanager.com/gtag/js?id=UA-71959023-1' }
     ]
 
-    scripts.map(attachScript)
+    scripts.forEach(attachScript)
   }
 
   var setupGTag = function () {
