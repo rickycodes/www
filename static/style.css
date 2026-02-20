@@ -200,6 +200,14 @@ code {
   text-transform: none;
 }
 
+.work-history {
+  margin-top: 2em;
+}
+
+.work-history .link {
+  margin: 0;
+}
+
 .work-history ul {
   margin: 0;
   padding: 0;
