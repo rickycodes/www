@@ -84,7 +84,7 @@
   padding: 1em 2em;
   color: white;
   font-size: .8em;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'IBM Plex Mono', monospace;
   text-align: right;
 }
 
@@ -140,11 +140,11 @@ footer {
   margin-top: 4em;
   padding-top: 1em;
   border-top: 2px solid black;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'IBM Plex Mono', monospace;
 }
 
 .link, .content .meta a {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'IBM Plex Mono', monospace;
   display: inline-block;
   vertical-align: middle;
   transform: perspective(1px) translateZ(0);
