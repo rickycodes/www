@@ -75,14 +75,13 @@ gen() {
     --use-short-doctype \
     --minify-css; } > $OUTPUT
     msg "HTML" "$OUTPUT"
-    # newline
-    echo "\n" >> "$OUTPUT"
-    # begin html comment
-    echo "<!--" >> "$OUTPUT"
-    # add ascii cat
-    cat cat.txt >> "$OUTPUT"
-    # end html comment
-    echo "-->" >> "$OUTPUT"
+    # append ASCII art inside an HTML comment
+    {
+        printf "\n"
+        printf "<!--\n"
+        cat cat.txt
+        printf "\n-->\n"
+    } >> "$OUTPUT"
     # copy ascii text to static so we can fetch
     cp cat.txt static/
 }

@@ -2,7 +2,7 @@
 
 # sync to http
 function http() {
-    rsync -avze "ssh -p $PORT" ./target/deploy/ $USER@$HOST:$DEPLOY_PATH
+    rsync -avze "ssh -p $PORT" ./target/deploy/ "${USER}@${HOST}:${DEPLOY_PATH}"
 }
 
 # sync to dat
