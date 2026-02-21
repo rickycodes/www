@@ -52,6 +52,10 @@
   }
 }
 
+:root {
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
 .canvas {
   width: 100%;
   height: 100%;
@@ -84,7 +88,7 @@
   padding: 1em 2em;
   color: white;
   font-size: .8em;
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
   text-align: right;
 }
 
@@ -119,7 +123,6 @@
 }
 
 .info {
-  display: block;
   top: 0;
   right: 0;
   transform: translate3d(0,0,0);
@@ -140,18 +143,17 @@ footer {
   margin-top: 4em;
   padding-top: 1em;
   border-top: 2px solid black;
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
 }
 
 .link, .content .meta a {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
   display: inline-block;
   vertical-align: middle;
   transform: perspective(1px) translateZ(0);
   box-shadow: 0 0 1px transparent;
   position: relative;
-  transition-property: color;
-  transition-duration: .3s;
+  transition: color .3s;
   padding: 0 1em;
   margin: 0 .5em .5em 0;
   border: 2px solid black;
@@ -161,7 +163,7 @@ footer {
   font-size: .8em;
 }
 
-.link:before {
+.link::before {
   content: "";
   position: absolute;
   z-index: -1;
@@ -177,11 +179,10 @@ footer {
 
 .link:hover {
   color: white;
-  border: 2px solid black;
   animation: visible 0.2s, rgbshift 3s infinite;
 }
 
-.link:hover:before {
+.link:hover::before {
   transform: scaleX(1);
 }
 
@@ -218,8 +219,8 @@ code {
   list-style-type: disc;
   margin-block-start: 1em;
   margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
   padding-inline-start: 40px;
   font-size: 80%;
 }
@@ -292,10 +293,8 @@ code {
   display: block;
 }
 
-.content .meta {}
 .content .meta a {
-  display: inline-block;
-  padding: 0 1em 0 1em;
+  padding: 0 1em;
   margin-right: 1em;
   font-size: .6em;
   cursor: pointer;
