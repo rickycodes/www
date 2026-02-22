@@ -175,7 +175,8 @@
 }
 
 .slideshow-container .slideshow div img {
-  object-fit: contain;
+  object-fit: cover;
   max-width: 100%;
   user-select: none;
+  width: auto;
 }
