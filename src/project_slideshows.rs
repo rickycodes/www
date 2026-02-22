@@ -5,8 +5,9 @@ use stdweb::web::{document, window, HtmlElement, Node};
 use crate::util::{create_element, node_list};
 
 use crate::constants::{
-    A, ARROW_LEFT, ARROW_RIGHT, CONTROLS, DATA_INDEX, DATA_PROJECT, DIV, EMPTY, ESC, LINK, NEXT,
-    PREV, SLIDESHOW_SELECTOR, UNDERSCORE,
+    A, ARIA_LABEL, ARROW_LEFT, ARROW_RIGHT, CONTROLS, DATA_INDEX, DATA_PROJECT, DIV, EMPTY, ESC,
+    LINK, NEXT, NEXT_SLIDE_ARIA_LABEL, PREV, PREVIOUS_SLIDE_ARIA_LABEL, SLIDESHOW_SELECTOR,
+    UNDERSCORE,
 };
 
 fn get_data_index(element: &HtmlElement) -> usize {
@@ -79,9 +80,15 @@ impl SlideShows {
                 let slideshow_el: HtmlElement = slideshow.try_into().unwrap();
 
                 let slideshow_prev = create_element(A, PREV);
+                slideshow_prev
+                    .set_attribute(ARIA_LABEL, PREVIOUS_SLIDE_ARIA_LABEL)
+                    .unwrap();
                 slideshow_el.append_child(&slideshow_prev);
 
                 let slideshow_next = create_element(A, NEXT);
+                slideshow_next
+                    .set_attribute(ARIA_LABEL, NEXT_SLIDE_ARIA_LABEL)
+                    .unwrap();
                 slideshow_el.append_child(&slideshow_next);
 
                 Controls::new(&slideshow_el, &slides);
