@@ -1,0 +1,63 @@
+name: Build And Deploy Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup Rust toolchain for cargo-web
+        run: |
+          rustup toolchain install nightly-2019-08-01 --profile minimal
+          rustup target add wasm32-unknown-unknown --toolchain nightly-2019-08-01
+          rustup toolchain install 1.63.0 --profile minimal
+
+      - name: Install cargo-web
+        run: cargo +1.63.0 install cargo-web --version 0.6.26 --locked
+
+      - name: Build static site
+        run: |
+          ./build.sh --gen
+          cargo +nightly-2019-08-01 web deploy --target=wasm32-unknown-unknown
+          ./build.sh --min
+          echo "ricky.codes" > target/deploy/CNAME
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: target/deploy
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
