@@ -1,0 +1,80 @@
+name: Build Wasm Bundle
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/wasm-bundle.yml"
+      - "build.sh"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "src/*.rs"
+      - "src/**/*.rs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wasm-bundle
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # This is the job to move onto a prebuilt toolchain image later.
+    # Example future shape:
+    # container: ghcr.io/rickycodes/www-buildenv:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Rust toolchains for cargo-web
+        run: |
+          rustup toolchain install nightly-2019-08-01 --profile minimal
+          rustup target add wasm32-unknown-unknown --toolchain nightly-2019-08-01
+          rustup toolchain install 1.63.0 --profile minimal
+
+      - name: Cache cargo-web binary
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/cargo-web
+          key: ${{ runner.os }}-cargo-web-0.6.26
+
+      - name: Cache Rust dependencies/build
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ". -> target"
+          shared-key: "pages-nightly-2019-08-01"
+          cache-on-failure: true
+
+      - name: Restore wasm bundle cache
+        id: wasm_bundle_cache
+        uses: actions/cache@v4
+        with:
+          path: .ci-cache/wasm
+          key: ${{ runner.os }}-wasm-bundle-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs') }}
+
+      - name: Install cargo-web
+        run: |
+          if command -v cargo-web >/dev/null 2>&1; then
+            cargo-web --version
+          else
+            cargo +1.63.0 install cargo-web --version 0.6.26 --locked
+          fi
+
+      - name: Build wasm bundle
+        run: |
+          cargo +nightly-2019-08-01 web deploy --target=wasm32-unknown-unknown
+          mkdir -p .ci-cache/wasm
+          cp target/deploy/rickycodes.wasm .ci-cache/wasm/rickycodes.wasm
+          cp target/deploy/rickycodes.js .ci-cache/wasm/rickycodes.js
+
+      - name: Upload wasm bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wasm-bundle
+          path: .ci-cache/wasm
+          if-no-files-found: error
+          retention-days: 30

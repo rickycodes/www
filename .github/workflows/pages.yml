@@ -7,11 +7,14 @@ on:
     paths:
       - ".github/workflows/pages.yml"
       - "build.sh"
-      - "Cargo.toml"
-      - "Cargo.lock"
       - "cat.txt"
-      - "src/**"
+      - "src/partials/**"
       - "static/**"
+  workflow_run:
+    workflows:
+      - Build Wasm Bundle
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -25,46 +28,18 @@ concurrency:
 
 jobs:
   build:
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Detect changed paths
-        id: changes
-        uses: dorny/paths-filter@v3
         with:
-          filters: |
-            rust:
-              - 'Cargo.toml'
-              - 'Cargo.lock'
-              - 'build.sh'
-              - 'src/*.rs'
-              - 'src/**/*.rs'
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-
-      - name: Setup Rust toolchain for cargo-web
-        run: |
-          rustup toolchain install nightly-2019-08-01 --profile minimal
-          rustup target add wasm32-unknown-unknown --toolchain nightly-2019-08-01
-          rustup toolchain install 1.63.0 --profile minimal
-
-      - name: Cache cargo-web binary
-        uses: actions/cache@v4
-        with:
-          path: ~/.cargo/bin/cargo-web
-          key: ${{ runner.os }}-cargo-web-0.6.26
-
-      - name: Cache Rust dependencies/build
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: ". -> target"
-          shared-key: "pages-nightly-2019-08-01"
-          cache-on-failure: true
 
       - name: Restore cached wasm bundle
         id: wasm_bundle_cache
@@ -73,44 +48,23 @@ jobs:
           path: .ci-cache/wasm
           key: ${{ runner.os }}-wasm-bundle-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs') }}
 
-      - name: Install cargo-web
+      - name: Ensure wasm bundle exists
+        if: steps.wasm_bundle_cache.outputs.cache-hit != 'true'
         run: |
-          if command -v cargo-web >/dev/null 2>&1; then
-            cargo-web --version
-          else
-            cargo +1.63.0 install cargo-web --version 0.6.26 --locked
-          fi
+          echo "No wasm bundle cache found for this Rust source state."
+          echo "Run the 'Build Wasm Bundle' workflow (or push a Rust change) first."
+          exit 1
 
-      - name: Build static site
-        env:
-          RUST_CHANGED: ${{ steps.changes.outputs.rust }}
-          WASM_CACHE_HIT: ${{ steps.wasm_bundle_cache.outputs.cache-hit }}
+      - name: Build static site from cached wasm
         run: |
           ./build.sh --gen
-          if [ "$RUST_CHANGED" = "true" ]; then
-            echo "Rust/build inputs changed: running full wasm build."
-            cargo +nightly-2019-08-01 web deploy --target=wasm32-unknown-unknown
-          else
-            if [ "$WASM_CACHE_HIT" = "true" ] && [ -f .ci-cache/wasm/rickycodes.wasm ] && [ -f .ci-cache/wasm/rickycodes.js ]; then
-              echo "Content-only change: reusing cached wasm/js bundle."
-              rm -rf target/deploy
-              mkdir -p target/deploy
-              cp -R static/. target/deploy/
-              cp .ci-cache/wasm/rickycodes.wasm target/deploy/rickycodes.wasm
-              cp .ci-cache/wasm/rickycodes.js target/deploy/rickycodes.js
-            else
-              echo "No cached wasm/js bundle available: falling back to full wasm build."
-              cargo +nightly-2019-08-01 web deploy --target=wasm32-unknown-unknown
-            fi
-          fi
-
+          rm -rf target/deploy
+          mkdir -p target/deploy
+          cp -R static/. target/deploy/
+          cp .ci-cache/wasm/rickycodes.wasm target/deploy/rickycodes.wasm
+          cp .ci-cache/wasm/rickycodes.js target/deploy/rickycodes.js
           ./build.sh --min
           echo "ricky.codes" > target/deploy/CNAME
-
-          # Refresh bundle cache after any build path.
-          mkdir -p .ci-cache/wasm
-          cp target/deploy/rickycodes.wasm .ci-cache/wasm/rickycodes.wasm
-          cp target/deploy/rickycodes.js .ci-cache/wasm/rickycodes.js
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
