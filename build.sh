@@ -12,6 +12,7 @@ GEN="gen"
 WATCH="watch"
 MIN="min"
 TEST="test"
+LINT="lint"
 SITE_NAME="ricky.codes"
 NODE_BIN_DIR="${NODE_BIN_DIR:-./node_modules/.bin}"
 
@@ -29,6 +30,7 @@ OPTIONS:
     --$WATCH             Starts a local static server + rebuilds wasm on changes
                         (avoids cargo web start runtime panic)
     --$MIN               Minify deployed *.js files with uglify
+    --$LINT              Run shellcheck against project shell scripts
     --$TEST              Run tests
 
 Running "bash build.sh" (with zero options) will --$GEN --$BUILD and --$MIN (in that order)
@@ -78,6 +80,16 @@ require_node_tools() {
         exit 1
     fi
     PATH="$NODE_BIN_DIR:$PATH"
+}
+
+lint() {
+    if ! command -v shellcheck >/dev/null 2>&1; then
+        echo "error: shellcheck is not installed."
+        echo "Install shellcheck and retry."
+        exit 1
+    fi
+    echo "Running shellcheck..."
+    shellcheck ./*.sh
 }
 
 gen() {
@@ -170,6 +182,8 @@ fail() {
 
 tests() {
     echo "warming up $SITE_NAME test suite!"
+    # lint shell scripts
+    lint
     # test help
     HELP=$(./build.sh --help)
     CHECK_HELP=$(echo "$HELP" | grep "$SITE_NAME build tool")
@@ -211,6 +225,7 @@ else
     [ "$ARG" = "--$_HELP" ] || [ "$ARG" = "$_HELP" ] && _help
     [ "$ARG" = "--$GEN" ] || [ "$ARG" = "$GEN" ] && gen
     [ "$ARG" = "--$MIN" ] || [ "$ARG" = "$MIN" ] && min
+    [ "$ARG" = "--$LINT" ] || [ "$ARG" = "$LINT" ] && lint
     [ "$ARG" = "--$BUILD" ] || [ "$ARG" = "$BUILD" ] && build
     [ "$ARG" = "--$WATCH" ] || [ "$ARG" = "$WATCH" ] && watch
     exit 0

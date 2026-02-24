@@ -30,6 +30,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Lint shell scripts
+        uses: fearphage/shellcheck-action@430e230b33ad06e9316aec3222b7c6419ddea83f
+        with:
+          args: "./*.sh"
+
       - name: Setup Rust toolchains for cargo-web
         run: |
           rustup toolchain install nightly-2019-08-01 --profile minimal
