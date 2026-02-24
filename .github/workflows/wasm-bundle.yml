@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: read
+  checks: write
 
 concurrency:
   group: wasm-bundle
@@ -32,8 +33,8 @@ jobs:
 
       - name: Lint shell scripts
         uses: fearphage/shellcheck-action@430e230b33ad06e9316aec3222b7c6419ddea83f
-        with:
-          args: "./*.sh"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Rust toolchains for cargo-web
         run: |

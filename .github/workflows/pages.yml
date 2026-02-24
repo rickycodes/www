@@ -23,6 +23,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  checks: write
 
 concurrency:
   group: pages
@@ -40,8 +41,8 @@ jobs:
 
       - name: Lint shell scripts
         uses: fearphage/shellcheck-action@430e230b33ad06e9316aec3222b7c6419ddea83f
-        with:
-          args: "./*.sh"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
