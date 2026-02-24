@@ -44,6 +44,18 @@ msg() {
     echo "$1 deployed to $2"
 }
 
+write_build_meta() {
+    BUILT_AT_UTC=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    GIT_SHA=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+    RUNNER_OS_VAL=${RUNNER_OS:-$(uname -s)}
+    RUNNER_ARCH_VAL=${RUNNER_ARCH:-$(uname -m)}
+    CPU_CORES=$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo "unknown")
+
+    cat > static/build-meta.json <<EOF
+{"built_at_utc":"$BUILT_AT_UTC","git_sha":"$GIT_SHA","runner_os":"$RUNNER_OS_VAL","runner_arch":"$RUNNER_ARCH_VAL","cpu_cores":"$CPU_CORES"}
+EOF
+}
+
 require_cargo_web() {
     if ! command -v cargo-web >/dev/null 2>&1; then
         echo "error: no such subcommand: 'web'"
@@ -95,6 +107,7 @@ gen() {
     } >> "$OUTPUT"
     # copy ascii text to static so we can fetch
     cp cat.txt static/
+    write_build_meta
 }
 
 build() {

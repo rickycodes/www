@@ -2,5 +2,6 @@ target
 node_modules
 static/index.html
 static/cat.txt
+static/build-meta.json
 images
 ignore
