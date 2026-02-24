@@ -13,6 +13,7 @@ WATCH="watch"
 MIN="min"
 TEST="test"
 SITE_NAME="ricky.codes"
+NODE_BIN_DIR="${NODE_BIN_DIR:-./node_modules/.bin}"
 
 HELP="$(cat <<-EOF
 $SITE_NAME build tool
@@ -58,7 +59,17 @@ require_cargo_web() {
     fi
 }
 
+require_node_tools() {
+    if [ ! -x "$NODE_BIN_DIR/html-minifier" ] || [ ! -x "$NODE_BIN_DIR/uglifyjs" ]; then
+        echo "error: missing node build tools."
+        echo "Run: npm ci"
+        exit 1
+    fi
+    PATH="$NODE_BIN_DIR:$PATH"
+}
+
 gen() {
+    require_node_tools
     echo 'Generate + minify HTML...'
     { cat ${PARTIALS}/doctype.html \
         ${PARTIALS}/header.html \
@@ -66,7 +77,7 @@ gen() {
         ${PARTIALS}/cv.html \
         ${PARTIALS}/copyright.html \
         ${PROJECTS}* \
-        ${PARTIALS}/footer.html | npx html-minifier \
+        ${PARTIALS}/footer.html | html-minifier \
     --collapse-whitespace \
     --remove-comments \
     --remove-optional-tags \
@@ -124,13 +135,14 @@ watch() {
 }
 
 min() {
+    require_node_tools
     # replace console.log before minify
     sed -i "s/\"Finished loading \Rust wasm module 'rickycodes'\"//g" target/deploy/rickycodes.js
     # minify gen and static js files
     echo 'Minify...'
     jsFiles='target/deploy/*.js'
     for f in $jsFiles; do
-        npx uglify-js "$f" \
+        uglifyjs "$f" \
             --compress \
             --mangle \
             --output "$f"

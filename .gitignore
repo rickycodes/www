@@ -1,4 +1,5 @@
 target
+node_modules
 static/index.html
 static/cat.txt
 images
