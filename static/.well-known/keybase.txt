@@ -1,0 +1,60 @@
+
+dns
+Ricky Miller
+==================================================================
+https://keybase.io/rickycodes
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://ricky.codes
+  * I am rickycodes (https://keybase.io/rickycodes) on keybase.
+  * I have a public key ASCynvgPEmMEVlU6f-_aM7WNM73nsH5SLol1pIqiEQYwdwo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01012a1d47af41de7f31bf36bce8015bb629da49602b0ff56e780bd7f5e8d72547570a",
+      "host": "keybase.io",
+      "kid": "0120b29ef80f12630456553a7fefda33b58d33bde7b07e522e8975a48aa2110630770a",
+      "uid": "517cfbfd820e25b453b208cc60e24b19",
+      "username": "rickycodes"
+    },
+    "merkle_root": {
+      "ctime": 1610466052,
+      "hash": "e7e9300cad33eb42075ceb307b336817ae4e729089e6f52529ebe6e22f82cf0a16919e336e616a69fd4fb3e3ba70657c6a994a75a2d4c7a5272e399bfcac576e",
+      "hash_meta": "2f6f3fd0bda52ab8651f44c771fd2a6eeb9bdd3bb9f91d0ce926a1d7430b9f31",
+      "seqno": 18712899
+    },
+    "service": {
+      "entropy": "AaDLEkqnyywqyWKgIgH4fWOY",
+      "hostname": "ricky.codes",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "5.5.2"
+  },
+  "ctime": 1610466118,
+  "expire_in": 504576000,
+  "prev": "ed5dfa65aaeab0d9c4c037e6b19be531ea7c8b178f231f2a3b7b8bde9b498451",
+  "seqno": 32,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgsp74DxJjBFZVOn/v2jO1jTO957B+Ui6JdaSKohEGMHcKp3BheWxvYWTESpcCIMQg7V36ZarqsNnEwDfmsZvlMep8ixePIx8qO3uL3ptJhFHEIL9E1dwd/L+DGdlUIob3Km7a2yS6jMpBNWcN7fgznaLtAgHCo3NpZ8RAJbj7P8bfgFzGud36khGi27yzGdXzNsUP5mIKHHhleN5HEWSTgqXgYhvzF8XHkfduTl7BqwvA0q3wY52q5Ii2BKhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIJcYKkEs/lQ+1iVZVCkhmDbpnhqXRhJGHXVUknd6jQIyo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/rickycodes
+
+==================================================================
+
