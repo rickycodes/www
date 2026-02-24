@@ -62,5 +62,6 @@ impl Website {
 }
 
 fn main() {
+    // welcome to my homepage i kiss you
     Website::new().initialize().set_date().event_loop();
 }
