@@ -30,6 +30,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Detect changed paths
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            rust:
+              - 'Cargo.toml'
+              - 'Cargo.lock'
+              - 'build.sh'
+              - 'src/*.rs'
+              - 'src/**/*.rs'
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -54,6 +66,13 @@ jobs:
           shared-key: "pages-nightly-2019-08-01"
           cache-on-failure: true
 
+      - name: Restore cached wasm bundle
+        id: wasm_bundle_cache
+        uses: actions/cache@v4
+        with:
+          path: .ci-cache/wasm
+          key: ${{ runner.os }}-wasm-bundle-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs') }}
+
       - name: Install cargo-web
         run: |
           if command -v cargo-web >/dev/null 2>&1; then
@@ -63,11 +82,35 @@ jobs:
           fi
 
       - name: Build static site
+        env:
+          RUST_CHANGED: ${{ steps.changes.outputs.rust }}
+          WASM_CACHE_HIT: ${{ steps.wasm_bundle_cache.outputs.cache-hit }}
         run: |
           ./build.sh --gen
-          cargo +nightly-2019-08-01 web deploy --target=wasm32-unknown-unknown
+          if [ "$RUST_CHANGED" = "true" ]; then
+            echo "Rust/build inputs changed: running full wasm build."
+            cargo +nightly-2019-08-01 web deploy --target=wasm32-unknown-unknown
+          else
+            if [ "$WASM_CACHE_HIT" = "true" ] && [ -f .ci-cache/wasm/rickycodes.wasm ] && [ -f .ci-cache/wasm/rickycodes.js ]; then
+              echo "Content-only change: reusing cached wasm/js bundle."
+              rm -rf target/deploy
+              mkdir -p target/deploy
+              cp -R static/. target/deploy/
+              cp .ci-cache/wasm/rickycodes.wasm target/deploy/rickycodes.wasm
+              cp .ci-cache/wasm/rickycodes.js target/deploy/rickycodes.js
+            else
+              echo "No cached wasm/js bundle available: falling back to full wasm build."
+              cargo +nightly-2019-08-01 web deploy --target=wasm32-unknown-unknown
+            fi
+          fi
+
           ./build.sh --min
           echo "ricky.codes" > target/deploy/CNAME
+
+          # Refresh bundle cache after any build path.
+          mkdir -p .ci-cache/wasm
+          cp target/deploy/rickycodes.wasm .ci-cache/wasm/rickycodes.wasm
+          cp target/deploy/rickycodes.js .ci-cache/wasm/rickycodes.js
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
