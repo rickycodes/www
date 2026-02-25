@@ -1,0 +1,32 @@
+name: Shellcheck
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "*.sh"
+  pull_request:
+    paths:
+      - "*.sh"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+
+concurrency:
+  group: shellcheck-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint shell scripts
+        uses: fearphage/shellcheck-action@430e230b33ad06e9316aec3222b7c6419ddea83f
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

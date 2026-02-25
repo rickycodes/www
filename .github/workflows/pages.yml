@@ -38,11 +38,6 @@ jobs:
         with:
           ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
 
-      - name: Lint shell scripts
-        uses: fearphage/shellcheck-action@430e230b33ad06e9316aec3222b7c6419ddea83f
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
