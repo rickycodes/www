@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - ".github/workflows/pages.yml"
-      - "build.sh"
       - "package.json"
       - "package-lock.json"
       - "cat.txt"

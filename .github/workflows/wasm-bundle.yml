@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - ".github/workflows/wasm-bundle.yml"
-      - "build.sh"
       - "Cargo.toml"
       - "Cargo.lock"
       - "src/*.rs"
