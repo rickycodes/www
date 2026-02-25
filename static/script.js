@@ -1,16 +1,5 @@
 /* global IntersectionObserver */
 (function () {
-  var loadDeferredStyles = function () {
-    var addStylesNode = document.querySelector('.deferred')
-    var replacement = document.createElement('div')
-    replacement.innerHTML = addStylesNode.textContent
-    document.body.appendChild(replacement)
-    addStylesNode.parentElement.removeChild(addStylesNode)
-  }
-
-  var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-    window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
-
   var lazyLoadImages = function () {
     var lazyImages = [].slice.call(document.querySelectorAll('img[data-src]'))
     if ('IntersectionObserver' in window) {
@@ -101,8 +90,6 @@
   }
 
   var initialize = function () {
-    if (raf) raf(function () { window.setTimeout(loadDeferredStyles, 0) })
-    else window.addEventListener('load', loadDeferredStyles)
     setupGTag()
     renderBuildMeta()
     lazyLoadImages()
