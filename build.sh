@@ -58,6 +58,30 @@ write_build_meta() {
 EOF
 }
 
+write_search_metadata() {
+    BASE_URL="https://$SITE_NAME"
+    TODAY_UTC=$(date -u +"%Y-%m-%d")
+
+    cat > static/robots.txt <<EOF
+User-agent: *
+Allow: /
+
+Sitemap: $BASE_URL/sitemap.xml
+EOF
+
+    cat > static/sitemap.xml <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>$BASE_URL/</loc>
+    <lastmod>$TODAY_UTC</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
+EOF
+}
+
 require_cargo_web() {
     if ! command -v cargo-web >/dev/null 2>&1; then
         echo "error: no such subcommand: 'web'"
@@ -120,6 +144,7 @@ gen() {
     # copy ascii text to static so we can fetch
     cp cat.txt static/
     write_build_meta
+    write_search_metadata
 }
 
 build() {
