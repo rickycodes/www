@@ -3,6 +3,7 @@ node_modules
 static/index.html
 static/cat.txt
 static/build-meta.json
+static/robots.txt
 static/sitemap.xml
 images
 ignore
