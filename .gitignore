@@ -5,5 +5,12 @@ static/cat.txt
 static/build-meta.json
 static/robots.txt
 static/sitemap.xml
+static/*.png
+static/*.jpg
+static/*.jpeg
+static/*.gif
+static/*.webp
+static/*.svg
+static/*.avif
 images
 ignore
