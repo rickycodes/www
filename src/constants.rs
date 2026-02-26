@@ -101,6 +101,6 @@ transform: rotate(-7deg);";
 pub(crate) fn log() {
     console!(log, "%c welcome to my homepage", CONSOLE_STYLE);
     console!(log, "The original Magic Kitty™ is an oracle that lets anyone seek advice about their future!");
-    console!(log, "All you have to do is simply “ask() the kitty” any yes or no question, then wait for your answer to be revealed.");
+    console!(log, "All you have to do is “ask() the kitty” any yes or no question and your answer will be revealed.");
     console!(log, "example: ask('will i be pretty?')")
 }
