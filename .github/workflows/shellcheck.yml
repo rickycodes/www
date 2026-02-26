@@ -6,9 +6,11 @@ on:
       - main
     paths:
       - "*.sh"
+      - "scripts/*.sh"
   pull_request:
     paths:
       - "*.sh"
+      - "scripts/*.sh"
   workflow_dispatch:
 
 permissions:

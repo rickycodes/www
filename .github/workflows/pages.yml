@@ -28,7 +28,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check external links
+        run: ./build.sh --check-links
+
   build:
+    needs: link-check
     if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     steps:
