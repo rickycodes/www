@@ -23,5 +23,5 @@ OPTIONS:
     --test              Run tests
 
 Running "bash build.sh" (with zero options) will --generate --build-wasm and --minify (in that order)
-This is not a sophisticated script, one [OPTION] (singular) at a time or none.
+You can pass multiple options; they run in the order provided.
 EOF

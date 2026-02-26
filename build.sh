@@ -2,7 +2,6 @@
 
 PARTIALS='src/partials'
 PROJECTS=$PARTIALS/projects/
-ARG=$1
 OUTPUT=static/index.html
 
 _HELP="help"
@@ -68,20 +67,45 @@ tests() {
     bash scripts/run-tests.sh "$SITE_NAME" "$OUTPUT"
 }
 
-if [ -z "$ARG" ]
+if [ "$#" -eq 0 ]
 then
     gen
     build
     min
     echo 'Done.'
 else
-    [ "$ARG" = "--$TEST" ] || [ "$ARG" = "$TEST" ] && tests
-    [ "$ARG" = "--$_HELP" ] || [ "$ARG" = "$_HELP" ] && _help
-    [ "$ARG" = "--$GEN" ] || [ "$ARG" = "$GEN" ] || [ "$ARG" = "--$GENERATE" ] || [ "$ARG" = "$GENERATE" ] && gen
-    [ "$ARG" = "--$MIN" ] || [ "$ARG" = "$MIN" ] || [ "$ARG" = "--$MINIFY" ] || [ "$ARG" = "$MINIFY" ] && min
-    [ "$ARG" = "--$LINT" ] || [ "$ARG" = "$LINT" ] && lint
-    [ "$ARG" = "--$CHECK_LINKS" ] || [ "$ARG" = "$CHECK_LINKS" ] && check_links
-    [ "$ARG" = "--$BUILD" ] || [ "$ARG" = "$BUILD" ] || [ "$ARG" = "--$BUILD_WASM" ] || [ "$ARG" = "$BUILD_WASM" ] && build
-    [ "$ARG" = "--$WATCH" ] || [ "$ARG" = "$WATCH" ] && watch
-    exit 0
+    while [ "$#" -gt 0 ]; do
+        case "$1" in
+            --"$TEST"|"$TEST")
+                tests
+                ;;
+            --"$_HELP"|"$_HELP")
+                _help
+                ;;
+            --"$GEN"|"$GEN"|--"$GENERATE"|"$GENERATE")
+                gen
+                ;;
+            --"$MIN"|"$MIN"|--"$MINIFY"|"$MINIFY")
+                min
+                ;;
+            --"$LINT"|"$LINT")
+                lint
+                ;;
+            --"$CHECK_LINKS"|"$CHECK_LINKS")
+                check_links
+                ;;
+            --"$BUILD"|"$BUILD"|--"$BUILD_WASM"|"$BUILD_WASM")
+                build
+                ;;
+            --"$WATCH"|"$WATCH")
+                watch
+                ;;
+            *)
+                echo "Unknown option: $1"
+                echo "Run ./build.sh --help"
+                exit 1
+                ;;
+        esac
+        shift
+    done
 fi
