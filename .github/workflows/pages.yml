@@ -30,17 +30,24 @@ concurrency:
 jobs:
   link-check:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Check external links
+        if: github.event_name != 'workflow_run'
         run: ./build.sh --check-links
+
+      - name: Skip link check on wasm workflow trigger
+        if: github.event_name == 'workflow_run'
+        run: echo "Skipping external link check for workflow_run event."
 
   build:
     needs: link-check
     if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -93,6 +100,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
