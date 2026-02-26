@@ -27,7 +27,6 @@ lint() {
 }
 
 check_links() {
-    echo "Checking external links..."
     bash scripts/check-external-links.sh
 }
 

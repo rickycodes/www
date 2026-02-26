@@ -11,19 +11,14 @@ fail() {
 
 echo "warming up ${site_name} test suite!"
 
-./build.sh --lint
-
 help_output="$(./build.sh --help)"
 check_help="$(echo "${help_output}" | grep "${site_name} build tool" || true)"
 if [[ -z "${check_help}" ]]; then
   fail "build.sh --help test failed (unexpected text)"
 fi
 
-if [[ -f "${output}" ]]; then
-  rm "${output}"
-fi
-
-./build.sh --gen
+rm -f "${output}"
+./build.sh --lint --generate
 if [[ ! -f "${output}" ]]; then
   fail "build.sh --gen test failed (no HTML file)"
 fi
