@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PARTIALS='src/partials'
-PROJECTS=$PARTIALS/projects/
+PROJECTS=$PARTIALS/projects
 OUTPUT=static/index.html
 
 _HELP="help"

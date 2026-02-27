@@ -10,7 +10,7 @@ if ! command -v html-minifier >/dev/null 2>&1; then
   exit 1
 fi
 
-echo "Generate + minify HTML..."
+echo "Cat & minify HTML in ${partials_dir}..."
 {
   cat "${partials_dir}/doctype.html" \
     "${partials_dir}/header.html" \
