@@ -6,7 +6,7 @@ use stdweb::web::HtmlElement;
 use crate::util::{node_list, query_selector};
 
 use crate::constants::{
-    CLOSE, CLOSE_SELECTOR, CURSORS_ATTRIBUTES, CURSOR_SELECTOR, STYLE, X_SELECTOR, Y_SELECTOR, ZERO,
+    CLOSE, CLOSE_SELECTOR, CURSORS_ATTRIBUTES, CURSOR_SELECTOR, STYLE, ZERO,
 };
 
 struct Cursor;
@@ -38,8 +38,6 @@ impl Cursors {
     pub(crate) fn new() -> Self {
         let cursor_element = query_selector(CURSOR_SELECTOR);
         let close = query_selector(CLOSE_SELECTOR);
-        let x_element = query_selector(X_SELECTOR);
-        let y_element = query_selector(Y_SELECTOR);
         let cursor_for_move = cursor_element.clone();
 
         Cursor::new(close, &cursor_element, CLOSE);
@@ -58,8 +56,6 @@ impl Cursors {
             let x = f64::from(event.client_x());
             let y = f64::from(event.client_y());
 
-            self::set_cursor_coordinates(&x_element, &format!("{}px", x), ZERO);
-            self::set_cursor_coordinates(&y_element, ZERO, &format!("{}px", y));
             self::set_cursor_coordinates(
                 &cursor_for_move,
                 &format!("{}px", x),

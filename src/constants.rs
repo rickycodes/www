@@ -60,8 +60,6 @@ pub(crate) const INFO_SELECTOR: &str = ".info";
 pub(crate) const INFO_LINKS_SELECTOR: &str = ".content a[title], .content label[name]";
 pub(crate) const SLIDESHOW_SELECTOR: &str = ".slideshow";
 pub(crate) const YEAR_SELECTOR: &str = ".year";
-pub(crate) const X_SELECTOR: &str = ".x";
-pub(crate) const Y_SELECTOR: &str = ".y";
 
 pub(crate) struct CursorAttributes {
     pub(crate) selector: &'static str,
