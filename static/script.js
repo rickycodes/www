@@ -1,5 +1,22 @@
 /* global IntersectionObserver */
 (function () {
+  var getBuildVersion = function () {
+    var current = document.currentScript
+    if (!current) return null
+    var src = current.getAttribute('src') || ''
+    var match = src.match(/[?&]v=([^&]+)/)
+    return match ? match[1] : null
+  }
+
+  var buildVersion = getBuildVersion()
+  window.__BUILD_VERSION = buildVersion
+
+  var withBuildVersion = function (url) {
+    if (!buildVersion) return url
+    if (/^https?:\/\//.test(url)) return url
+    return url + (url.indexOf('?') === -1 ? '?v=' : '&v=') + buildVersion
+  }
+
   var lazyLoadImages = function () {
     var lazyImages = [].slice.call(document.querySelectorAll('img[data-src]'))
     if ('IntersectionObserver' in window) {
@@ -34,7 +51,7 @@
 
   var attachScripts = function () {
     var scripts = [
-      { src: 'detect.js' },
+      { src: withBuildVersion('detect.js') },
       { type: 'async', src: 'https://www.googletagmanager.com/gtag/js?id=UA-71959023-1' }
     ]
 

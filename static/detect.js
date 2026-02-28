@@ -1,6 +1,7 @@
 const featureKey = 'WebAssembly';
 const ASCII = 'cat.txt';
-const src = 'rickycodes.js';
+const buildVersion = window.__BUILD_VERSION || null;
+const src = buildVersion ? `rickycodes.js?v=${buildVersion}` : 'rickycodes.js';
 
 const options = [
   "It is certain.",

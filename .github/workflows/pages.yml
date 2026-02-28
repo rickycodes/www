@@ -86,6 +86,8 @@ jobs:
           cp -R static/. target/deploy/
           cp .ci-cache/wasm/rickycodes.wasm target/deploy/rickycodes.wasm
           cp .ci-cache/wasm/rickycodes.js target/deploy/rickycodes.js
+          GIT_SHA="$(git rev-parse --short HEAD)"
+          bash scripts/version-wasm-loader.sh target/deploy/rickycodes.js "${GIT_SHA}"
           ./build.sh --min
           echo "ricky.codes" > target/deploy/CNAME
 

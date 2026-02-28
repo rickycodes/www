@@ -17,6 +17,7 @@ LINT="lint"
 CHECK_LINKS="check-links"
 SITE_NAME="ricky.codes"
 NODE_BIN_DIR="${NODE_BIN_DIR:-./node_modules/.bin}"
+GIT_SHA="$(git rev-parse --short HEAD)"
 
 _help() {
     bash scripts/print-help.sh "$SITE_NAME"
@@ -33,7 +34,7 @@ check_links() {
 gen() {
     . scripts/require-node-tools.sh
     bash scripts/generate-html.sh "$PARTIALS" "$OUTPUT" "$PROJECTS"
-    git_sha="$(git rev-parse --short HEAD)"
+    git_sha="$GIT_SHA"
     # append ASCII art inside an HTML comment
     {
         printf "\n"
@@ -53,6 +54,8 @@ build() {
     # build
     echo 'Building...'
     cargo web deploy --target=wasm32-unknown-unknown
+    git_sha="$GIT_SHA"
+    bash scripts/version-wasm-loader.sh "target/deploy/rickycodes.js" "$git_sha"
 }
 
 watch() {
