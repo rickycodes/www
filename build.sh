@@ -33,6 +33,7 @@ check_links() {
 gen() {
     . scripts/require-node-tools.sh
     bash scripts/generate-html.sh "$PARTIALS" "$OUTPUT" "$PROJECTS"
+    git_sha="$(git rev-parse --short HEAD)"
     # append ASCII art inside an HTML comment
     {
         printf "\n"
@@ -42,8 +43,9 @@ gen() {
     } >> "$OUTPUT"
     # copy ascii text to static so we can fetch
     cp cat.txt static/
-    bash scripts/write-build-meta.sh
+    bash scripts/write-build-meta.sh "$git_sha"
     bash scripts/write-search-metadata.sh "$SITE_NAME"
+    bash scripts/version-static-assets.sh "$OUTPUT" "$git_sha"
 }
 
 build() {
