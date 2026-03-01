@@ -11,6 +11,7 @@ on:
       - "src/**/*.rs"
       - "build.sh"
       - "scripts/strip-wasm.sh"
+      - "scripts/version-wasm-loader.sh"
       - ".github/workflows/wasm-bundle.yml"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
@@ -58,7 +59,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .ci-cache/wasm
-          key: ${{ runner.os }}-wasm-bundle-v2-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs', 'build.sh', 'scripts/strip-wasm.sh', '.github/workflows/wasm-bundle.yml', '.github/workflows/pages.yml') }}
+          key: ${{ runner.os }}-wasm-bundle-v2-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs', 'build.sh', 'scripts/strip-wasm.sh', 'scripts/version-wasm-loader.sh', '.github/workflows/wasm-bundle.yml', '.github/workflows/pages.yml') }}
 
       - name: Install cargo-web
         run: |
@@ -74,9 +75,10 @@ jobs:
           sudo apt-get install -y wabt
 
       - name: Build wasm bundle
+        env:
+          RUSTUP_TOOLCHAIN: nightly-2019-08-01
         run: |
-          cargo +nightly-2019-08-01 web deploy --release --target=wasm32-unknown-unknown
-          bash scripts/strip-wasm.sh target/deploy/rickycodes.wasm
+          ./build.sh --build
           mkdir -p .ci-cache/wasm
           cp target/deploy/rickycodes.wasm .ci-cache/wasm/rickycodes.wasm
           cp target/deploy/rickycodes.js .ci-cache/wasm/rickycodes.js
