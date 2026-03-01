@@ -6,7 +6,7 @@ use stdweb::web::HtmlElement;
 use crate::util::{node_list, query_selector};
 
 use crate::constants::{
-    CLOSE, CLOSE_SELECTOR, CURSORS_ATTRIBUTES, CURSOR_SELECTOR, STYLE, ZERO,
+    CLOSE, CLOSE_SELECTOR, CURSORS_ATTRIBUTES, CURSOR_SELECTOR, STYLE,
 };
 
 struct Cursor;

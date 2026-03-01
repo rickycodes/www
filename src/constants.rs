@@ -28,7 +28,6 @@ pub(crate) const HIDDEN: &str = "hidden";
 pub(crate) const NAME: &str = "name";
 pub(crate) const TITLE: &str = "title";
 pub(crate) const EMPTY: &str = "";
-pub(crate) const ZERO: &str = "0";
 pub(crate) const UNDERSCORE: &str = "_";
 pub(crate) const ARROW_LEFT: &str = "ArrowLeft";
 pub(crate) const ARROW_RIGHT: &str = "ArrowRight";
