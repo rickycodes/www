@@ -53,7 +53,8 @@ build() {
     sh scripts/require-cargo-web.sh
     # build
     echo 'Building...'
-    cargo web deploy --target=wasm32-unknown-unknown
+    cargo web deploy --release --target=wasm32-unknown-unknown
+    bash scripts/strip-wasm.sh "target/deploy/rickycodes.wasm"
     git_sha="$GIT_SHA"
     bash scripts/version-wasm-loader.sh "target/deploy/rickycodes.js" "$git_sha"
 }
