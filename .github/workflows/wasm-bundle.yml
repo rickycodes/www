@@ -10,6 +10,9 @@ on:
       - "src/*.rs"
       - "src/**/*.rs"
       - "build.sh"
+      - "scripts/strip-wasm.sh"
+      - ".github/workflows/wasm-bundle.yml"
+      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -55,7 +58,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .ci-cache/wasm
-          key: ${{ runner.os }}-wasm-bundle-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs') }}
+          key: ${{ runner.os }}-wasm-bundle-v2-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs', 'build.sh', 'scripts/strip-wasm.sh', '.github/workflows/wasm-bundle.yml', '.github/workflows/pages.yml') }}
 
       - name: Install cargo-web
         run: |
