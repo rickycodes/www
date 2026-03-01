@@ -65,6 +65,11 @@ jobs:
             cargo +1.63.0 install cargo-web --version 0.6.26 --locked
           fi
 
+      - name: Install wabt (wasm-strip)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wabt
+
       - name: Build wasm bundle
         run: |
           cargo +nightly-2019-08-01 web deploy --target=wasm32-unknown-unknown
