@@ -72,7 +72,8 @@ jobs:
 
       - name: Build wasm bundle
         run: |
-          cargo +nightly-2019-08-01 web deploy --target=wasm32-unknown-unknown
+          cargo +nightly-2019-08-01 web deploy --release --target=wasm32-unknown-unknown
+          bash scripts/strip-wasm.sh target/deploy/rickycodes.wasm
           mkdir -p .ci-cache/wasm
           cp target/deploy/rickycodes.wasm .ci-cache/wasm/rickycodes.wasm
           cp target/deploy/rickycodes.js .ci-cache/wasm/rickycodes.js
