@@ -10,6 +10,10 @@ on:
       - "cat.txt"
       - "src/partials/**"
       - "static/**"
+      - "build.sh"
+      - "scripts/assemble-deploy-from-cache.sh"
+      - "scripts/version-wasm-loader.sh"
+      - ".github/workflows/pages.yml"
   workflow_run:
     workflows:
       - Build Wasm Bundle
@@ -69,7 +73,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .ci-cache/wasm
-          key: ${{ runner.os }}-wasm-bundle-v2-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs', 'build.sh', 'scripts/strip-wasm.sh', 'scripts/version-wasm-loader.sh', '.github/workflows/wasm-bundle.yml', '.github/workflows/pages.yml') }}
+          key: ${{ runner.os }}-wasm-bundle-v2-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs', 'build.sh', 'scripts/strip-wasm.sh', 'scripts/version-wasm-loader.sh', 'scripts/setup-wasm-toolchain-ci.sh', '.github/workflows/wasm-bundle.yml', '.github/workflows/pages.yml') }}
 
       - name: Ensure wasm bundle exists
         if: steps.wasm_bundle_cache.outputs.cache-hit != 'true'
@@ -79,17 +83,7 @@ jobs:
           exit 1
 
       - name: Build static site from cached wasm
-        run: |
-          ./build.sh --gen
-          rm -rf target/deploy
-          mkdir -p target/deploy
-          cp -R static/. target/deploy/
-          cp .ci-cache/wasm/rickycodes.wasm target/deploy/rickycodes.wasm
-          cp .ci-cache/wasm/rickycodes.js target/deploy/rickycodes.js
-          GIT_SHA="$(git rev-parse --short HEAD)"
-          bash scripts/version-wasm-loader.sh target/deploy/rickycodes.js "${GIT_SHA}"
-          ./build.sh --min
-          echo "ricky.codes" > target/deploy/CNAME
+        run: bash scripts/assemble-deploy-from-cache.sh
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

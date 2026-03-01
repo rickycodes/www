@@ -12,6 +12,7 @@ on:
       - "build.sh"
       - "scripts/strip-wasm.sh"
       - "scripts/version-wasm-loader.sh"
+      - "scripts/setup-wasm-toolchain-ci.sh"
       - ".github/workflows/wasm-bundle.yml"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
@@ -35,12 +36,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Rust toolchains for cargo-web
-        run: |
-          rustup toolchain install nightly-2019-08-01 --profile minimal
-          rustup target add wasm32-unknown-unknown --toolchain nightly-2019-08-01
-          rustup toolchain install 1.63.0 --profile minimal
-
       - name: Cache cargo-web binary
         uses: actions/cache@v4
         with:
@@ -59,20 +54,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .ci-cache/wasm
-          key: ${{ runner.os }}-wasm-bundle-v2-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs', 'build.sh', 'scripts/strip-wasm.sh', 'scripts/version-wasm-loader.sh', '.github/workflows/wasm-bundle.yml', '.github/workflows/pages.yml') }}
+          key: ${{ runner.os }}-wasm-bundle-v2-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs', 'build.sh', 'scripts/strip-wasm.sh', 'scripts/version-wasm-loader.sh', 'scripts/setup-wasm-toolchain-ci.sh', '.github/workflows/wasm-bundle.yml', '.github/workflows/pages.yml') }}
 
-      - name: Install cargo-web
-        run: |
-          if command -v cargo-web >/dev/null 2>&1; then
-            cargo-web --version
-          else
-            cargo +1.63.0 install cargo-web --version 0.6.26 --locked
-          fi
-
-      - name: Install wabt (wasm-strip)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wabt
+      - name: Setup wasm build toolchain
+        run: bash scripts/setup-wasm-toolchain-ci.sh
 
       - name: Build wasm bundle
         env:
