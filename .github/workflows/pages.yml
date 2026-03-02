@@ -73,7 +73,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .ci-cache/wasm
-          key: ${{ runner.os }}-wasm-bundle-v2-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs', 'build.sh', 'scripts/strip-wasm.sh', 'scripts/version-wasm-loader.sh', 'scripts/setup-wasm-toolchain-ci.sh', '.github/workflows/wasm-bundle.yml', '.github/workflows/pages.yml') }}
+          key: ${{ runner.os }}-wasm-bundle-v2-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs', 'build.sh', 'scripts/assemble-deploy-from-cache.sh', 'scripts/strip-wasm.sh', 'scripts/version-wasm-loader.sh', 'scripts/setup-wasm-toolchain-ci.sh', '.github/workflows/wasm-bundle.yml', '.github/workflows/pages.yml') }}
 
       - name: Ensure wasm bundle exists
         if: steps.wasm_bundle_cache.outputs.cache-hit != 'true'
