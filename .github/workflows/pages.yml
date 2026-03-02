@@ -10,10 +10,6 @@ on:
       - "cat.txt"
       - "src/partials/**"
       - "static/**"
-      - "build.sh"
-      - "scripts/assemble-deploy-from-cache.sh"
-      - "scripts/version-wasm-loader.sh"
-      - ".github/workflows/pages.yml"
   workflow_run:
     workflows:
       - Build Wasm Bundle
