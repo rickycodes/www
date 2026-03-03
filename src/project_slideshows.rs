@@ -7,15 +7,10 @@ use crate::util::{create_element, node_list};
 use crate::constants::{
     A, ARIA_LABEL, ARROW_LEFT, ARROW_RIGHT, CONTROLS, DATA_INDEX, DATA_PROJECT, DIV, EMPTY, ESC,
     LINK, NEXT, NEXT_SLIDE_ARIA_LABEL, PREV, PREVIOUS_SLIDE_ARIA_LABEL, SLIDESHOW_SELECTOR,
-    UNDERSCORE,
 };
 
 fn get_data_index(element: &HtmlElement) -> usize {
     element.get_attribute(DATA_INDEX).unwrap().parse().unwrap()
-}
-
-fn set_data_index_attribute(element: &HtmlElement, attribute: &str) {
-    element.set_attribute(DATA_INDEX, attribute).unwrap();
 }
 
 fn get_increment(direction: &str, data_index: usize, last: usize) -> usize {
@@ -52,14 +47,6 @@ impl Controls {
     }
 }
 
-pub(crate) struct Slide;
-
-impl Slide {
-    pub(crate) fn from_node(node: Node) -> HtmlElement {
-        node.try_into().unwrap()
-    }
-}
-
 pub(crate) struct SlideShows;
 
 impl SlideShows {
@@ -72,7 +59,7 @@ impl SlideShows {
                 .child_nodes()
                 .into_iter()
                 .filter(|item| item.node_name() == div_tag)
-                .map(Slide::from_node)
+                .map(|node: Node| node.try_into().unwrap())
                 .collect();
 
             // only setup slideshow if there is more than one slide!
@@ -96,7 +83,7 @@ impl SlideShows {
 
                 let prev_next_click = move |direction: &str, slideshow_el: &HtmlElement| {
                     let increment = get_increment(direction, get_data_index(slideshow_el), last);
-                    set_data_index_attribute(slideshow_el, &increment.to_string())
+                    let _ = slideshow_el.set_attribute(DATA_INDEX, &increment.to_string());
                 };
 
                 let slideshow_prev_event = enclose!( (slideshow_el) move |event: ClickEvent| {
@@ -116,27 +103,26 @@ impl SlideShows {
 
         // use keyboard to navigate
         let next_prev_click = |selector: &str| {
-            if let Some(_el) = document().query_selector(selector).unwrap() {
+            if let Ok(Some(_el)) = document().query_selector(selector) {
                 js!( document.querySelector(@{selector}).click(); );
             }
         };
 
         let determine_key = |key: &str| match key {
-            ARROW_LEFT => PREV,
-            ARROW_RIGHT => NEXT,
-            _ => UNDERSCORE,
+            ARROW_LEFT => Some(PREV),
+            ARROW_RIGHT => Some(NEXT),
+            _ => None,
         };
 
         let keyup_event = move |event: KeyUpEvent| {
-            if let Some(data_project) = document().body().unwrap().get_attribute(DATA_PROJECT) {
-                let key = event.key();
-                if key == ESC {
-                    js!( window.location.hash = @{EMPTY}; );
-                } else {
-                    let next_prev_key = determine_key(&key);
-                    if next_prev_key != UNDERSCORE {
+            if let Some(body) = document().body() {
+                if let Some(data_project) = body.get_attribute(DATA_PROJECT) {
+                    let key = event.key();
+                    if key == ESC {
+                        js!( window.location.hash = @{EMPTY}; );
+                    } else if let Some(next_prev_key) = determine_key(&key) {
                         let selector = &format!(".project.{} .{}", data_project, next_prev_key);
-                        next_prev_click(selector)
+                        next_prev_click(selector);
                     }
                 }
             }

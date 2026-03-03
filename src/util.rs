@@ -37,9 +37,17 @@ pub(crate) fn query_selector(selector: &str) -> HtmlElement {
         .unwrap()
 }
 
+pub(crate) fn try_query_selector(selector: &str) -> Option<HtmlElement> {
+    document()
+        .query_selector(selector)
+        .ok()
+        .and_then(|el| el)
+        .and_then(|el| el.try_into().ok())
+}
+
 pub(crate) fn get_range(start: f64, end: f64) -> f64 {
     let mut rng = rand::thread_rng();
-    rng.gen_range(start, end) as f64
+    rng.gen_range(start, end)
 }
 
 pub(crate) fn set_date() {

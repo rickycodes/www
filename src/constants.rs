@@ -28,7 +28,6 @@ pub(crate) const HIDDEN: &str = "hidden";
 pub(crate) const NAME: &str = "name";
 pub(crate) const TITLE: &str = "title";
 pub(crate) const EMPTY: &str = "";
-pub(crate) const UNDERSCORE: &str = "_";
 pub(crate) const ARROW_LEFT: &str = "ArrowLeft";
 pub(crate) const ARROW_RIGHT: &str = "ArrowRight";
 pub(crate) const DIV: &str = "div";
@@ -46,7 +45,6 @@ pub(crate) const PREVIOUS_SLIDE_ARIA_LABEL: &str = "Previous slide";
 pub(crate) const NEXT_SLIDE_ARIA_LABEL: &str = "Next slide";
 
 pub(crate) const CURSOR_SELECTOR: &str = ".cursor";
-pub(crate) const CURSOR_PROJECT_SELECTOR: &str = ".cursor .project";
 pub(crate) const DRAG_ENTER: &str = "dragenter";
 pub(crate) const DRAG_SELECTOR: &str = ".drag";
 pub(crate) const COORDINATE_SELECTOR: &str = ".coord";

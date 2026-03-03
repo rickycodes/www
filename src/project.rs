@@ -5,33 +5,34 @@ use crate::util::{get_hash, query_selector};
 
 use crate::constants::{DATA_PROJECT, DATA_SCROLL, EMPTY, PROJECT_SELECTOR};
 
-fn show(hash: String, scrolls: &mut Vec<f64>) {
+fn show(hash: String, scroll_top: &mut Option<f64>) {
     let body = document().body().unwrap();
     let selector = &format!(".projects .project.{}", hash);
     if document().query_selector(selector).unwrap().is_some() {
         let top = window().page_y_offset();
         body.set_attribute(DATA_PROJECT, &hash).unwrap();
-        scrolls.push(top);
+        *scroll_top = Some(top);
         query_selector(PROJECT_SELECTOR).set_scroll_top(top)
     }
 }
 
-fn hide(scrolls: &[f64]) {
+fn hide(scroll_top: &mut Option<f64>) {
     let body = document().body().unwrap();
-    let document_element = document().document_element();
-    let top = *scrolls.last().unwrap_or(&0.00);
+    let top = scroll_top.take().unwrap_or(0.0);
     body.remove_attribute(DATA_PROJECT);
-    document_element.unwrap().set_scroll_top(top);
+    if let Some(document_element) = document().document_element() {
+        document_element.set_scroll_top(top);
+    }
     body.set_scroll_top(top);
-    body.remove_attribute(DATA_SCROLL)
+    body.remove_attribute(DATA_SCROLL);
 }
 
-fn toggle(scrolls: &mut Vec<f64>) {
+fn toggle(scroll_top: &mut Option<f64>) {
     let hash = get_hash();
     if hash != EMPTY {
-        self::show(hash, scrolls)
+        show(hash, scroll_top)
     } else {
-        self::hide(scrolls)
+        hide(scroll_top)
     }
 }
 
@@ -39,9 +40,9 @@ pub(crate) struct ToggleProject;
 
 impl ToggleProject {
     pub(crate) fn new() -> Self {
-        let mut scrolls = Vec::new();
-        self::toggle(&mut scrolls);
-        let toggle_project_event = move |_event: HashChangeEvent| self::toggle(&mut scrolls);
+        let mut scroll_top = None;
+        toggle(&mut scroll_top);
+        let toggle_project_event = move |_event: HashChangeEvent| toggle(&mut scroll_top);
         window().add_event_listener(toggle_project_event);
 
         Self

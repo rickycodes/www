@@ -56,7 +56,7 @@ impl Cursors {
             let x = f64::from(event.client_x());
             let y = f64::from(event.client_y());
 
-            self::set_cursor_coordinates(
+            set_cursor_coordinates(
                 &cursor_for_move,
                 &format!("{}px", x),
                 &format!("{}px", y),
