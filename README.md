@@ -1,4 +1,4 @@
-[![Build And Deploy Pages](https://github.com/rickycodes/www/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/rickycodes/www/actions) ![Shellcheck Status](https://img.shields.io/badge/Shellcheck-Passing-brightgreen) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frickycodes%2Fwww.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frickycodes%2Fwww?ref=badge_shield)
+[![Build And Deploy Pages](https://github.com/rickycodes/www/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/rickycodes/www/actions) [![Shellcheck Status](https://img.shields.io/badge/Shellcheck-Passing-brightgreen)](https://github.com/rickycodes/www/actions/workflows/shellcheck.yml) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frickycodes%2Fwww.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frickycodes%2Fwww?ref=badge_shield)
 
 # <a href='https://ricky.codes'>ricky.codes</a>  
 
