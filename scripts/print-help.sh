@@ -22,6 +22,12 @@ OPTIONS:
     --check-links       Check external links referenced in source/static assets
     --test              Run tests
 
+TOOLCHAIN:
+    This repo expects a legacy toolchain for cargo-web:
+      rustup toolchain install nightly-2019-08-01-x86_64-unknown-linux-gnu
+      cargo +nightly-2019-08-01-x86_64-unknown-linux-gnu install cargo-web --version 0.6.26 --locked
+      rustup target add wasm32-unknown-unknown --toolchain nightly-2019-08-01-x86_64-unknown-linux-gnu
+
 Running "bash build.sh" (with zero options) will --generate --build-wasm and --minify (in that order)
 You can pass multiple options; they run in the order provided.
 EOF
