@@ -32,6 +32,7 @@
 }
 
 [data-project='intel'] .projects .project.intel,
+[data-project='metamask'] .projects .project.metamask,
 [data-project='moonmoji'] .projects .project.moonmoji,
 [data-project='retrorecord'] .projects .project.retrorecord,
 [data-project='emoji-picker'] .projects .project.emoji-picker,
