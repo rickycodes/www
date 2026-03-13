@@ -68,7 +68,72 @@
   var renderBuildMeta = function () {
     var el = document.querySelector('.build-meta')
     if (!el) return
-    var formatBuiltAt = function (isoString) {
+    var DETAILS_PREFIX = 'Shipped: '
+    var COMMIT_BASE_URL = 'https://github.com/rickycodes/www/commit/'
+
+    var buildDetails = function (meta) {
+      var items = []
+
+      if (meta.git_sha) {
+        var sha = meta.git_sha
+        items.push({ type: 'link', href: COMMIT_BASE_URL + sha, text: sha })
+      }
+      if (meta.runner_os && meta.runner_arch) {
+        var runner = meta.runner_os + '/' + meta.runner_arch
+        items.push({ type: 'text', text: runner })
+      }
+      if (meta.cpu_cores) {
+        var cores = meta.cpu_cores + ' cores'
+        items.push({ type: 'text', text: cores })
+      }
+
+      return items
+    }
+
+    var appendDetails = function (el, items) {
+      for (var i = 0; i < items.length; i++) {
+        if (i > 0) el.appendChild(document.createTextNode(' • '))
+        var item = items[i]
+        if (item.type === 'link') {
+          var link = document.createElement('a')
+          link.href = item.href
+          link.target = '_blank'
+          link.rel = 'noopener'
+          link.textContent = item.text
+          el.appendChild(link)
+        } else {
+          el.appendChild(document.createTextNode(item.text))
+        }
+      }
+    }
+
+    var renderMeta = function (el, builtAt, details) {
+      while (el.firstChild) el.removeChild(el.firstChild)
+
+      if (builtAt && details.length > 0) {
+        el.appendChild(document.createTextNode(DETAILS_PREFIX + builtAt + ','))
+        el.appendChild(document.createElement('br'))
+        appendDetails(el, details)
+        el.appendChild(document.createTextNode('.'))
+        return
+      }
+
+      if (builtAt) {
+        el.textContent = DETAILS_PREFIX + builtAt + '.'
+        return
+      }
+
+      if (details.length > 0) {
+        el.appendChild(document.createTextNode(DETAILS_PREFIX))
+        appendDetails(el, details)
+        el.appendChild(document.createTextNode('.'))
+        return
+      }
+
+      el.textContent = `${DETAILS_PREFIX}unknown`
+    }
+
+    var formatShippedAt = function (isoString) {
       if (!isoString) return null
       var date = new Date(isoString)
       if (Number.isNaN(date.getTime())) return isoString
@@ -85,24 +150,12 @@
         return response.json()
       })
       .then(function (meta) {
-        var details = []
-        var builtAt = formatBuiltAt(meta.built_at_utc)
-        if (meta.git_sha) details.push(meta.git_sha)
-        if (meta.runner_os && meta.runner_arch) details.push(meta.runner_os + '/' + meta.runner_arch)
-        if (meta.cpu_cores) details.push(meta.cpu_cores + ' cores')
-
-        if (builtAt && details.length > 0) {
-          el.innerHTML = 'Built: ' + builtAt + ',<br>' + details.join(' • ') + '.'
-        } else if (builtAt) {
-          el.textContent = 'Built: ' + builtAt + '.'
-        } else if (details.length > 0) {
-          el.textContent = 'Built: ' + details.join(' • ') + '.'
-        } else {
-          el.textContent = 'Built: unknown'
-        }
+        var builtAt = formatShippedAt(meta.built_at_utc)
+        var details = buildDetails(meta)
+        renderMeta(el, builtAt, details)
       })
       .catch(function () {
-        el.textContent = 'Built: unknown'
+        el.textContent = `${DETAILS_PREFIX}unknown`
       })
   }
 
