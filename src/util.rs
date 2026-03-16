@@ -1,7 +1,6 @@
 use stdweb::traits::*;
 use stdweb::web::{document, Date, HtmlElement, NodeList};
 
-use rand::Rng;
 use stdweb::unstable::TryInto;
 
 use crate::constants::{A, HREF, CLASS, EMPTY, HASH, POOP, YEAR_SELECTOR};
@@ -46,8 +45,8 @@ pub(crate) fn try_query_selector(selector: &str) -> Option<HtmlElement> {
 }
 
 pub(crate) fn get_range(start: f64, end: f64) -> f64 {
-    let mut rng = rand::thread_rng();
-    rng.gen_range(start, end)
+    let rand: f64 = js!( return Math.random(); ).try_into().unwrap();
+    start + rand * (end - start)
 }
 
 pub(crate) fn set_date() {

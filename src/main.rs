@@ -5,8 +5,6 @@
 #[macro_use]
 extern crate stdweb;
 
-extern crate rand;
-
 #[macro_use]
 mod enclose;
 mod constants;
