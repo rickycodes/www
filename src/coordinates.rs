@@ -1,6 +1,6 @@
+use crate::util::query_selector;
 use stdweb::traits::*;
 use stdweb::web::window;
-use crate::util::query_selector;
 
 use stdweb::web::event::MouseMoveEvent;
 

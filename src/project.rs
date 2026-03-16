@@ -1,7 +1,7 @@
+use crate::util::{get_hash, query_selector};
 use stdweb::traits::*;
 use stdweb::web::event::HashChangeEvent;
 use stdweb::web::{document, window};
-use crate::util::{get_hash, query_selector};
 
 use crate::constants::{DATA_PROJECT, DATA_SCROLL, EMPTY, PROJECT_SELECTOR};
 

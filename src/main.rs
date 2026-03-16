@@ -11,21 +11,21 @@ mod constants;
 mod coordinates;
 mod cursors;
 mod links;
-mod project_slideshows;
 mod project;
+mod project_slideshows;
 mod trash;
 mod util;
 mod work_history;
 
+use crate::constants::log;
 use crate::coordinates::Coordinates;
 use crate::cursors::Cursors;
 use crate::links::Links;
-use crate::project_slideshows::SlideShows;
 use crate::project::ToggleProject;
+use crate::project_slideshows::SlideShows;
 use crate::trash::Trash;
 use crate::util::set_date;
 use crate::work_history::WorkHistory;
-use crate::constants::log;
 
 struct Website;
 

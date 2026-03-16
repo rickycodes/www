@@ -3,9 +3,9 @@ use stdweb::web::event::{
     DragStartEvent,
 };
 
+use crate::util::{get_range, node_list, query_selector, try_query_selector};
 use stdweb::traits::*;
 use stdweb::web::{confirm, document, CloneKind};
-use crate::util::{get_range, node_list, query_selector, try_query_selector};
 
 use stdweb::unstable::TryInto;
 use stdweb::web::{HtmlElement, Node};
@@ -77,8 +77,10 @@ impl Trash {
             let drag_event = move |event: DragEvent| {
                 let x = f64::from(event.client_x());
                 let y = f64::from(event.client_y());
-                let _ = cursor_for_drag
-                    .set_attribute(STYLE, &format!("transform: translate3d({}px,{}px,0);", x, y));
+                let _ = cursor_for_drag.set_attribute(
+                    STYLE,
+                    &format!("transform: translate3d({}px,{}px,0);", x, y),
+                );
             };
 
             link.add_event_listener(enclose!((el, coord, cursor) move |_event: DragStartEvent| {

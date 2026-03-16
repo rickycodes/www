@@ -1,13 +1,11 @@
+use crate::util::{node_list, query_selector};
 use stdweb::traits::*;
 use stdweb::unstable::TryInto;
 use stdweb::web::event::{MouseMoveEvent, MouseOutEvent, MouseOverEvent};
 use stdweb::web::window;
 use stdweb::web::HtmlElement;
-use crate::util::{node_list, query_selector};
 
-use crate::constants::{
-    CLOSE, CLOSE_SELECTOR, CURSORS_ATTRIBUTES, CURSOR_SELECTOR, STYLE,
-};
+use crate::constants::{CLOSE, CLOSE_SELECTOR, CURSORS_ATTRIBUTES, CURSOR_SELECTOR, STYLE};
 
 struct Cursor;
 
@@ -56,11 +54,7 @@ impl Cursors {
             let x = f64::from(event.client_x());
             let y = f64::from(event.client_y());
 
-            set_cursor_coordinates(
-                &cursor_for_move,
-                &format!("{}px", x),
-                &format!("{}px", y),
-            );
+            set_cursor_coordinates(&cursor_for_move, &format!("{}px", x), &format!("{}px", y));
         };
 
         window().add_event_listener(mouse_move_event);

@@ -3,7 +3,7 @@ use stdweb::web::{document, Date, HtmlElement, NodeList};
 
 use stdweb::unstable::TryInto;
 
-use crate::constants::{A, HREF, CLASS, EMPTY, HASH, POOP, YEAR_SELECTOR};
+use crate::constants::{A, CLASS, EMPTY, HASH, HREF, POOP, YEAR_SELECTOR};
 
 pub(crate) fn node_list(selector: &str) -> NodeList {
     document().query_selector_all(selector).unwrap()

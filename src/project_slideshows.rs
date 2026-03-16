@@ -1,8 +1,8 @@
+use crate::util::{create_element, node_list};
 use stdweb::traits::*;
 use stdweb::unstable::TryInto;
 use stdweb::web::event::{ClickEvent, KeyUpEvent};
 use stdweb::web::{document, window, HtmlElement, Node};
-use crate::util::{create_element, node_list};
 
 use crate::constants::{
     A, ARIA_LABEL, ARROW_LEFT, ARROW_RIGHT, CONTROLS, DATA_INDEX, DATA_PROJECT, DIV, EMPTY, ESC,
@@ -31,10 +31,12 @@ impl Controls {
         for (index, _slide) in slides.iter().enumerate() {
             let control_el = create_element(A, LINK);
             control_el.set_text_content(&(index + 1).to_string());
-            control_el.add_event_listener(enclose!( (slideshow_el, index) move |event:ClickEvent| {
-                event.prevent_default();
-                slideshow_el.set_attribute(DATA_INDEX, &index.to_string()).unwrap();
-            }));
+            control_el.add_event_listener(
+                enclose!( (slideshow_el, index) move |event:ClickEvent| {
+                    event.prevent_default();
+                    slideshow_el.set_attribute(DATA_INDEX, &index.to_string()).unwrap();
+                }),
+            );
             controls_el.append_child(&control_el);
         }
 

@@ -1,7 +1,7 @@
+use crate::util::{node_list, query_selector};
 use stdweb::traits::*;
 use stdweb::unstable::TryInto;
 use stdweb::web::HtmlElement;
-use crate::util::{node_list, query_selector};
 
 use stdweb::web::event::{MouseOutEvent, MouseOverEvent};
 
