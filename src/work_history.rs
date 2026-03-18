@@ -3,7 +3,7 @@ use stdweb::unstable::TryInto;
 use stdweb::web::event::ClickEvent;
 use stdweb::web::{document, Element};
 
-use crate::constants::{EMPTY, HASH, WORK_HISTORY_HASH, WORK_HISTORY_SELECTOR};
+use crate::constants::{EMPTY, HASH, WORK_HISTORY};
 use crate::util::get_hash;
 
 fn scroll_into_view(el: Element) {
@@ -19,7 +19,7 @@ pub(crate) struct WorkHistory;
 
 impl WorkHistory {
     fn open_from_hash(details: Element) {
-        if get_hash() == WORK_HISTORY_HASH {
+        if get_hash() == WORK_HISTORY {
             let details_for_js = details.clone();
             js! { @(no_return)
                 let details = @{details_for_js};
@@ -30,10 +30,8 @@ impl WorkHistory {
     }
 
     pub(crate) fn new() -> Self {
-        let details = document()
-            .query_selector(WORK_HISTORY_SELECTOR)
-            .unwrap()
-            .unwrap();
+        let selector = format!(".{}", WORK_HISTORY);
+        let details = document().query_selector(&selector).unwrap().unwrap();
         Self::open_from_hash(details.clone());
         let click_event = enclose!( (details) move |_: ClickEvent| {
             let clone = details.clone();
@@ -44,7 +42,7 @@ impl WorkHistory {
             let hash = if is_open {
                 EMPTY.to_string()
             } else {
-                format!("{}{}", HASH, WORK_HISTORY_HASH)
+                format!("{}{}", HASH, WORK_HISTORY)
             };
 
             js! { @(no_return)
