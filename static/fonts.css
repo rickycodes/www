@@ -3,7 +3,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(fonts/ibm-plex-mono-400.ttf) format('truetype');
+  src: url(https://assets.ricky.codes/fonts/ibm-plex-mono-400.ttf) format('truetype');
 }
 
 @font-face {
@@ -12,5 +12,6 @@
   font-weight: 400;
   font-stretch: normal;
   font-display: swap;
-  src: url(fonts/ibm-plex-sans-400.ttf) format('truetype');
+  src: url(https://assets.ricky.codes/fonts/ibm-plex-sans-400.ttf) format('truetype');
 }
+
