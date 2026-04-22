@@ -7,5 +7,13 @@ edition = "2018"
 [dependencies]
 stdweb = "^0.4.20"
 
+[profile.release]
+# WASM size-focused defaults.
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+debug = false
+
 [patch.crates-io]
 bumpalo = { path = "bumpalo" }
