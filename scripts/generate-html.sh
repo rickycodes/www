@@ -5,8 +5,8 @@ partials_dir="${1:-src/partials}"
 output_path="${2:-static/index.html}"
 projects_dir="${3:-${partials_dir}/projects}"
 
-if ! command -v html-minifier >/dev/null 2>&1; then
-  echo "error: html-minifier is not installed or not in PATH."
+if ! command -v html-minifier-next >/dev/null 2>&1; then
+  echo "error: html-minifier-next is not installed or not in PATH."
   exit 1
 fi
 
@@ -18,7 +18,7 @@ echo "Cat & minify HTML in ${partials_dir}..."
     "${partials_dir}/cv.html" \
     "${partials_dir}/copyright.html" \
     "${projects_dir}"/* \
-    "${partials_dir}/footer.html" | html-minifier \
+    "${partials_dir}/footer.html" | html-minifier-next \
     --collapse-whitespace \
     --remove-comments \
     --remove-optional-tags \
