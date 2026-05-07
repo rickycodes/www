@@ -48,6 +48,7 @@ pub(crate) const CURSOR_SELECTOR: &str = ".cursor";
 pub(crate) const DRAG_ENTER: &str = "dragenter";
 pub(crate) const DRAG_SELECTOR: &str = ".drag";
 pub(crate) const COORDINATE_SELECTOR: &str = ".coord";
+pub(crate) const PROJECT_LINK_SELECTOR: &str = "._projects .project.link";
 pub(crate) const LINK_SELECTOR: &str = ".project.link, .cv.link";
 pub(crate) const CLOSE_SELECTOR: &str = ".close div";
 pub(crate) const NOT_PROJECT_SELECTOR: &str = ".content a:not(.project)";
