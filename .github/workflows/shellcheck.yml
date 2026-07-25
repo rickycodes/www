@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Lint shell scripts
         uses: fearphage/shellcheck-action@430e230b33ad06e9316aec3222b7c6419ddea83f

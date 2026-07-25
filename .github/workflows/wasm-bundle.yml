@@ -35,10 +35,10 @@ jobs:
     # container: ghcr.io/rickycodes/www-buildenv:latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Cache cargo-web binary
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cargo/bin/cargo-web
           key: ${{ runner.os }}-cargo-web-0.6.26
@@ -52,7 +52,7 @@ jobs:
 
       - name: Restore wasm bundle cache
         id: wasm_bundle_cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .ci-cache/wasm
           key: ${{ runner.os }}-wasm-bundle-v2-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs', 'build.sh', 'scripts/assemble-deploy-from-cache.sh', 'scripts/strip-wasm.sh', 'scripts/version-wasm-loader.sh', 'scripts/setup-wasm-toolchain-ci.sh', '.github/workflows/wasm-bundle.yml', '.github/workflows/pages.yml') }}
@@ -70,7 +70,7 @@ jobs:
           cp target/deploy/rickycodes.js .ci-cache/wasm/rickycodes.js
 
       - name: Upload wasm bundle artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: wasm-bundle
           path: .ci-cache/wasm
