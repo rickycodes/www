@@ -44,7 +44,7 @@ jobs:
           key: ${{ runner.os }}-cargo-web-0.6.26
 
       - name: Cache Rust dependencies/build
-        uses: swatinem/rust-cache@ad397744b0d591a723ab90405b7247fac0e6b8db
+        uses: swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
         with:
           workspaces: ". -> target"
           shared-key: "pages-nightly-2019-08-01"
