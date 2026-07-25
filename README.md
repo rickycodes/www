@@ -52,7 +52,7 @@ cargo web start --target=wasm32-unknown-unknown
 ```
 or you can use the handy <a href='./build.sh'>build script</a>:
 ```
-bash build.sh --serve
+bash build.sh --watch
 ```
 You should see something like:  
 ```
