@@ -13,6 +13,7 @@ mod cursors;
 mod links;
 mod project;
 mod project_slideshows;
+mod theme;
 mod trash;
 mod util;
 mod work_history;
@@ -23,6 +24,7 @@ use crate::cursors::Cursors;
 use crate::links::Links;
 use crate::project::ToggleProject;
 use crate::project_slideshows::SlideShows;
+use crate::theme::Theme;
 use crate::trash::Trash;
 use crate::util::set_date;
 use crate::work_history::WorkHistory;
@@ -45,6 +47,7 @@ impl Website {
         Trash::new();
         WorkHistory::new();
         ToggleProject::new();
+        Theme::new();
         self
     }
 
