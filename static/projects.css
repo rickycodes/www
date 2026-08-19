@@ -108,6 +108,16 @@
   background: radial-gradient(var(--background), rgba(127,127,127,.1));
 }
 
+@media (prefers-color-scheme: dark) {
+  .slideshow {
+    background: var(--background);
+  }
+}
+
+[data-theme='dark'] .slideshow {
+  background: var(--background);
+}
+
 .slideshow .prev,
 .slideshow .next {
   position: absolute;
