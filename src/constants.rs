@@ -43,6 +43,10 @@ pub(crate) const HREF: &str = "href";
 pub(crate) const ARIA_LABEL: &str = "aria-label";
 pub(crate) const PREVIOUS_SLIDE_ARIA_LABEL: &str = "Previous slide";
 pub(crate) const NEXT_SLIDE_ARIA_LABEL: &str = "Next slide";
+pub(crate) const THEME_DARK: &str = "dark";
+pub(crate) const THEME_LIGHT: &str = "light";
+pub(crate) const THEME_STORAGE_KEY: &str = "ricky.codes.theme";
+pub(crate) const THEME_SELECTOR: &str = ".theme-toggle";
 
 pub(crate) const CURSOR_SELECTOR: &str = ".cursor";
 pub(crate) const DRAG_ENTER: &str = "dragenter";
