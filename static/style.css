@@ -126,18 +126,6 @@ a {
   filter: invert(1);
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
-    background-image: var(--page-background-image);
-    background-repeat: var(--page-background-repeat);
-  }
-}
-
-[data-theme='dark'] {
-  background-image: var(--page-background-image);
-  background-repeat: var(--page-background-repeat);
-}
-
 .theme-toggle {
   position: fixed;
   z-index: 3;
