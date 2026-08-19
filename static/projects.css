@@ -103,7 +103,6 @@
 .slideshow {
   position: relative;
   height: 520px;
-  border-top: 2px solid var(--muted);
   border-bottom: 2px solid var(--muted);
   overflow: hidden;
   background: radial-gradient(var(--background), rgba(127,127,127,.1));
