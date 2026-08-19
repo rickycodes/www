@@ -146,11 +146,18 @@ a {
     border-color .3s ease-out;
 }
 
-.theme-toggle:hover,
 .theme-toggle:focus-visible {
   opacity: 1;
   background: var(--contrast);
   color: var(--background);
+}
+
+@media (hover: hover) {
+  .theme-toggle:hover {
+    opacity: 1;
+    background: var(--contrast);
+    color: var(--background);
+  }
 }
 
 .info, .coord {
