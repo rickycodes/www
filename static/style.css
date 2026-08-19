@@ -59,6 +59,10 @@
   --contrast: #000;
   --muted: lightgrey;
   --code-background: rgba(27,31,35,0.05);
+  --light-pattern: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc4JyBoZWlnaHQ9JzgnIHZpZXdCb3g9JzAgMCA4IDgnIG9wYWNpdHk9Jy4xJz48ZyBmaWxsPScjMDAwJyBmaWxsLXJ1bGU9J2V2ZW5vZGQnPjxwYXRoIGQ9J00zIDNoMXYxSDN6TTcgN2gxdjFIN3onLz48L2c+PC9zdmc+);
+  --dark-pattern: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc4JyBoZWlnaHQ9JzgnIHZpZXdCb3g9JzAgMCA4IDgnIG9wYWNpdHk9Jy4xJz48ZyBmaWxsPScjZmZmJyBmaWxsLXJ1bGU9J2V2ZW5vZGQnPjxwYXRoIGQ9J00zIDNoMXYxSDN6TTcgN2gxdjFIN3onLz48L2c+PC9zdmc+);
+  --page-background-image: var(--light-pattern), url(https://assets.ricky.codes/gradient.png);
+  --page-background-repeat: repeat, repeat-x;
   color-scheme: light;
 }
 
@@ -69,6 +73,8 @@
     --contrast: #f2f2f2;
     --muted: #777;
     --code-background: rgba(255,255,255,0.1);
+    --page-background-image: var(--dark-pattern);
+    --page-background-repeat: repeat;
     color-scheme: dark;
   }
 
@@ -84,9 +90,11 @@
   --contrast: #000;
   --muted: lightgrey;
   --code-background: rgba(27,31,35,0.05);
+  --page-background-image: var(--light-pattern), url(https://assets.ricky.codes/gradient.png);
+  --page-background-repeat: repeat, repeat-x;
   color-scheme: light;
-  background-image: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc4JyBoZWlnaHQ9JzgnIHZpZXdCb3g9JzAgMCA4IDgnIG9wYWNpdHk9Jy4xJz48ZyBmaWxsPScjMDAwJyBmaWxsLXJ1bGU9J2V2ZW5vZGQnPjxwYXRoIGQ9J00zIDNoMXYxSDN6TTcgN2gxdjFIN3onLz48L2c+PC9zdmc+), url(https://assets.ricky.codes/gradient.png);
-  background-repeat: repeat, repeat-x;
+  background-image: var(--page-background-image);
+  background-repeat: var(--page-background-repeat);
 }
 
 [data-theme='dark'] {
@@ -95,12 +103,16 @@
   --contrast: #f2f2f2;
   --muted: #777;
   --code-background: rgba(255,255,255,0.1);
+  --page-background-image: var(--dark-pattern);
+  --page-background-repeat: repeat;
   color-scheme: dark;
 }
 
 body {
   color: var(--foreground);
   background-color: var(--background);
+  background-image: var(--page-background-image);
+  background-repeat: var(--page-background-repeat);
   transition: background-color .3s ease-out, color .3s ease-out;
 }
 
@@ -116,14 +128,14 @@ a {
 
 @media (prefers-color-scheme: dark) {
   body {
-    background-image: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc4JyBoZWlnaHQ9JzgnIHZpZXdCb3g9JzAgMCA4IDgnIG9wYWNpdHk9Jy4xJz48ZyBmaWxsPScjZmZmJyBmaWxsLXJ1bGU9J2V2ZW5vZGQnPjxwYXRoIGQ9J00zIDNoMXYxSDN6TTcgN2gxdjFIN3onLz48L2c+PC9zdmc+);
-    background-repeat: repeat;
+    background-image: var(--page-background-image);
+    background-repeat: var(--page-background-repeat);
   }
 }
 
 [data-theme='dark'] {
-  background-image: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc4JyBoZWlnaHQ9JzgnIHZpZXdCb3g9JzAgMCA4IDgnIG9wYWNpdHk9Jy4xJz48ZyBmaWxsPScjZmZmJyBmaWxsLXJ1bGU9J2V2ZW5vZGQnPjxwYXRoIGQ9J00zIDNoMXYxSDN6TTcgN2gxdjFIN3onLz48L2c+PC9zdmc+);
-  background-repeat: repeat;
+  background-image: var(--page-background-image);
+  background-repeat: var(--page-background-repeat);
 }
 
 .theme-toggle {
