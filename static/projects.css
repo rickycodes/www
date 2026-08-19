@@ -9,7 +9,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 3;
+  z-index: 1;
   pointer-events: none;
   display: block;
 }
@@ -24,11 +24,11 @@
   margin-left: 4em;
   height: inherit;
   top: 0;
-  z-index: 4;
+  z-index: 2;
   overflow-y: scroll;
   transform: translate3d(100%,0,0) rotateX(0);
   transition: transform .3s ease-out;
-  background: white;
+  background: var(--background);
 }
 
 [data-project='intel'] .projects .project.intel,
@@ -53,7 +53,7 @@
   top: 0;
   right: 0;
   transition: background-color .3s ease-out;
-  background-color: black;
+  background-color: var(--foreground);
 }
 
 .projects .project .close-link img {
@@ -62,7 +62,7 @@
 }
 
 .projects .project .close-link:hover {
-  background-color: dimgrey;
+  background-color: var(--muted);
 }
 
 .projects .project .content {
@@ -76,7 +76,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: black;
+  background: var(--foreground);
   opacity: .4;
 }
 
@@ -99,10 +99,10 @@
 .slideshow {
   position: relative;
   height: 520px;
-  border-top: 2px solid lightgrey;
-  border-bottom: 2px solid lightgrey;
+  border-top: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
   overflow: hidden;
-  background: radial-gradient(white, rgb(0,0,0,.1));
+  background: radial-gradient(var(--background), rgba(127,127,127,.1));
 }
 
 .slideshow .prev,
@@ -170,8 +170,8 @@
 .slideshow[data-index='2'] + .controls .link:nth-child(3),
 .slideshow[data-index='3'] + .controls .link:nth-child(4),
 .slideshow[data-index='4'] + .controls .link:nth-child(5) {
-  background: black;
-  color: white;
+  background: var(--foreground);
+  color: var(--background);
   pointer-events: none;
 }
 
