@@ -9,7 +9,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 6;
+  z-index: 5;
   pointer-events: none;
   display: block;
 }
@@ -27,7 +27,7 @@
   z-index: 2;
   overflow-y: scroll;
   transform: translate3d(100%,0,0) rotateX(0);
-  transition: transform .3s ease-out;
+  transition: transform .3s ease-out, background-color .3s ease-out, color .3s ease-out;
   background: var(--background);
 }
 
@@ -59,6 +59,10 @@
 .projects .project .close-link img {
   width: 100%;
   height: 100%;
+}
+
+[data-theme='dark'] .projects .project .close-link img {
+  filter: invert(1);
 }
 
 .projects .project .close-link:hover {
