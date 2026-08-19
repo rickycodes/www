@@ -120,6 +120,7 @@ impl Theme {
                 ThemePreference::Light
             };
             set_theme(&event_button, state.dark);
+            event_button.blur();
             let _ = event_storage.insert(
                 THEME_STORAGE_KEY,
                 if state.dark { THEME_DARK } else { THEME_LIGHT },
