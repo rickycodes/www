@@ -70,7 +70,7 @@
   :root {
     --background: #151515;
     --foreground: #f2f2f2;
-    --contrast: #f2f2f2;
+    --contrast: var(--foreground);
     --muted: #777;
     --code-background: rgba(255,255,255,0.1);
     --page-background-image: var(--dark-pattern);
@@ -100,7 +100,7 @@
 [data-theme='dark'] {
   --background: #151515;
   --foreground: #f2f2f2;
-  --contrast: #f2f2f2;
+  --contrast: var(--foreground);
   --muted: #777;
   --code-background: rgba(255,255,255,0.1);
   --page-background-image: var(--dark-pattern);
@@ -141,20 +141,16 @@ a {
   font: 1em/1 var(--font-mono);
   cursor: pointer;
   filter: grayscale(1);
-  opacity: .75;
-  transition: opacity .2s ease-out, background-color .3s ease-out, color .3s ease-out,
-    border-color .3s ease-out;
+  transition: background-color .3s ease-out, color .3s ease-out, border-color .3s ease-out;
 }
 
 .theme-toggle:focus-visible {
-  opacity: 1;
   background: var(--contrast);
   color: var(--background);
 }
 
 @media (hover: hover) {
   .theme-toggle:hover {
-    opacity: 1;
     background: var(--contrast);
     color: var(--background);
   }
