@@ -60,7 +60,7 @@ fn set_theme(button: &HtmlElement, dark: bool) {
     } else {
         "Switch to dark mode"
     };
-    let icon = if dark { "🌞" } else { "🌚" };
+    let icon = if dark { "🌚" } else { "🌞" };
 
     body.set_attribute("data-theme", theme).unwrap();
     button.set_attribute("aria-label", label).unwrap();
