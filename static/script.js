@@ -68,7 +68,7 @@
   var renderBuildMeta = function () {
     var el = document.querySelector('.build-meta')
     if (!el) return
-    var DETAILS_PREFIX = 'Shipped: '
+    var DETAILS_PREFIX = 'Deployed: '
     var COMMIT_BASE_URL = 'https://github.com/rickycodes/www/commit/'
 
     var buildDetails = function (meta) {
