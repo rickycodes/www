@@ -1,29 +1,29 @@
 /* global IntersectionObserver */
 (function () {
-  var getBuildVersion = function () {
-    var current = document.currentScript
+  const getBuildVersion = function () {
+    const current = document.currentScript
     if (!current) return null
-    var src = current.getAttribute('src') || ''
-    var match = src.match(/[?&]v=([^&]+)/)
+    const src = current.getAttribute('src') || ''
+    const match = src.match(/[?&]v=([^&]+)/)
     return match ? match[1] : null
   }
 
-  var buildVersion = getBuildVersion()
+  const buildVersion = getBuildVersion()
   window.__BUILD_VERSION = buildVersion
 
-  var withBuildVersion = function (url) {
+  const withBuildVersion = function (url) {
     if (!buildVersion) return url
     if (/^https?:\/\//.test(url)) return url
     return url + (url.indexOf('?') === -1 ? '?v=' : '&v=') + buildVersion
   }
 
-  var lazyLoadImages = function () {
-    var lazyImages = [].slice.call(document.querySelectorAll('img[data-src]'))
+  const lazyLoadImages = function () {
+    const lazyImages = [].slice.call(document.querySelectorAll('img[data-src]'))
     if ('IntersectionObserver' in window) {
-      let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
+      const lazyImageObserver = new IntersectionObserver(function (entries, observer) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            let lazyImage = entry.target
+            const lazyImage = entry.target
             lazyImage.src = lazyImage.dataset.src
             lazyImageObserver.unobserve(lazyImage)
           }
@@ -42,15 +42,15 @@
     }
   }
 
-  var attachScript = function (source) {
-    var script = document.createElement('script')
+  const attachScript = function (source) {
+    const script = document.createElement('script')
     script.setAttribute('src', source.src)
     'type' in source && script.setAttribute('type', source.type)
     document.body.appendChild(script)
   }
 
-  var attachScripts = function () {
-    var scripts = [
+  const attachScripts = function () {
+    const scripts = [
       { src: withBuildVersion('detect.js') },
       { type: 'async', src: 'https://www.googletagmanager.com/gtag/js?id=UA-71959023-1' }
     ]
@@ -58,44 +58,44 @@
     scripts.forEach(attachScript)
   }
 
-  var setupGTag = function () {
+  const setupGTag = function () {
     window.dataLayer = window.dataLayer || []
     function gtag () { window.dataLayer.push(arguments) }
     gtag('js', new Date())
     gtag('config', 'UA-71959023-1')
   }
 
-  var renderBuildMeta = function () {
-    var el = document.querySelector('.build-meta')
+  const renderBuildMeta = function () {
+    const el = document.querySelector('.build-meta')
     if (!el) return
-    var DETAILS_PREFIX = 'Deployed: '
-    var COMMIT_BASE_URL = 'https://github.com/rickycodes/www/commit/'
+    const DETAILS_PREFIX = 'Deployed: '
+    const COMMIT_BASE_URL = 'https://github.com/rickycodes/www/commit/'
 
-    var buildDetails = function (meta) {
-      var items = []
+    const buildDetails = function (meta) {
+      const items = []
 
       if (meta.git_sha) {
-        var sha = meta.git_sha
+        const sha = meta.git_sha
         items.push({ type: 'link', href: COMMIT_BASE_URL + sha, text: sha })
       }
       if (meta.runner_os && meta.runner_arch) {
-        var runner = meta.runner_os + '/' + meta.runner_arch
+        const runner = meta.runner_os + '/' + meta.runner_arch
         items.push({ type: 'text', text: runner })
       }
       if (meta.cpu_cores) {
-        var cores = meta.cpu_cores + ' cores'
+        const cores = meta.cpu_cores + ' cores'
         items.push({ type: 'text', text: cores })
       }
 
       return items
     }
 
-    var appendDetails = function (el, items) {
-      for (var i = 0; i < items.length; i++) {
+    const appendDetails = function (el, items) {
+      for (let i = 0; i < items.length; i++) {
         if (i > 0) el.appendChild(document.createTextNode(' • '))
-        var item = items[i]
+        const item = items[i]
         if (item.type === 'link') {
-          var link = document.createElement('a')
+          const link = document.createElement('a')
           link.href = item.href
           link.target = '_blank'
           link.rel = 'noopener'
@@ -107,7 +107,7 @@
       }
     }
 
-    var renderMeta = function (el, builtAt, details) {
+    const renderMeta = function (el, builtAt, details) {
       while (el.firstChild) el.removeChild(el.firstChild)
 
       if (builtAt && details.length > 0) {
@@ -133,15 +133,38 @@
       el.textContent = `${DETAILS_PREFIX}unknown`
     }
 
-    var formatShippedAt = function (isoString) {
+    const ordinalSuffix = function (day) {
+      const lastTwo = day % 100
+      if (lastTwo >= 11 && lastTwo <= 13) return 'th'
+      switch (day % 10) {
+        case 1: return 'st'
+        case 2: return 'nd'
+        case 3: return 'rd'
+        default: return 'th'
+      }
+    }
+
+    const formatShippedAt = function (isoString) {
       if (!isoString) return null
-      var date = new Date(isoString)
+      const date = new Date(isoString)
       if (Number.isNaN(date.getTime())) return isoString
-      return new Intl.DateTimeFormat('en-CA', {
-        dateStyle: 'medium',
+
+      const dateParts = new Intl.DateTimeFormat('en-CA', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        timeZone: 'America/Toronto'
+      }).formatToParts(date)
+      const getPart = function (type) {
+        return dateParts.find(function (part) { return part.type === type }).value
+      }
+      const day = Number(getPart('day'))
+      const time = new Intl.DateTimeFormat('en-CA', {
         timeStyle: 'short',
         timeZone: 'America/Toronto'
       }).format(date) + ' ET'
+
+      return getPart('month') + ' ' + day + ordinalSuffix(day) + ', ' + getPart('year') + ', ' + time
     }
 
     fetch('build-meta.json', { cache: 'no-store' })
@@ -150,8 +173,8 @@
         return response.json()
       })
       .then(function (meta) {
-        var builtAt = formatShippedAt(meta.built_at_utc)
-        var details = buildDetails(meta)
+        const builtAt = formatShippedAt(meta.built_at_utc)
+        const details = buildDetails(meta)
         renderMeta(el, builtAt, details)
       })
       .catch(function () {
@@ -159,7 +182,7 @@
       })
   }
 
-  var initialize = function () {
+  const initialize = function () {
     setupGTag()
     renderBuildMeta()
     lazyLoadImages()
