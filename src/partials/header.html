@@ -4,6 +4,14 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta http-equiv='Content-Security-Policy' content="default-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; img-src 'self' data: https://assets.ricky.codes https://webring.xxiivv.com; font-src 'self' https://assets.ricky.codes data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com">
 
+    <script>
+      (function () {
+        const theme = localStorage.getItem('ricky.codes.theme');
+        (theme === 'light' || theme === 'dark')
+          && document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+
     <title>Ricky's WWWebsite</title>
 
     <!-- social woo woo -->
