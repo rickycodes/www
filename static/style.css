@@ -93,8 +93,6 @@
   --page-background-image: var(--light-pattern), url(https://assets.ricky.codes/gradient.png);
   --page-background-repeat: repeat, repeat-x;
   color-scheme: light;
-  background-image: var(--page-background-image);
-  background-repeat: var(--page-background-repeat);
 }
 
 [data-theme='dark'] {
