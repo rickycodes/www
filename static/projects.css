@@ -141,9 +141,14 @@
 }
 
 .slideshow .slide * {
-  height: 100%;
   transition: opacity .3s ease-out;
   opacity: 0;
+}
+
+.slideshow .slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slideshow .slide.is-active * {
@@ -180,8 +185,10 @@
 }
 
 .slideshow-container .slideshow div img {
-  object-fit: cover;
   max-width: 100%;
+  max-height: 100%;
   user-select: none;
   width: auto;
+  height: auto;
+  object-fit: contain;
 }
