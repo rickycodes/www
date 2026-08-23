@@ -3,7 +3,7 @@ use stdweb::web::{document, Date, HtmlElement, NodeList};
 
 use stdweb::unstable::TryInto;
 
-use crate::constants::{A, CLASS, EMPTY, HASH, HREF, POOP, YEAR_SELECTOR};
+use crate::constants::{A, BUTTON, CLASS, EMPTY, HASH, HREF, POOP, TYPE, YEAR_SELECTOR};
 
 pub(crate) fn node_list(selector: &str) -> NodeList {
     document().query_selector_all(selector).unwrap()
@@ -13,6 +13,9 @@ pub(crate) fn create_element(element_type: &str, class: &str) -> HtmlElement {
     let el = document().create_element(element_type).unwrap();
     if element_type == A {
         el.set_attribute(HREF, HASH).unwrap();
+    }
+    if element_type == BUTTON {
+        el.set_attribute(TYPE, BUTTON).unwrap();
     }
     el.set_attribute(CLASS, class).unwrap();
     el.try_into().unwrap()

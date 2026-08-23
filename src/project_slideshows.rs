@@ -5,8 +5,8 @@ use stdweb::web::event::{ClickEvent, KeyUpEvent};
 use stdweb::web::{document, window, HtmlElement, Node};
 
 use crate::constants::{
-    A, ARIA_LABEL, ARROW_LEFT, ARROW_RIGHT, CONTROLS, DATA_INDEX, DATA_PROJECT, DIV, EMPTY, ESC,
-    LINK, NEXT, NEXT_SLIDE_ARIA_LABEL, PREV, PREVIOUS_SLIDE_ARIA_LABEL, SLIDESHOW_SELECTOR,
+    ARIA_LABEL, ARROW_LEFT, ARROW_RIGHT, BUTTON, CONTROLS, DATA_INDEX, DATA_PROJECT, DIV, EMPTY,
+    ESC, LINK, NEXT, NEXT_SLIDE_ARIA_LABEL, PREV, PREVIOUS_SLIDE_ARIA_LABEL, SLIDESHOW_SELECTOR,
 };
 
 fn get_data_index(element: &HtmlElement) -> usize {
@@ -29,8 +29,11 @@ impl Controls {
         let controls_el = create_element(DIV, CONTROLS);
 
         for (index, _slide) in slides.iter().enumerate() {
-            let control_el = create_element(A, LINK);
+            let control_el = create_element(BUTTON, LINK);
             control_el.set_text_content(&(index + 1).to_string());
+            control_el
+                .set_attribute(ARIA_LABEL, &format!("Show slide {}", index + 1))
+                .unwrap();
             control_el.add_event_listener(
                 enclose!( (slideshow_el, index) move |event:ClickEvent| {
                     event.prevent_default();
@@ -68,13 +71,13 @@ impl SlideShows {
             if slides.len() > 1 {
                 let slideshow_el: HtmlElement = slideshow.try_into().unwrap();
 
-                let slideshow_prev = create_element(A, PREV);
+                let slideshow_prev = create_element(BUTTON, PREV);
                 slideshow_prev
                     .set_attribute(ARIA_LABEL, PREVIOUS_SLIDE_ARIA_LABEL)
                     .unwrap();
                 slideshow_el.append_child(&slideshow_prev);
 
-                let slideshow_next = create_element(A, NEXT);
+                let slideshow_next = create_element(BUTTON, NEXT);
                 slideshow_next
                     .set_attribute(ARIA_LABEL, NEXT_SLIDE_ARIA_LABEL)
                     .unwrap();

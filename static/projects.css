@@ -122,6 +122,8 @@
   width: 40%;
   background: transparent;
   border: none;
+  color: inherit;
+  font: inherit;
   height: 100%;
   z-index: 3;
   cursor: none;
@@ -168,11 +170,18 @@
 }
 
 .slideshow-container .controls .link {
+  background: transparent;
+  color: inherit;
   display: inline-block;
+  font: inherit;
   padding: 0 1em;
   margin-right: 1em;
   font-size: .8em;
   cursor: pointer;
+}
+
+.slideshow-container .controls .link:hover {
+  color: var(--background);
 }
 
 .slideshow[data-index='0'] + .controls .link:nth-child(1),
