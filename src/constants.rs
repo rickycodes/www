@@ -60,6 +60,7 @@ pub(crate) const LINK_SELECTOR: &str = ".project.link, .cv.link";
 pub(crate) const CLOSE_SELECTOR: &str = ".close div";
 pub(crate) const NOT_PROJECT_SELECTOR: &str = ".content a:not(.project)";
 pub(crate) const PROJECT_SELECTOR: &str = "[data-project] > .content";
+pub(crate) const ACTIVE_PROJECT_SELECTOR: &str = ".projects .project.is-active";
 pub(crate) const COORDINATES_SELECTOR: &str = ".coord > div";
 pub(crate) const INFO_SELECTOR: &str = ".info";
 pub(crate) const INFO_LINKS_SELECTOR: &str = ".content a[title], .content label[name]";
