@@ -5,8 +5,9 @@ use stdweb::web::event::{ClickEvent, KeyUpEvent};
 use stdweb::web::{document, window, HtmlElement, Node};
 
 use crate::constants::{
-    ARIA_LABEL, ARROW_LEFT, ARROW_RIGHT, BUTTON, CONTROLS, DATA_INDEX, DATA_PROJECT, DIV, EMPTY,
-    ESC, LINK, NEXT, NEXT_SLIDE_ARIA_LABEL, PREV, PREVIOUS_SLIDE_ARIA_LABEL, SLIDESHOW_SELECTOR,
+    ACTIVE, ARIA_LABEL, ARIA_PRESSED, ARROW_LEFT, ARROW_RIGHT, BUTTON, CLASS, CONTROLS, DATA_INDEX,
+    DATA_PROJECT, DIV, EMPTY, ESC, LINK, NEXT, NEXT_SLIDE_ARIA_LABEL, PREV,
+    PREVIOUS_SLIDE_ARIA_LABEL, SLIDE, SLIDESHOW_SELECTOR,
 };
 
 fn get_data_index(element: &HtmlElement) -> usize {
@@ -25,8 +26,9 @@ fn get_increment(direction: &str, data_index: usize, last: usize) -> usize {
 pub(crate) struct Controls;
 
 impl Controls {
-    pub(crate) fn new(slideshow_el: &HtmlElement, slides: &[HtmlElement]) -> Self {
+    pub(crate) fn new(slideshow_el: &HtmlElement, slides: &[HtmlElement]) -> Vec<HtmlElement> {
         let controls_el = create_element(DIV, CONTROLS);
+        let mut controls = Vec::new();
 
         for (index, _slide) in slides.iter().enumerate() {
             let control_el = create_element(BUTTON, LINK);
@@ -34,13 +36,23 @@ impl Controls {
             control_el
                 .set_attribute(ARIA_LABEL, &format!("Show slide {}", index + 1))
                 .unwrap();
-            control_el.add_event_listener(
-                enclose!( (slideshow_el, index) move |event:ClickEvent| {
+            control_el
+                .set_attribute(ARIA_PRESSED, if index == 0 { "true" } else { "false" })
+                .unwrap();
+            controls.push(control_el.clone());
+            controls_el.append_child(&control_el);
+        }
+
+        for (index, control) in controls.iter().enumerate() {
+            let all_slides = slides.to_vec();
+            let all_controls = controls.clone();
+            control.add_event_listener(
+                enclose!( (slideshow_el, index, all_slides, all_controls) move |event:ClickEvent| {
                     event.prevent_default();
                     slideshow_el.set_attribute(DATA_INDEX, &index.to_string()).unwrap();
+                    set_active(&all_slides, &all_controls, index);
                 }),
             );
-            controls_el.append_child(&control_el);
         }
 
         slideshow_el
@@ -48,7 +60,31 @@ impl Controls {
             .unwrap()
             .append_child(&controls_el);
 
-        Self
+        controls
+    }
+}
+
+fn set_active(slides: &[HtmlElement], controls: &[HtmlElement], index: usize) {
+    for (slide_index, slide) in slides.iter().enumerate() {
+        let class = if slide_index == index {
+            format!("{} {}", SLIDE, ACTIVE)
+        } else {
+            SLIDE.to_string()
+        };
+        slide.set_attribute(CLASS, &class).unwrap();
+    }
+
+    for (control_index, control) in controls.iter().enumerate() {
+        control
+            .set_attribute(
+                ARIA_PRESSED,
+                if control_index == index {
+                    "true"
+                } else {
+                    "false"
+                },
+            )
+            .unwrap();
     }
 }
 
@@ -67,10 +103,16 @@ impl SlideShows {
                 .map(|node: Node| node.try_into().unwrap())
                 .collect();
 
-            // only setup slideshow if there is more than one slide!
-            if slides.len() > 1 {
-                let slideshow_el: HtmlElement = slideshow.try_into().unwrap();
+            let slideshow_el: HtmlElement = slideshow.try_into().unwrap();
+            let controls = if slides.len() > 1 {
+                Controls::new(&slideshow_el, &slides)
+            } else {
+                Vec::new()
+            };
+            set_active(&slides, &controls, 0);
 
+            // only add navigation for slideshows with more than one slide
+            if slides.len() > 1 {
                 let slideshow_prev = create_element(BUTTON, PREV);
                 slideshow_prev
                     .set_attribute(ARIA_LABEL, PREVIOUS_SLIDE_ARIA_LABEL)
@@ -83,22 +125,31 @@ impl SlideShows {
                     .unwrap();
                 slideshow_el.append_child(&slideshow_next);
 
-                Controls::new(&slideshow_el, &slides);
                 let last = slides.len() - 1;
 
-                let prev_next_click = move |direction: &str, slideshow_el: &HtmlElement| {
-                    let increment = get_increment(direction, get_data_index(slideshow_el), last);
-                    let _ = slideshow_el.set_attribute(DATA_INDEX, &increment.to_string());
-                };
+                let prev_next_click =
+                    move |direction: &str,
+                          slideshow_el: &HtmlElement,
+                          slides: &[HtmlElement],
+                          controls: &[HtmlElement]| {
+                        let increment =
+                            get_increment(direction, get_data_index(slideshow_el), last);
+                        let _ = slideshow_el.set_attribute(DATA_INDEX, &increment.to_string());
+                        set_active(slides, controls, increment);
+                    };
 
-                let slideshow_prev_event = enclose!( (slideshow_el) move |event: ClickEvent| {
+                let previous_slides = slides.clone();
+                let previous_controls = controls.clone();
+                let slideshow_prev_event = enclose!( (slideshow_el, previous_slides, previous_controls) move |event: ClickEvent| {
                     event.prevent_default();
-                    prev_next_click(PREV, &slideshow_el)
+                    prev_next_click(PREV, &slideshow_el, &previous_slides, &previous_controls)
                 });
 
-                let slideshow_next_event = enclose!( (slideshow_el) move |event: ClickEvent| {
+                let next_slides = slides.clone();
+                let next_controls = controls.clone();
+                let slideshow_next_event = enclose!( (slideshow_el, next_slides, next_controls) move |event: ClickEvent| {
                     event.prevent_default();
-                    prev_next_click(NEXT, &slideshow_el)
+                    prev_next_click(NEXT, &slideshow_el, &next_slides, &next_controls)
                 });
 
                 slideshow_prev.add_event_listener(slideshow_prev_event);

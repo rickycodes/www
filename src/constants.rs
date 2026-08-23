@@ -43,6 +43,7 @@ pub(crate) const HASH: &str = "#";
 pub(crate) const DISPLAY_NONE: &str = "display: none;";
 pub(crate) const HREF: &str = "href";
 pub(crate) const ARIA_LABEL: &str = "aria-label";
+pub(crate) const ARIA_PRESSED: &str = "aria-pressed";
 pub(crate) const PREVIOUS_SLIDE_ARIA_LABEL: &str = "Previous slide";
 pub(crate) const NEXT_SLIDE_ARIA_LABEL: &str = "Next slide";
 pub(crate) const THEME_DARK: &str = "dark";
@@ -63,6 +64,8 @@ pub(crate) const COORDINATES_SELECTOR: &str = ".coord > div";
 pub(crate) const INFO_SELECTOR: &str = ".info";
 pub(crate) const INFO_LINKS_SELECTOR: &str = ".content a[title], .content label[name]";
 pub(crate) const SLIDESHOW_SELECTOR: &str = ".slideshow";
+pub(crate) const SLIDE: &str = "slide";
+pub(crate) const ACTIVE: &str = "is-active";
 pub(crate) const YEAR_SELECTOR: &str = ".year";
 
 pub(crate) struct CursorAttributes {
