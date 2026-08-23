@@ -5,9 +5,7 @@
 
 .projects {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  inset: 0;
   height: 100%;
   z-index: 5;
   pointer-events: none;
@@ -52,8 +50,7 @@
   position: absolute;
   width: 60px;
   height: 60px;
-  top: 0;
-  right: 0;
+  inset: 0 0 auto auto;
   transition: background-color .3s ease-out;
   background-color: var(--foreground);
 }
@@ -78,10 +75,7 @@
 .projects .close {
   visibility: hidden;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: #000;
   opacity: .7;
 }
@@ -112,7 +106,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  body:not([data-theme='light']) .slideshow {
+  :root:not([data-theme]) .slideshow {
     background: var(--background);
   }
 }
@@ -175,7 +169,7 @@
 
 .slideshow-container .controls .link {
   display: inline-block;
-  padding: 0 1em 0 1em;
+  padding: 0 1em;
   margin-right: 1em;
   font-size: .8em;
   cursor: pointer;

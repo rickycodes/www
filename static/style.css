@@ -77,11 +77,6 @@
     --page-background-repeat: repeat;
     color-scheme: dark;
   }
-
-  body {
-    background-image: url(data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc4JyBoZWlnaHQ9JzgnIHZpZXdCb3g9JzAgMCA4IDgnIG9wYWNpdHk9Jy4xJz48ZyBmaWxsPScjZmZmJyBmaWxsLXJ1bGU9J2V2ZW5vZGRkJz48cGF0aCBkPSdNM ​​zIDNoMXYxSDN6TTcgN2gxdjFIN3onLz48L2c+PC9zdmc+), linear-gradient(rgba(21,21,21,.42), rgba(21,21,21,.42)), url(https://assets.ricky.codes/gradient.png);
-    background-repeat: repeat, repeat, repeat-x;
-  }
 }
 
 [data-theme='light'] {
@@ -240,10 +235,7 @@ footer {
   content: "";
   position: absolute;
   z-index: -1;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: var(--foreground);
   transform: scaleX(0);
   transform-origin: 0 50%;

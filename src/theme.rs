@@ -53,7 +53,7 @@ fn system_prefers_dark() -> bool {
 }
 
 fn set_theme(button: &HtmlElement, dark: bool) {
-    let body = document().body().unwrap();
+    let document_element = document().document_element().unwrap();
     let theme = if dark { THEME_DARK } else { THEME_LIGHT };
     let label = if dark {
         "Switch to light mode"
@@ -62,7 +62,7 @@ fn set_theme(button: &HtmlElement, dark: bool) {
     };
     let icon = if dark { "🌚" } else { "🌞" };
 
-    body.set_attribute("data-theme", theme).unwrap();
+    document_element.set_attribute("data-theme", theme).unwrap();
     button.set_attribute("aria-label", label).unwrap();
     button
         .set_attribute("aria-pressed", if dark { "true" } else { "false" })
