@@ -106,13 +106,13 @@ body {
   background-color: var(--background);
   background-image: var(--page-background-image);
   background-repeat: var(--page-background-repeat);
-  transition: background-color .3s ease-out, color .3s ease-out;
+  transition: background-color var(--ease-out), color var(--ease-out);
 }
 
 a {
   color: var(--foreground);
   border-color: var(--foreground);
-  transition: color .3s ease-out, background-color .3s ease-out, border-color .3s ease-out;
+  transition: color var(--ease-out), background-color var(--ease-out), border-color var(--ease-out);
 }
 
 [data-theme='dark'] .webring img {
@@ -134,7 +134,7 @@ a {
   font: 1em/1 var(--font-mono);
   cursor: pointer;
   filter: grayscale(1);
-  transition: background-color .3s ease-out, color .3s ease-out, border-color .3s ease-out;
+  transition: background-color var(--ease-out), color var(--ease-out), border-color var(--ease-out);
 }
 
 .theme-toggle:focus-visible {
@@ -158,7 +158,7 @@ a {
   font-size: .8em;
   font-family: var(--font-mono);
   text-align: right;
-  transition: background-color .3s ease-out, color .3s ease-out;
+  transition: background-color var(--ease-out), color var(--ease-out);
 }
 
 .coord {
@@ -194,7 +194,7 @@ a {
   top: 0;
   right: 0;
   transform: translate3d(0,0,0);
-  transition: transform .3s ease-out;
+  transition: transform var(--ease-out);
 }
 
 .info.hidden {
@@ -239,7 +239,7 @@ footer {
   background: var(--foreground);
   transform: scaleX(0);
   transform-origin: 0 50%;
-  transition: transform .3s ease-out;
+  transition: transform var(--ease-out);
 }
 
 .link:hover {
@@ -262,7 +262,7 @@ footer {
 code {
   padding: 0.2em 0.4em;
   background-color: var(--code-background);
-  transition: background-color .3s ease-out, color .3s ease-out;
+  transition: background-color var(--ease-out), color var(--ease-out);
   border-radius: 3px;
   text-transform: none;
 }

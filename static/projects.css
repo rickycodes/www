@@ -25,7 +25,7 @@
   z-index: 2;
   overflow-y: scroll;
   transform: translate3d(100%,0,0) rotateX(0);
-  transition: transform .3s ease-out, background-color .3s ease-out, color .3s ease-out;
+  transition: transform var(--ease-out), background-color var(--ease-out), color var(--ease-out);
   background-color: var(--background);
   background-image: var(--page-background-image);
   background-repeat: var(--page-background-repeat);
@@ -44,7 +44,7 @@
   width: 60px;
   height: 60px;
   inset: 0 0 auto auto;
-  transition: background-color .3s ease-out;
+  transition: background-color var(--ease-out);
   background-color: var(--foreground);
 }
 
@@ -141,7 +141,7 @@
 }
 
 .slideshow .slide * {
-  transition: opacity .3s ease-out;
+  transition: opacity var(--ease-out);
   opacity: 0;
 }
 
