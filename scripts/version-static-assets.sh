@@ -14,11 +14,10 @@ if [[ -z "${version}" ]]; then
   exit 1
 fi
 
-# Version local CSS/JS href/src references in generated HTML only.
+# Version local CSS/JS/PDF href/src references in generated HTML only.
 # This matches paths without ":" to avoid touching absolute URLs like "https://...".
 sed -E -i \
-  -e "s#((href|src)=['\"])([^\"'?:]+\\.css)(\\?[^\"']*)?(['\"])#\\1\\3?v=${version}\\5#g" \
-  -e "s#((href|src)=['\"])([^\"'?:]+\\.js)(\\?[^\"']*)?(['\"])#\\1\\3?v=${version}\\5#g" \
+  -e "s#((href|src)=['\"])([^\"'?:]+\\.(css|js|pdf))(\\?[^\"']*)?(['\"])#\\1\\3?v=${version}\\6#g" \
   "${html_file}"
 
-echo "Versioned local CSS/JS assets in ${html_file} with v=${version}"
+echo "Versioned local CSS/JS/PDF assets in ${html_file} with v=${version}"
