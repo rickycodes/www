@@ -129,6 +129,11 @@
   right: 0;
 }
 
+/* Slideshow buttons use their own active/hover states instead of focus outlines. */
+.slideshow button:focus {
+  outline: none;
+}
+
 .slideshow div {
   /* slides */
   position: absolute;
