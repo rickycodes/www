@@ -76,7 +76,12 @@
 
       if (meta.git_sha) {
         const sha = meta.git_sha
-        items.push({ type: 'link', href: COMMIT_BASE_URL + sha, text: sha })
+        items.push({
+          type: 'link',
+          href: COMMIT_BASE_URL + sha,
+          text: sha,
+          title: 'View this commit on GitHub'
+        })
       }
       if (meta.runner_os && meta.runner_arch) {
         const runner = meta.runner_os + '/' + meta.runner_arch
@@ -97,6 +102,7 @@
         if (item.type === 'link') {
           const link = document.createElement('a')
           link.href = item.href
+          if (item.title) link.title = item.title
           link.target = '_blank'
           link.rel = 'noopener'
           link.textContent = item.text
