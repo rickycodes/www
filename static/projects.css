@@ -194,6 +194,6 @@
   max-height: 100%;
   user-select: none;
   width: auto;
-  height: auto;
+  height: 100%;
   object-fit: contain;
 }
