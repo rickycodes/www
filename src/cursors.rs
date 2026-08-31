@@ -1,4 +1,4 @@
-use crate::util::{node_list, query_selector};
+use crate::util::{node_list, query_selector, PointerState};
 use stdweb::traits::*;
 use stdweb::unstable::TryInto;
 use stdweb::web::event::{MouseMoveEvent, MouseOutEvent, MouseOverEvent};
@@ -37,6 +37,8 @@ impl Cursors {
         let cursor_element = query_selector(CURSOR_SELECTOR);
         let close = query_selector(CLOSE_SELECTOR);
         let cursor_for_move = cursor_element.clone();
+        let state = PointerState::new();
+        let state_for_event = state.clone();
 
         Cursor::new(close, &cursor_element, CLOSE);
 
@@ -53,8 +55,10 @@ impl Cursors {
         let mouse_move_event = move |event: MouseMoveEvent| {
             let x = f64::from(event.client_x());
             let y = f64::from(event.client_y());
-
-            set_cursor_coordinates(&cursor_for_move, &format!("{}px", x), &format!("{}px", y));
+            let cursor = cursor_for_move.clone();
+            state_for_event.clone().update(x, y, move |x, y| {
+                set_cursor_coordinates(&cursor, &format!("{}px", x), &format!("{}px", y));
+            });
         };
 
         window().add_event_listener(mouse_move_event);
