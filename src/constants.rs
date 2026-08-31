@@ -43,6 +43,7 @@ pub(crate) const HASH: &str = "#";
 pub(crate) const DISPLAY_NONE: &str = "display: none;";
 pub(crate) const HREF: &str = "href";
 pub(crate) const ARIA_LABEL: &str = "aria-label";
+pub(crate) const ARIA_HIDDEN: &str = "aria-hidden";
 pub(crate) const ARIA_PRESSED: &str = "aria-pressed";
 pub(crate) const PREVIOUS_SLIDE_ARIA_LABEL: &str = "Previous slide";
 pub(crate) const NEXT_SLIDE_ARIA_LABEL: &str = "Next slide";

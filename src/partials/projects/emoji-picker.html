@@ -1,4 +1,4 @@
-<div class='project emoji-picker'>
+<div class='project emoji-picker' role='dialog' aria-hidden='true' aria-labelledby='emoji-picker-title' tabindex='-1'>
     <div class='slideshow-container'>
       <div class='slideshow' data-index='0'>
         <!-- slides -->
@@ -9,7 +9,7 @@
       <img width='300' height='300' alt='close' src='https://assets.ricky.codes/images/close.svg' />
     </a>
     <div class='content'>
-      <h2>Emoji Picker</h2>
+      <h2 id='emoji-picker-title'>Emoji Picker</h2>
       <p>
         A vanilla JavaScript emoji picker that replaces a Basecamp emoji string, e.g. <code>:dog:</code>, in a text input with the equivalent Unicode character, e.g. 🐶. This uses native, browser-supported ES6 modules (no bundling!), so you may need to enable them for it to work. A similar feature exists in the popular cloud-based team collaboration tool <a target='_blank' href='https://slack.com/'>Slack</a>.
       </p>
