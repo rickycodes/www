@@ -3,8 +3,8 @@ set -euo pipefail
 
 deploy_dir="${1:-target/deploy}"
 
-if ! command -v uglifyjs >/dev/null 2>&1; then
-  echo "error: uglifyjs is not installed or not in PATH."
+if ! command -v terser >/dev/null 2>&1; then
+  echo "error: terser is not installed or not in PATH."
   exit 1
 fi
 
@@ -21,7 +21,7 @@ sed -i "s/\"Finished loading \Rust wasm module 'rickycodes'\"//g" "${deploy_dir}
 
 for f in "${js_files[@]}"; do
   echo "    ${f}"
-  uglifyjs "$f" \
+  terser "$f" \
     --compress \
     --mangle \
     --output "$f"

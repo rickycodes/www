@@ -19,6 +19,6 @@
   "homepage": "https://github.com/rickycodes/www#readme",
   "devDependencies": {
     "html-minifier-next": "^6.2.0",
-    "uglify-js": "^3.19.3"
+    "terser": "^5.46.2"
   }
 }

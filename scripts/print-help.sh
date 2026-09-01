@@ -17,7 +17,7 @@ OPTIONS:
                         (deploys site to ./target/deploy)
     --watch             Starts a local static server + rebuilds wasm on changes
                         (avoids cargo web start runtime panic)
-    --min, --minify     Minify deployed *.js files with uglify
+    --min, --minify     Minify deployed *.js files with terser
     --lint              Run shellcheck against project shell scripts
     --check-links       Check external links referenced in source/static assets
     --test              Run tests
