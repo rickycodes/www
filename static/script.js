@@ -17,14 +17,22 @@
     return url + (url.indexOf('?') === -1 ? '?v=' : '&v=') + buildVersion
   }
 
+  const loadImage = function (img) {
+    const src = img.getAttribute('data-src')
+    if (!src) return
+    img.setAttribute('src', src)
+    img.removeAttribute('data-src')
+  }
+
   const lazyLoadImages = function () {
     const lazyImages = [].slice.call(document.querySelectorAll('img[data-src]'))
+      .filter(img => !img.closest('.projects .project'))
     if ('IntersectionObserver' in window) {
       const lazyImageObserver = new IntersectionObserver(function (entries, observer) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             const lazyImage = entry.target
-            lazyImage.src = lazyImage.dataset.src
+            loadImage(lazyImage)
             lazyImageObserver.unobserve(lazyImage)
           }
         })
@@ -33,13 +41,39 @@
         lazyImageObserver.observe(img)
       })
     } else {
-      lazyImages.forEach(function (img) {
-        img.setAttribute('src', img.getAttribute('data-src'))
-        img.onload = function () {
-          this.removeAttribute('data-src')
-        }
-      })
+      lazyImages.forEach(loadImage)
     }
+  }
+
+  const preloadProjectImages = function (project) {
+    const images = [].slice.call(project.querySelectorAll('img[data-src]'))
+    images.forEach(loadImage)
+  }
+
+  const setupProjectImagePreloading = function () {
+    const projectFromHash = function (hash) {
+      const projectName = hash.charAt(0) === '#' ? hash.slice(1) : ''
+      if (!projectName) return null
+      return document.querySelector('.projects .project.' + projectName)
+    }
+    const preloadFromLink = function (link) {
+      const project = projectFromHash(link.getAttribute('href') || '')
+      if (project) preloadProjectImages(project)
+    }
+    const projectLinks = [].slice.call(document.querySelectorAll('._projects .project.link'))
+
+    projectLinks.forEach(function (link) {
+      link.addEventListener('pointerenter', function () { preloadFromLink(link) })
+      link.addEventListener('focus', function () { preloadFromLink(link) })
+    })
+
+    const preloadOpenProject = function () {
+      const project = projectFromHash(window.location.hash)
+      if (project) preloadProjectImages(project)
+    }
+
+    window.addEventListener('hashchange', preloadOpenProject)
+    preloadOpenProject()
   }
 
   const attachScript = function (source) {
@@ -192,6 +226,7 @@
     setupGTag()
     renderBuildMeta()
     lazyLoadImages()
+    setupProjectImagePreloading()
     attachScripts()
   }
 
