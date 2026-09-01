@@ -9,6 +9,10 @@ use crate::constants::{
     PROJECT_SELECTOR,
 };
 
+const TAB: &str = "Tab";
+const ACTIVE_DIALOG_SELECTOR: &str = "[data-project] .project.is-active";
+const FOCUSABLE_SELECTOR: &str = "a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex=\"-1\"])";
+
 fn set_active_project(selector: Option<&str>) {
     if let Some(active_project) = document().query_selector(ACTIVE_PROJECT_SELECTOR).unwrap() {
         let class = active_project
@@ -79,12 +83,10 @@ fn toggle(scroll_top: &mut Option<f64>, return_focus: &mut Option<HtmlElement>) 
 
 fn trap_focus(shift: bool) {
     js! { @(no_return)
-        const dialog = document.querySelector("[data-project] .project.is-active");
+        const dialog = document.querySelector(@{ACTIVE_DIALOG_SELECTOR});
         if (!dialog) return;
 
-        const focusable = dialog.querySelectorAll(
-            "a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex=\"-1\"])"
-        );
+        const focusable = dialog.querySelectorAll(@{FOCUSABLE_SELECTOR});
         if (focusable.length === 0) return;
 
         const first = focusable[0];
@@ -113,7 +115,7 @@ impl ToggleProject {
         window().add_event_listener(toggle_project_event);
 
         let keydown_event = move |event: KeyDownEvent| {
-            if get_hash() != EMPTY && event.key() == "Tab" {
+            if get_hash() != EMPTY && event.key() == TAB {
                 event.prevent_default();
                 trap_focus(event.shift_key());
             }
