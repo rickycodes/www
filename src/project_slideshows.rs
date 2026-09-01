@@ -159,8 +159,8 @@ impl SlideShows {
 
         // use keyboard to navigate
         let next_prev_click = |selector: &str| {
-            if let Ok(Some(_el)) = document().query_selector(selector) {
-                js!( document.querySelector(@{selector}).click(); );
+            if let Ok(Some(element)) = document().query_selector(selector) {
+                js!( @{element}.click(); );
             }
         };
 

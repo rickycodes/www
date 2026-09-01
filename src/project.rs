@@ -2,7 +2,7 @@ use crate::util::{get_hash, query_selector};
 use stdweb::traits::*;
 use stdweb::unstable::TryInto;
 use stdweb::web::event::{HashChangeEvent, KeyDownEvent};
-use stdweb::web::{document, window, HtmlElement};
+use stdweb::web::{document, window, Element, HtmlElement};
 
 use crate::constants::{
     ACTIVE, ACTIVE_PROJECT_SELECTOR, CLASS, DATA_PROJECT, DATA_SCROLL, EMPTY, INERT,
@@ -13,7 +13,7 @@ const TAB: &str = "Tab";
 const ACTIVE_DIALOG_SELECTOR: &str = "[data-project] .project.is-active";
 const FOCUSABLE_SELECTOR: &str = "a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex=\"-1\"])";
 
-fn set_active_project(selector: Option<&str>) {
+fn set_active_project(project: Option<Element>) {
     if let Some(active_project) = document().query_selector(ACTIVE_PROJECT_SELECTOR).unwrap() {
         let class = active_project
             .get_attribute(CLASS)
@@ -26,30 +26,28 @@ fn set_active_project(selector: Option<&str>) {
         active_project.set_attribute(INERT, EMPTY).unwrap();
     }
 
-    if let Some(selector) = selector {
-        if let Some(project) = document().query_selector(selector).unwrap() {
-            let class = project.get_attribute(CLASS).unwrap_or_default();
-            project
-                .set_attribute(CLASS, &format!("{} {}", class, ACTIVE))
-                .unwrap();
-            project.remove_attribute(INERT);
-            let project: HtmlElement = project.try_into().unwrap();
-            project.focus();
-        }
+    if let Some(project) = project {
+        let class = project.get_attribute(CLASS).unwrap_or_default();
+        project
+            .set_attribute(CLASS, &format!("{} {}", class, ACTIVE))
+            .unwrap();
+        project.remove_attribute(INERT);
+        let project: HtmlElement = project.try_into().unwrap();
+        project.focus();
     }
 }
 
 fn show(hash: String, scroll_top: &mut Option<f64>, return_focus: &mut Option<HtmlElement>) {
     let body = document().body().unwrap();
     let selector = &format!(".projects .project.{}", hash);
-    if document().query_selector(selector).unwrap().is_some() {
+    if let Some(project) = document().query_selector(selector).unwrap() {
         if let Some(opener) = document()
             .query_selector(&format!("._projects .project.link.{}", hash))
             .unwrap()
         {
             *return_focus = opener.try_into().ok();
         }
-        set_active_project(Some(selector));
+        set_active_project(Some(project));
         let top = window().page_y_offset();
         body.set_attribute(DATA_PROJECT, &hash).unwrap();
         *scroll_top = Some(top);

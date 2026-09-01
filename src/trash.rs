@@ -69,10 +69,8 @@ impl Trash {
             }
         }));
 
-        fn bind_link(link: Node) {
+        fn bind_link(link: Node, cursor: HtmlElement, coord: HtmlElement) {
             let el: HtmlElement = link.clone().try_into().unwrap();
-            let cursor = query_selector(CURSOR_SELECTOR);
-            let coord = query_selector(COORDINATE_SELECTOR);
             let cursor_for_drag = cursor.clone();
             let drag_event = move |event: DragEvent| {
                 let x = f64::from(event.client_x());
@@ -108,8 +106,9 @@ impl Trash {
             });
         }
 
+        let cursor = query_selector(CURSOR_SELECTOR);
         for link in node_list(LINK_SELECTOR) {
-            bind_link(link)
+            bind_link(link, cursor.clone(), coord.clone())
         }
 
         Self
