@@ -35,6 +35,11 @@
   transform: translate3d(0%,0,0) rotateX(0);
 }
 
+/* The dialog receives programmatic focus; its controls retain their own focus styles. */
+.projects .project:focus {
+  outline: none;
+}
+
 .projects .project .close-link {
   display: block;
   z-index: 3;
