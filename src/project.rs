@@ -82,25 +82,37 @@ fn toggle(scroll_top: &mut Option<f64>, return_focus: &mut Option<HtmlElement>) 
 }
 
 fn trap_focus(shift: bool) {
-    js! { @(no_return)
-        const dialog = document.querySelector(@{ACTIVE_DIALOG_SELECTOR});
-        if (!dialog) return;
+    let dialog = match document().query_selector(ACTIVE_DIALOG_SELECTOR).unwrap() {
+        Some(dialog) => dialog,
+        None => return,
+    };
 
-        const focusable = dialog.querySelectorAll(@{FOCUSABLE_SELECTOR});
-        if (focusable.length === 0) return;
-
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        const active = document.activeElement;
-
-        if (!dialog.contains(active)) {
-            ( @{shift} ? last : first ).focus();
-        } else if (active === first && @{shift}) {
-            last.focus();
-        } else if (active === last && !@{shift}) {
-            first.focus();
-        }
+    let focusable: Vec<HtmlElement> = dialog
+        .query_selector_all(FOCUSABLE_SELECTOR)
+        .unwrap()
+        .into_iter()
+        .filter_map(|node| node.try_into().ok())
+        .collect();
+    if focusable.is_empty() {
+        return;
     }
+
+    let focused_index = dialog
+        .query_selector(":focus")
+        .unwrap()
+        .and_then(|focused| {
+            focusable
+                .iter()
+                .position(|element| focused.as_ref() == element.as_ref())
+        });
+    let current_index = focused_index.unwrap_or(if shift { 0 } else { focusable.len() - 1 });
+    let target_index = if shift {
+        (current_index + focusable.len() - 1) % focusable.len()
+    } else {
+        (current_index + 1) % focusable.len()
+    };
+
+    focusable[target_index].focus();
 }
 
 pub(crate) struct ToggleProject;
