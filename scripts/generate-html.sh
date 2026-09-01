@@ -25,7 +25,8 @@ echo "Cat & minify HTML in ${partials_dir}..."
     --remove-redundant-attributes \
     --remove-script-type-attributes \
     --use-short-doctype \
-    --minify-css
+    --minify-css \
+    --minify-js
 } > "${output_path}"
 
 echo "HTML deployed to ${output_path}"
