@@ -117,15 +117,6 @@
           title: 'View this commit on GitHub'
         })
       }
-      if (meta.runner_os && meta.runner_arch) {
-        const runner = meta.runner_os + '/' + meta.runner_arch
-        items.push({ type: 'text', text: runner })
-      }
-      if (meta.cpu_cores) {
-        const cores = meta.cpu_cores + ' cores'
-        items.push({ type: 'text', text: cores })
-      }
-
       return items
     }
 
