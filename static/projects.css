@@ -25,7 +25,9 @@
   z-index: 2;
   overflow-y: scroll;
   transform: translate3d(100%,0,0) rotateX(0);
-  transition: transform var(--ease-out), background-color var(--ease-out), color var(--ease-out);
+  transition: transform var(--ease-out),
+	  background-color var(--ease-out),
+	  color var(--ease-out);
   background-color: var(--background);
   background-image: var(--page-background-image);
   background-repeat: var(--page-background-repeat);
