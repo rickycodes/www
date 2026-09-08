@@ -389,6 +389,14 @@ code {
     height: 260px;
   }
 
+  .colophon-list > div {
+    display: block;
+  }
+
+  .colophon-list dt {
+    margin-bottom: .5em;
+  }
+
   .cursor, .info, .coord {
     display: none;
   }

@@ -17,6 +17,7 @@ echo "Cat & minify HTML in ${partials_dir}..."
     "${partials_dir}/about.html" \
     "${partials_dir}/cv.html" \
     "${partials_dir}/copyright.html" \
+    "${partials_dir}/colophon.html" \
     "${projects_dir}"/* \
     "${partials_dir}/footer.html" | html-minifier-next \
     --collapse-whitespace \

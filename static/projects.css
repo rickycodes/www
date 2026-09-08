@@ -70,6 +70,36 @@
   padding-top: 0;
 }
 
+.projects .project.colophon .content {
+  max-width: 56rem;
+}
+
+.colophon-list {
+  margin: 2em 0 0;
+  padding: 0;
+  border-top: 2px solid var(--muted);
+}
+
+.colophon-list > div {
+  display: grid;
+  grid-template-columns: minmax(8em, 18%) 1fr;
+  gap: 1em;
+  padding: 1em 0;
+  border-bottom: 2px solid var(--muted);
+}
+
+.colophon-list dt {
+  font-family: var(--font-mono);
+}
+
+.colophon-list dd {
+  margin: 0;
+}
+
+.colophon-note {
+  font-size: .8em;
+}
+
 .projects .close {
   visibility: hidden;
   position: fixed;

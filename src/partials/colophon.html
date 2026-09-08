@@ -1,0 +1,34 @@
+<div class='project colophon' role='dialog' aria-modal='true' aria-labelledby='colophon-title' tabindex='-1' inert>
+  <a href='#' class='close-link' aria-label='Close colophon'>
+    <img width='300' height='300' alt='close' src='https://assets.ricky.codes/images/close.svg' />
+  </a>
+  <div class='content'>
+    <h2 id='colophon-title'>Colophon</h2>
+    <p>A small note about the machinery behind this website. It is hand-written, statically assembled, and served as a collection of files.</p>
+
+    <dl class='colophon-list'>
+      <div>
+        <dt>Front end</dt>
+        <dd>Semantic HTML, CSS, vanilla JavaScript, and a small Rust/WebAssembly layer for interaction.</dd>
+      </div>
+      <div>
+        <dt>Build</dt>
+        <dd><a href='https://www.rust-lang.org/'>Rust</a>, <a href='https://github.com/koute/stdweb'>stdweb</a>, and <a href='https://github.com/koute/cargo-web'>cargo-web</a> target <code>wasm32-unknown-unknown</code>. Bash scripts assemble the HTML, minify assets, and add the build revision.</dd>
+      </div>
+      <div>
+        <dt>Tooling</dt>
+        <dd><a href='https://github.com/terser/terser'>Terser</a> minifies the deploy JavaScript; <a href='https://github.com/terser/html-minifier-terser'>html-minifier-next</a> keeps the generated document compact.</dd>
+      </div>
+      <div>
+        <dt>Infra</dt>
+        <dd>Built and deployed with <a href='https://github.com/rickycodes/www/actions'>GitHub Actions</a> to GitHub Pages, with <code>ricky.codes</code> as the custom domain.</dd>
+      </div>
+      <div>
+        <dt>Source</dt>
+        <dd>The whole thing is open source on <a href='https://github.com/rickycodes/www'>GitHub</a>.</dd>
+      </div>
+    </dl>
+
+    <p class='colophon-note'>Fonts are <a href='https://fonts.google.com/specimen/IBM+Plex+Sans'>IBM Plex Sans</a> and <a href='https://fonts.google.com/specimen/IBM+Plex+Mono'>IBM Plex Mono</a>. Icons and cursors were made with <a href='https://hundredrabbits.itch.io/dotgrid'>Dotgrid</a>.</p>
+  </div>
+</div>
