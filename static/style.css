@@ -396,6 +396,14 @@ code {
     margin-left: 0;
   }
 
+  .content .link.project {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin-right: .75em;
+    margin-bottom: .75em;
+  }
+
   .slideshow {
     height: 260px;
   }
