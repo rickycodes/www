@@ -50,7 +50,7 @@
   position: absolute;
   width: 60px;
   height: 60px;
-  inset: 0 0 auto auto;
+  inset: 0 auto auto 0;
   transition: background-color var(--ease-out);
   background-color: var(--foreground);
 }
@@ -74,6 +74,11 @@
 
 .projects .project.colophon .content {
   max-width: 56rem;
+  padding-top: 2em;
+}
+
+.projects .project.colophon .content h2 {
+  margin-top: 4em;
 }
 
 .colophon-list {
