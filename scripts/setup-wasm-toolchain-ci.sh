@@ -24,4 +24,4 @@ fi
 wasm-bindgen --version
 
 sudo apt-get update
-sudo apt-get install -y binaryen wabt
+sudo apt-get install -y wabt

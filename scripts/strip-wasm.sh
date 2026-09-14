@@ -15,18 +15,7 @@ else
   echo "Stripped wasm binary: ${wasm_file}"
 fi
 
-if ! command -v wasm-opt >/dev/null 2>&1; then
-  echo "Skipping wasm-opt: wasm-opt is not installed."
-  exit 0
-fi
-
-# Further shrink and simplify the module (Binaryen). Current Rust and
-# wasm-bindgen output uses several post-MVP features (bulk memory, reference
-# types, sign extension, and saturating float conversions), so let Binaryen
-# enable all features while validating and optimizing the module.
-wasm-opt \
-  --all-features \
-  -Oz \
-  "${wasm_file}" \
-  -o "${wasm_file}"
-echo "Optimized wasm binary (-Oz): ${wasm_file}"
+# Rust's release profile already performs size optimization. Avoid a Binaryen
+# reserialization here: distro Binaryen versions can rewrite wasm-bindgen's
+# externref table in a way that fails during browser initialization.
+echo "Skipping wasm-opt: Rust release optimization preserves wasm-bindgen tables."

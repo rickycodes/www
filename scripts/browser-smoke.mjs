@@ -8,13 +8,27 @@ const browser = await chromium.launch({
 })
 const page = await browser.newPage()
 const pageErrors = []
+const consoleErrors = []
+const failedRequests = []
 
 page.on('pageerror', error => pageErrors.push(error.message))
-await page.goto(url, { waitUntil: 'networkidle' })
-await page.waitForFunction(() => {
-  const year = document.querySelector('.year')
-  return year && year.textContent.length === 4
+page.on('console', message => {
+  if (message.type() === 'error') consoleErrors.push(message.text())
 })
+page.on('requestfailed', request => {
+  failedRequests.push(`${request.method()} ${request.url()}: ${request.failure()?.errorText}`)
+})
+await page.goto(url, { waitUntil: 'networkidle' })
+try {
+  await page.waitForFunction(() => {
+    const year = document.querySelector('.year')
+    return year && year.textContent.length === 4
+  })
+} catch (error) {
+  await browser.close()
+  const diagnostics = [...pageErrors, ...consoleErrors, ...failedRequests]
+  throw new Error(`${error.message}${diagnostics.length ? `\n${diagnostics.join('\n')}` : ''}`)
+}
 
 const themeToggle = page.locator('.theme-toggle')
 const beforeTheme = await themeToggle.getAttribute('aria-pressed')
