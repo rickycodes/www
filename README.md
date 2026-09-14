@@ -1,6 +1,6 @@
 [![Build And Deploy Pages](https://github.com/rickycodes/www/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/rickycodes/www/actions) [![Shellcheck Status](https://img.shields.io/badge/Shellcheck-Passing-brightgreen)](https://github.com/rickycodes/www/actions/workflows/shellcheck.yml) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frickycodes%2Fwww.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frickycodes%2Fwww?ref=badge_shield)
 
-# <a href='https://ricky.codes'>ricky.codes</a>  
+# <a href='https://ricky.codes'>ricky.codes</a>
 
 ```
    +---------------+
@@ -18,62 +18,48 @@
 \_____________________/
 ```
 
-My personal website built with <a href='http://rust-lang.org/'>Rust</a> using <a href='https://github.com/koute/cargo-web'>cargo-web</a> and <a href='https://github.com/koute/stdweb'>stdweb</a>
+My personal website, built with <a href='https://www.rust-lang.org/'>Rust</a>, <a href='https://github.com/wasm-bindgen/wasm-bindgen'>wasm-bindgen</a>, and <a href='https://wasm-bindgen.github.io/wasm-bindgen/web-sys/index.html'>web-sys</a>.
 
-<img src='screenshot.png' />
+<img src='screenshot.png' alt='Screenshot of ricky.codes' />
 
-## Disclaimer
+## Prerequisites
 
-<a href='https://github.com/koute/stdweb'>stdweb</a> seems to be now defunct (hasn't been updated since 2019). You might be better off exploring alternatives like <a href='https://rustwasm.github.io/wasm-bindgen/'> wasm bingen</a>. That's what everyone else <a href='https://github.com/yewstack/yew/pull/1697'>is doing</a>.
+The repository pins stable Rust and the `wasm32-unknown-unknown` target in `rust-toolchain.toml`. Install the matching WebAssembly packager and the Node build tools:
 
-If you still want to play with this I am building it on `nightly-2019-08-01-x86_64-unknown-linux-gnu` re: <a href='https://github.com/rickycodes/www/issues/8#issuecomment-782784044'>#8</a>
+```sh
+cargo install wasm-bindgen-cli --version 0.2.128 --locked
+npm ci
+```
+
+`wasm-strip` from WABT and `wasm-opt` from Binaryen are optional local optimizers. The build continues when either one is unavailable.
 
 ## Build
-you will need <a href='https://github.com/koute/cargo-web'>`cargo web`</a>
 
-```
-cargo web build --target=wasm32-unknown-unknown
-```
-or you can use the handy <a href='./build.sh'>build script</a>:
-```
-bash build.sh
-```
-I haven't tested other targets, but <a href='https://emscripten.org'>emscripten</a> should work
+Generate the static HTML, compile Rust, package the browser-ready ES module, and minify the JavaScript:
 
-You should see something like:  
+```sh
+./build.sh
 ```
-warning: debug builds on the wasm32-unknown-unknown are currently totally broken
-         forcing a release build
-    Finished release [optimized] target(s) in 0.0 secs
-```
-## Running local web server
-```
-cargo web start --target=wasm32-unknown-unknown
-```
-or you can use the handy <a href='./build.sh'>build script</a>:
-```
-bash build.sh --watch
-```
-You should see something like:  
-```
-warning: debug builds on the wasm32-unknown-unknown are currently totally broken
-         forcing a release build
-    Finished release [optimized] target(s) in 0.0 secs
 
-If you need to serve any extra files put them in the 'static' directory
-in the root of your crate; they will be served alongside your application.
-You can also put a 'static' directory in your 'src' directory.
+The deployable site is written to `target/deploy`. Individual phases are also available:
 
-Your application is being served at '/rickycodes.js'. It will be automatically
-rebuilt if you make any changes in your code.
-
-You can access the web server at `http://[::1]:8000`.
+```sh
+./build.sh --generate
+./build.sh --build-wasm
+./build.sh --minify
+./build.sh --test
 ```
+
+## Run locally
+
+```sh
+./build.sh --watch
+```
+
+This builds the site and serves `target/deploy` at `http://127.0.0.1:8000`. If `watchexec` is installed, changes under `src` and `static` trigger a rebuild.
+
 ## License
 
-Licensed under
-
-  * MIT license ([LICENSE](LICENSE) or http://opensource.org/licenses/MIT)
-
+Licensed under the MIT license ([LICENSE](LICENSE) or <https://opensource.org/licenses/MIT>).
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frickycodes%2Fwww.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frickycodes%2Fwww?ref=badge_large)

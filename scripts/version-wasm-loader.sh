@@ -14,10 +14,9 @@ if [[ -z "${version}" ]]; then
   exit 1
 fi
 
-# Ensure wasm fetch URL is cache-busted with the current build version.
-# Handles both first-time patch and replacing an existing ?v= value.
+# Ensure the generated wasm fetch URL is cache-busted with the build revision.
 sed -E -i \
-  "s#rickycodes\\.wasm(\\?v=[^\"']*)?#rickycodes.wasm?v=${version}#g" \
+  "s#rickycodes_bg\\.wasm(\\?v=[^\"']*)?#rickycodes_bg.wasm?v=${version}#g" \
   "${loader_file}"
 
 echo "Versioned wasm loader in ${loader_file} with v=${version}"

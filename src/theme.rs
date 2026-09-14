@@ -1,12 +1,11 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use stdweb::web::event::ClickEvent;
-use stdweb::web::{document, window, HtmlElement};
-use stdweb::Mut;
-use stdweb::{js, traits::*, unstable::TryInto, Reference};
+use wasm_bindgen::JsCast;
+use web_sys::{HtmlElement, MediaQueryListEvent, MouseEvent, Storage};
 
 use crate::constants::{THEME_DARK, THEME_LIGHT, THEME_SELECTOR, THEME_STORAGE_KEY};
+use crate::util::{document, listen, window};
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 enum ThemePreference {
@@ -17,16 +16,9 @@ enum ThemePreference {
 
 impl ThemePreference {
     fn from_storage(value: Option<String>) -> Self {
-        match value {
-            Some(value) => {
-                if value == THEME_DARK {
-                    Self::Dark
-                } else if value == THEME_LIGHT {
-                    Self::Light
-                } else {
-                    Self::System
-                }
-            }
+        match value.as_deref() {
+            Some(THEME_DARK) => Self::Dark,
+            Some(THEME_LIGHT) => Self::Light,
             _ => Self::System,
         }
     }
@@ -46,14 +38,21 @@ struct ThemeState {
     dark: bool,
 }
 
+fn system_preference() -> Option<web_sys::MediaQueryList> {
+    window()
+        .match_media("(prefers-color-scheme: dark)")
+        .ok()
+        .flatten()
+}
+
 fn system_prefers_dark() -> bool {
-    js!( return window.matchMedia("(prefers-color-scheme: dark)").matches; )
-        .try_into()
+    system_preference()
+        .map(|query| query.matches())
         .unwrap_or(false)
 }
 
 fn set_theme(button: &HtmlElement, dark: bool) {
-    let document_element = document().document_element().unwrap();
+    let document_element = document().document_element().expect("document element");
     let theme = if dark { THEME_DARK } else { THEME_LIGHT };
     let label = if dark {
         "Switch to light mode"
@@ -62,33 +61,37 @@ fn set_theme(button: &HtmlElement, dark: bool) {
     };
     let icon = if dark { "🌚" } else { "🌞" };
 
-    document_element.set_attribute("data-theme", theme).unwrap();
-    button.set_attribute("aria-label", label).unwrap();
+    document_element
+        .set_attribute("data-theme", theme)
+        .expect("theme");
+    button
+        .set_attribute("aria-label", label)
+        .expect("theme label");
     button
         .set_attribute("aria-pressed", if dark { "true" } else { "false" })
-        .unwrap();
-    button.set_text_content(icon);
+        .expect("theme state");
+    button.set_text_content(Some(icon));
 }
 
 fn watch_system_preference(button: HtmlElement, state: Rc<RefCell<ThemeState>>) {
-    let callback = move |_event: Reference| {
-        let follows_system = state.borrow().preference == ThemePreference::System;
-        if follows_system {
-            let dark = system_prefers_dark();
-            state.borrow_mut().dark = dark;
-            set_theme(&button, dark);
-        }
+    let Some(media_query) = system_preference() else {
+        return;
     };
+    listen(
+        media_query.as_ref(),
+        "change",
+        move |event: MediaQueryListEvent| {
+            if state.borrow().preference == ThemePreference::System {
+                let dark = event.matches();
+                state.borrow_mut().dark = dark;
+                set_theme(&button, dark);
+            }
+        },
+    );
+}
 
-    js! {
-        var mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-        var listener = @{Mut(callback)};
-        if (mediaQuery.addEventListener) {
-            mediaQuery.addEventListener("change", listener);
-        } else {
-            mediaQuery.addListener(listener);
-        }
-    }
+fn local_storage() -> Option<Storage> {
+    window().local_storage().ok().flatten()
 }
 
 pub(crate) struct Theme;
@@ -97,12 +100,15 @@ impl Theme {
     pub(crate) fn new() -> Self {
         let button: HtmlElement = document()
             .query_selector(THEME_SELECTOR)
-            .unwrap()
+            .expect("theme selector")
             .expect("theme toggle")
-            .try_into()
-            .unwrap();
-        let storage = window().local_storage();
-        let preference = ThemePreference::from_storage(storage.get(THEME_STORAGE_KEY));
+            .dyn_into()
+            .expect("theme button");
+        let storage = local_storage();
+        let stored = storage
+            .as_ref()
+            .and_then(|storage| storage.get_item(THEME_STORAGE_KEY).ok().flatten());
+        let preference = ThemePreference::from_storage(stored);
         let dark = preference.is_dark().unwrap_or_else(system_prefers_dark);
         let state = Rc::new(RefCell::new(ThemeState { preference, dark }));
 
@@ -110,8 +116,7 @@ impl Theme {
         watch_system_preference(button.clone(), state.clone());
 
         let event_button = button.clone();
-        let event_storage = storage.clone();
-        button.add_event_listener(move |_event: ClickEvent| {
+        listen(button.as_ref(), "click", move |_event: MouseEvent| {
             let mut state = state.borrow_mut();
             state.dark = !state.dark;
             state.preference = if state.dark {
@@ -120,11 +125,13 @@ impl Theme {
                 ThemePreference::Light
             };
             set_theme(&event_button, state.dark);
-            event_button.blur();
-            let _ = event_storage.insert(
-                THEME_STORAGE_KEY,
-                if state.dark { THEME_DARK } else { THEME_LIGHT },
-            );
+            event_button.blur().expect("blur theme button");
+            if let Some(storage) = &storage {
+                let _ = storage.set_item(
+                    THEME_STORAGE_KEY,
+                    if state.dark { THEME_DARK } else { THEME_LIGHT },
+                );
+            }
         });
 
         Self

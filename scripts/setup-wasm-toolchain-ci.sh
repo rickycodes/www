@@ -1,15 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-rustup toolchain install nightly-2019-08-01 --profile minimal
-rustup target add wasm32-unknown-unknown --toolchain nightly-2019-08-01
-rustup toolchain install 1.63.0 --profile minimal
+wasm_bindgen_version="0.2.128"
 
-if command -v cargo-web >/dev/null 2>&1; then
-  cargo-web --version
-else
-  cargo +1.63.0 install cargo-web --version 0.6.26 --locked
+rustup toolchain install 1.98.1 \
+  --profile minimal \
+  --target wasm32-unknown-unknown \
+  --component clippy \
+  --component rustfmt
+
+installed_version=""
+if command -v wasm-bindgen >/dev/null 2>&1; then
+  installed_version="$(wasm-bindgen --version | awk '{print $2}')"
 fi
 
+if [[ "${installed_version}" != "${wasm_bindgen_version}" ]]; then
+  cargo +1.98.1 install wasm-bindgen-cli \
+    --version "${wasm_bindgen_version}" \
+    --locked \
+    --force
+fi
+
+wasm-bindgen --version
+
 sudo apt-get update
-sudo apt-get install -y wabt
+sudo apt-get install -y binaryen wabt

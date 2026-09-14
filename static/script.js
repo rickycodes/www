@@ -79,14 +79,15 @@
   const attachScript = function (source) {
     const script = document.createElement('script')
     script.setAttribute('src', source.src)
-    'type' in source && script.setAttribute('type', source.type)
+    if (source.module) script.setAttribute('type', 'module')
+    if (source.async) script.async = true
     document.body.appendChild(script)
   }
 
   const attachScripts = function () {
     const scripts = [
-      { src: withBuildVersion('detect.js') },
-      { type: 'async', src: 'https://www.googletagmanager.com/gtag/js?id=UA-71959023-1' }
+      { module: true, src: withBuildVersion('detect.js') },
+      { async: true, src: 'https://www.googletagmanager.com/gtag/js?id=UA-71959023-1' }
     ]
 
     scripts.forEach(attachScript)

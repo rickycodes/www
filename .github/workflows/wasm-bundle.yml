@@ -7,15 +7,15 @@ on:
     paths:
       - "Cargo.toml"
       - "Cargo.lock"
+      - "rust-toolchain.toml"
       - "src/*.rs"
       - "src/**/*.rs"
       - "build.sh"
-      - "scripts/assemble-deploy-from-cache.sh"
+      - "scripts/require-wasm-bindgen.sh"
       - "scripts/strip-wasm.sh"
       - "scripts/version-wasm-loader.sh"
       - "scripts/setup-wasm-toolchain-ci.sh"
       - ".github/workflows/wasm-bundle.yml"
-      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -37,17 +37,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Cache cargo-web binary
+      - name: Cache wasm-bindgen CLI
         uses: actions/cache@v5
         with:
-          path: ~/.cargo/bin/cargo-web
-          key: ${{ runner.os }}-cargo-web-0.6.26
+          path: ~/.cargo/bin/wasm-bindgen*
+          key: ${{ runner.os }}-wasm-bindgen-cli-0.2.128
 
       - name: Cache Rust dependencies/build
         uses: swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
         with:
           workspaces: ". -> target"
-          shared-key: "pages-nightly-2019-08-01"
+          shared-key: "pages-stable-1.98.1"
           cache-on-failure: true
 
       - name: Restore wasm bundle cache
@@ -55,18 +55,22 @@ jobs:
         uses: actions/cache@v5
         with:
           path: .ci-cache/wasm
-          key: ${{ runner.os }}-wasm-bundle-v2-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'src/*.rs', 'src/**/*.rs', 'build.sh', 'scripts/assemble-deploy-from-cache.sh', 'scripts/strip-wasm.sh', 'scripts/version-wasm-loader.sh', 'scripts/setup-wasm-toolchain-ci.sh', '.github/workflows/wasm-bundle.yml', '.github/workflows/pages.yml') }}
+          key: ${{ runner.os }}-wasm-bundle-v3-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'rust-toolchain.toml', 'src/*.rs', 'src/**/*.rs', 'build.sh', 'scripts/require-wasm-bindgen.sh', 'scripts/strip-wasm.sh', 'scripts/version-wasm-loader.sh', 'scripts/setup-wasm-toolchain-ci.sh', '.github/workflows/wasm-bundle.yml') }}
 
       - name: Setup wasm build toolchain
         run: bash scripts/setup-wasm-toolchain-ci.sh
 
+      - name: Check Rust
+        run: |
+          cargo fmt --all -- --check
+          cargo clippy --locked --target wasm32-unknown-unknown -- -D warnings
+          cargo test --locked
+
       - name: Build wasm bundle
-        env:
-          RUSTUP_TOOLCHAIN: nightly-2019-08-01
         run: |
           ./build.sh --build
           mkdir -p .ci-cache/wasm
-          cp target/deploy/rickycodes.wasm .ci-cache/wasm/rickycodes.wasm
+          cp target/deploy/rickycodes_bg.wasm .ci-cache/wasm/rickycodes_bg.wasm
           cp target/deploy/rickycodes.js .ci-cache/wasm/rickycodes.js
 
       - name: Upload wasm bundle artifact

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-wasm_file="${1:-target/deploy/rickycodes.wasm}"
+wasm_file="${1:-target/deploy/rickycodes_bg.wasm}"
 
 if [[ ! -f "${wasm_file}" ]]; then
   echo "error: ${wasm_file} not found."

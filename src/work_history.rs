@@ -1,59 +1,50 @@
-use stdweb::traits::*;
-use stdweb::unstable::TryInto;
-use stdweb::web::event::ClickEvent;
-use stdweb::web::{document, Element};
+use wasm_bindgen::JsCast;
+use web_sys::{Element, HtmlDetailsElement, MouseEvent};
 
 use crate::constants::{EMPTY, HASH, WORK_HISTORY};
-use crate::util::get_hash;
+use crate::util::{document, get_hash, listen, set_timeout, window};
 
-fn scroll_into_view(el: Element) {
-    js! { @(no_return)
-        let el = @{el};
-        setTimeout(() => {
-            el.scrollIntoView();
-        }, 10);
-    }
+fn scroll_into_view(element: Element) {
+    set_timeout(move || element.scroll_into_view(), 10);
 }
 
 pub(crate) struct WorkHistory;
 
 impl WorkHistory {
-    fn open_from_hash(details: Element) {
+    fn open_from_hash(details: &HtmlDetailsElement) {
         if get_hash() == WORK_HISTORY {
-            let details_for_js = details.clone();
-            js! { @(no_return)
-                let details = @{details_for_js};
-                details.open = true;
-            }
-            self::scroll_into_view(details);
+            details.set_open(true);
+            scroll_into_view(details.clone().into());
         }
     }
 
     pub(crate) fn new() -> Self {
-        let selector = format!(".{}", WORK_HISTORY);
-        let details = document().query_selector(&selector).unwrap().unwrap();
-        Self::open_from_hash(details.clone());
-        let click_event = enclose!( (details) move |_: ClickEvent| {
-            let clone = details.clone();
-            let is_open: bool = js!( return @{&details}.open; )
-                .try_into()
-                .unwrap();
+        let selector = format!(".{WORK_HISTORY}");
+        let details: HtmlDetailsElement = document()
+            .query_selector(&selector)
+            .expect("work history selector")
+            .expect("work history")
+            .dyn_into()
+            .expect("details element");
+        Self::open_from_hash(&details);
 
+        let event_details = details.clone();
+        listen(details.as_ref(), "click", move |_event: MouseEvent| {
+            let is_open = event_details.open();
             let hash = if is_open {
                 EMPTY.to_string()
             } else {
-                format!("{}{}", HASH, WORK_HISTORY)
+                format!("{HASH}{WORK_HISTORY}")
             };
-
-            js! { @(no_return)
-                window.location.hash = @{hash};
-            }
-
+            window()
+                .location()
+                .set_hash(&hash)
+                .expect("work history hash");
             if !is_open {
-                self::scroll_into_view(clone)
+                scroll_into_view(event_details.clone().into());
             }
         });
-        details.add_event_listener(click_event);
+
         Self
     }
 }

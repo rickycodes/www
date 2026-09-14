@@ -16,15 +16,15 @@ if [[ ${#js_files[@]} -eq 0 ]]; then
   exit 0
 fi
 
-# Remove noisy cargo-web wasm boot log before minifying.
-sed -i "s/\"Finished loading \Rust wasm module 'rickycodes'\"//g" "${deploy_dir}/rickycodes.js"
-
 for f in "${js_files[@]}"; do
   echo "    ${f}"
-  terser "$f" \
-    --compress \
-    --mangle \
-    --output "$f"
+  terser_args=(--compress --mangle --output "$f")
+  case "$(basename "$f")" in
+    detect.js|rickycodes.js)
+      terser_args+=(--module)
+      ;;
+  esac
+  terser "$f" "${terser_args[@]}"
 done
 
 echo "Minified ${#js_files[@]} JavaScript file(s)."

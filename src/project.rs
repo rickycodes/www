@@ -1,108 +1,108 @@
-use crate::util::{get_hash, query_selector};
-use stdweb::traits::*;
-use stdweb::unstable::TryInto;
-use stdweb::web::event::{HashChangeEvent, KeyDownEvent};
-use stdweb::web::{document, window, Element, HtmlElement};
+use wasm_bindgen::JsCast;
+use web_sys::{Element, HtmlElement, KeyboardEvent};
 
 use crate::constants::{
-    ACTIVE, ACTIVE_PROJECT_SELECTOR, CLASS, DATA_PROJECT, DATA_SCROLL, EMPTY, INERT,
-    PROJECT_SELECTOR,
+    ACTIVE, ACTIVE_PROJECT_SELECTOR, DATA_PROJECT, DATA_SCROLL, EMPTY, INERT, PROJECT_SELECTOR,
 };
+use crate::util::{document, get_hash, listen, query_selector, window};
 
 const TAB: &str = "Tab";
 const ACTIVE_DIALOG_SELECTOR: &str = "[data-project] .project.is-active";
 const FOCUSABLE_SELECTOR: &str = "a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex=\"-1\"])";
 
 fn set_active_project(project: Option<Element>) {
-    if let Some(active_project) = document().query_selector(ACTIVE_PROJECT_SELECTOR).unwrap() {
-        let class = active_project
-            .get_attribute(CLASS)
-            .unwrap_or_default()
-            .split_whitespace()
-            .filter(|class| *class != ACTIVE)
-            .collect::<Vec<_>>()
-            .join(" ");
-        active_project.set_attribute(CLASS, &class).unwrap();
-        active_project.set_attribute(INERT, EMPTY).unwrap();
+    if let Some(active_project) = document()
+        .query_selector(ACTIVE_PROJECT_SELECTOR)
+        .expect("active project selector")
+    {
+        active_project
+            .class_list()
+            .remove_1(ACTIVE)
+            .expect("active class");
+        active_project.set_attribute(INERT, EMPTY).expect("inert");
     }
 
     if let Some(project) = project {
-        let class = project.get_attribute(CLASS).unwrap_or_default();
-        project
-            .set_attribute(CLASS, &format!("{} {}", class, ACTIVE))
-            .unwrap();
-        project.remove_attribute(INERT);
-        let project: HtmlElement = project.try_into().unwrap();
-        project.focus();
+        project.class_list().add_1(ACTIVE).expect("active class");
+        project.remove_attribute(INERT).expect("remove inert");
+        let project: HtmlElement = project.dyn_into().expect("project HTML element");
+        project.focus().expect("focus project");
     }
 }
 
-fn show(hash: String, scroll_top: &mut Option<f64>, return_focus: &mut Option<HtmlElement>) {
-    let body = document().body().unwrap();
-    let selector = &format!(".projects .project.{}", hash);
-    if let Some(project) = document().query_selector(selector).unwrap() {
+fn show(hash: String, scroll_top: &mut Option<i32>, return_focus: &mut Option<HtmlElement>) {
+    let body = document().body().expect("body");
+    let selector = format!(".projects .project.{hash}");
+    if let Some(project) = document()
+        .query_selector(&selector)
+        .expect("project selector")
+    {
         if let Some(opener) = document()
-            .query_selector(&format!("._projects .project.link.{}", hash))
-            .unwrap()
+            .query_selector(&format!("._projects .project.link.{hash}"))
+            .expect("project opener selector")
         {
-            *return_focus = opener.try_into().ok();
+            *return_focus = opener.dyn_into().ok();
         }
         set_active_project(Some(project));
-        let top = window().page_y_offset();
-        body.set_attribute(DATA_PROJECT, &hash).unwrap();
+        let top = window().page_y_offset().unwrap_or_default() as i32;
+        body.set_attribute(DATA_PROJECT, &hash)
+            .expect("project state");
         *scroll_top = Some(top);
-        query_selector(PROJECT_SELECTOR).set_scroll_top(top)
+        query_selector(PROJECT_SELECTOR).set_scroll_top(top);
     }
 }
 
-fn hide(scroll_top: &mut Option<f64>, return_focus: &mut Option<HtmlElement>) {
-    let body = document().body().unwrap();
+fn hide(scroll_top: &mut Option<i32>, return_focus: &mut Option<HtmlElement>) {
+    let body = document().body().expect("body");
     set_active_project(None);
-    let top = scroll_top.take().unwrap_or(0.0);
-    body.remove_attribute(DATA_PROJECT);
+    let top = scroll_top.take().unwrap_or_default();
+    body.remove_attribute(DATA_PROJECT).expect("project state");
     if let Some(document_element) = document().document_element() {
+        let document_element: HtmlElement =
+            document_element.dyn_into().expect("document HTML element");
         document_element.set_scroll_top(top);
     }
     body.set_scroll_top(top);
-    body.remove_attribute(DATA_SCROLL);
+    body.remove_attribute(DATA_SCROLL).expect("scroll state");
     if let Some(opener) = return_focus.take() {
-        opener.focus();
+        opener.focus().expect("restore focus");
     }
 }
 
-fn toggle(scroll_top: &mut Option<f64>, return_focus: &mut Option<HtmlElement>) {
+fn toggle(scroll_top: &mut Option<i32>, return_focus: &mut Option<HtmlElement>) {
     let hash = get_hash();
     if hash != EMPTY {
-        show(hash, scroll_top, return_focus)
+        show(hash, scroll_top, return_focus);
     } else {
-        hide(scroll_top, return_focus)
+        hide(scroll_top, return_focus);
     }
 }
 
 fn trap_focus(shift: bool) {
-    let dialog = match document().query_selector(ACTIVE_DIALOG_SELECTOR).unwrap() {
-        Some(dialog) => dialog,
-        None => return,
+    let Some(dialog) = document()
+        .query_selector(ACTIVE_DIALOG_SELECTOR)
+        .expect("dialog selector")
+    else {
+        return;
     };
 
-    let focusable: Vec<HtmlElement> = dialog
+    let nodes = dialog
         .query_selector_all(FOCUSABLE_SELECTOR)
-        .unwrap()
-        .into_iter()
-        .filter_map(|node| node.try_into().ok())
+        .expect("focusable selector");
+    let focusable: Vec<HtmlElement> = (0..nodes.length())
+        .filter_map(|index| nodes.item(index))
+        .filter_map(|node| node.dyn_into().ok())
         .collect();
     if focusable.is_empty() {
         return;
     }
 
-    let focused_index = dialog
-        .query_selector(":focus")
-        .unwrap()
-        .and_then(|focused| {
-            focusable
-                .iter()
-                .position(|element| focused.as_ref() == element.as_ref())
-        });
+    let active = document().active_element();
+    let focused_index = active.and_then(|focused| {
+        focusable
+            .iter()
+            .position(|element| element.is_same_node(Some(&focused)))
+    });
     let current_index = focused_index.unwrap_or(if shift { 0 } else { focusable.len() - 1 });
     let target_index = if shift {
         (current_index + focusable.len() - 1) % focusable.len()
@@ -110,7 +110,9 @@ fn trap_focus(shift: bool) {
         (current_index + 1) % focusable.len()
     };
 
-    focusable[target_index].focus();
+    focusable[target_index]
+        .focus()
+        .expect("focus dialog control");
 }
 
 pub(crate) struct ToggleProject;
@@ -120,17 +122,20 @@ impl ToggleProject {
         let mut scroll_top = None;
         let mut return_focus = None;
         toggle(&mut scroll_top, &mut return_focus);
-        let toggle_project_event =
-            move |_event: HashChangeEvent| toggle(&mut scroll_top, &mut return_focus);
-        window().add_event_listener(toggle_project_event);
+        listen(
+            window().as_ref(),
+            "hashchange",
+            move |_event: web_sys::Event| {
+                toggle(&mut scroll_top, &mut return_focus);
+            },
+        );
 
-        let keydown_event = move |event: KeyDownEvent| {
+        listen(window().as_ref(), "keydown", move |event: KeyboardEvent| {
             if get_hash() != EMPTY && event.key() == TAB {
                 event.prevent_default();
                 trap_focus(event.shift_key());
             }
-        };
-        window().add_event_listener(keydown_event);
+        });
 
         Self
     }
