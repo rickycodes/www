@@ -20,6 +20,13 @@ if ! command -v wasm-opt >/dev/null 2>&1; then
   exit 0
 fi
 
-# Further shrink and simplify the module (Binaryen).
-wasm-opt -Oz "${wasm_file}" -o "${wasm_file}"
+# Further shrink and simplify the module (Binaryen). Current Rust and
+# wasm-bindgen output uses several post-MVP features (bulk memory, reference
+# types, sign extension, and saturating float conversions), so let Binaryen
+# enable all features while validating and optimizing the module.
+wasm-opt \
+  --all-features \
+  -Oz \
+  "${wasm_file}" \
+  -o "${wasm_file}"
 echo "Optimized wasm binary (-Oz): ${wasm_file}"
