@@ -85,6 +85,14 @@
   }
 
   const attachScripts = function () {
+    if (!('noModule' in HTMLScriptElement.prototype)) {
+      ;['._projects', '.projects', '.coord'].forEach(function (selector) {
+        const element = document.querySelector(selector)
+        if (element) element.style.display = 'none'
+      })
+      return
+    }
+
     const scripts = [
       { module: true, src: withBuildVersion('detect.js') },
       { async: true, src: 'https://www.googletagmanager.com/gtag/js?id=UA-71959023-1' }

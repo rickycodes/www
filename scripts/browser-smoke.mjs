@@ -11,6 +11,8 @@ const pageErrors = []
 const consoleErrors = []
 const failedRequests = []
 
+const diagnostics = () => [...pageErrors, ...consoleErrors, ...failedRequests]
+
 page.on('pageerror', error => pageErrors.push(error.message))
 page.on('console', message => {
   if (message.type() === 'error') consoleErrors.push(message.text())
@@ -18,40 +20,32 @@ page.on('console', message => {
 page.on('requestfailed', request => {
   failedRequests.push(`${request.method()} ${request.url()}: ${request.failure()?.errorText}`)
 })
-await page.goto(url, { waitUntil: 'networkidle' })
 try {
+  await page.goto(url, { waitUntil: 'domcontentloaded' })
   await page.waitForFunction(() => {
     const year = document.querySelector('.year')
     return year && year.textContent.length === 4
   })
+  const themeToggle = page.locator('.theme-toggle')
+  const beforeTheme = await themeToggle.getAttribute('aria-pressed')
+  await themeToggle.click()
+  const afterTheme = await themeToggle.getAttribute('aria-pressed')
+  if (beforeTheme === afterTheme) throw new Error('theme toggle did not update aria-pressed')
+
+  const projectLink = page.locator('._projects .project.link').first()
+  const projectHash = (await projectLink.getAttribute('href')).slice(1)
+  await projectLink.click()
+  await page.waitForFunction(hash => document.body.getAttribute('data-project') === hash, projectHash)
+
+  await page.keyboard.press('Escape')
+  await page.waitForFunction(() => !document.body.hasAttribute('data-project'))
 } catch (error) {
+  const details = diagnostics()
+  throw new Error(`${error.message}${details.length ? `\n${details.join('\n')}` : ''}`)
+} finally {
   await browser.close()
-  const diagnostics = [...pageErrors, ...consoleErrors, ...failedRequests]
-  throw new Error(`${error.message}${diagnostics.length ? `\n${diagnostics.join('\n')}` : ''}`)
 }
 
-const themeToggle = page.locator('.theme-toggle')
-const beforeTheme = await themeToggle.getAttribute('aria-pressed')
-await themeToggle.click()
-const afterTheme = await themeToggle.getAttribute('aria-pressed')
-if (beforeTheme === afterTheme) {
-  throw new Error('theme toggle did not update aria-pressed')
-}
-
-const projectLink = page.locator('._projects .project.link').first()
-const projectHash = (await projectLink.getAttribute('href')).slice(1)
-await projectLink.click()
-await page.waitForFunction(hash => {
-  return document.body.getAttribute('data-project') === hash
-}, projectHash)
-
-await page.keyboard.press('Escape')
-await page.waitForFunction(() => !document.body.hasAttribute('data-project'))
-
-await browser.close()
-
-if (pageErrors.length > 0) {
-  throw new Error(pageErrors.join(' | '))
-}
+if (pageErrors.length > 0) throw new Error(pageErrors.join(' | '))
 
 console.log('Browser smoke test passed: Wasm initialized, theme toggled, project opened and closed.')
