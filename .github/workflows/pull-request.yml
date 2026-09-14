@@ -2,17 +2,6 @@ name: Pull Request Validation
 
 on:
   pull_request:
-    paths:
-      - "Cargo.toml"
-      - "Cargo.lock"
-      - "rust-toolchain.toml"
-      - "src/**"
-      - "static/**"
-      - "package.json"
-      - "package-lock.json"
-      - "build.sh"
-      - "scripts/**"
-      - ".github/workflows/pull-request.yml"
   workflow_dispatch:
 
 permissions:
@@ -24,6 +13,7 @@ concurrency:
 
 jobs:
   validate:
+    name: Validate deployable bundle
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
