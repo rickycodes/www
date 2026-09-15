@@ -28,7 +28,9 @@ if [[ -n "${simple}" ]]; then
   fail "'Nothing in life is simple' test failed ${simple}"
 fi
 
-echo "Running cargo clean and cargo check"
-cargo clean && cargo check
+echo "Running Rust format, lint, and test checks"
+cargo fmt --all -- --check
+cargo clippy --locked --target wasm32-unknown-unknown -- -D warnings
+cargo test --locked
 
 echo "all tests passed!"

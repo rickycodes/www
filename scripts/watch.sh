@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "$ROOT_DIR"
+root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "${root_dir}"
 
-sh scripts/require-cargo-web.sh
+sh scripts/require-wasm-bindgen.sh
 
 echo "Starting local server with rebuild loop..."
-cargo web deploy --target=wasm32-unknown-unknown || exit 1
+./build.sh --generate --build
 
 server_port="${SERVER_PORT:-8000}"
 
@@ -24,11 +24,16 @@ trap 'kill "${server_pid}" 2>/dev/null' EXIT INT TERM
 echo "Serving ./target/deploy at http://127.0.0.1:${server_port}"
 
 if command -v watchexec >/dev/null 2>&1; then
-  echo "Watching src/, static/, Cargo.toml via watchexec..."
-  watchexec -w src -w static -w Cargo.toml -- cargo web deploy --target=wasm32-unknown-unknown
+  echo "Watching src/, static/, Cargo.toml, and rust-toolchain.toml..."
+  watchexec \
+    -w src \
+    -w static \
+    -w Cargo.toml \
+    -w rust-toolchain.toml \
+    -- ./build.sh --build
 else
   echo "watchexec is not installed; watching is disabled."
-  echo "Install with: cargo +stable install watchexec-cli"
+  echo "Install with: cargo install watchexec-cli"
   echo "Server is running; press Ctrl+C to stop."
   wait "${server_pid}"
 fi

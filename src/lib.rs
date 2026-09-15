@@ -2,11 +2,6 @@
 #![deny(missing_debug_implementations, nonstandard_style)]
 #![warn(unreachable_pub, future_incompatible, rust_2018_idioms)]
 
-#[macro_use]
-extern crate stdweb;
-
-#[macro_use]
-mod enclose;
 mod constants;
 mod coordinates;
 mod cursors;
@@ -38,8 +33,6 @@ impl Website {
     }
 
     fn initialize(self) -> Self {
-        stdweb::initialize();
-
         SlideShows::new();
         Links::new();
         Coordinates::new();
@@ -51,18 +44,14 @@ impl Website {
         self
     }
 
-    fn event_loop(self) -> Self {
-        stdweb::event_loop();
-        self
-    }
-
     fn new() -> Self {
         log();
         Self
     }
 }
 
-fn main() {
+#[wasm_bindgen::prelude::wasm_bindgen(start)]
+pub fn start() {
     // welcome to my homepage i kiss you
-    Website::new().initialize().set_date().event_loop();
+    Website::new().initialize().set_date();
 }

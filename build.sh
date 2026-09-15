@@ -50,11 +50,19 @@ gen() {
 }
 
 build() {
-    sh scripts/require-cargo-web.sh
-    # build
-    echo 'Building...'
-    cargo web deploy --release --target=wasm32-unknown-unknown
-    bash scripts/strip-wasm.sh "target/deploy/rickycodes.wasm"
+    sh scripts/require-wasm-bindgen.sh
+    echo 'Building Rust/WebAssembly bundle...'
+    cargo build --locked --release --target=wasm32-unknown-unknown
+    rm -rf target/deploy
+    mkdir -p target/deploy
+    cp -R static/. target/deploy/
+    wasm-bindgen \
+        target/wasm32-unknown-unknown/release/rickycodes.wasm \
+        --out-dir target/deploy \
+        --out-name rickycodes \
+        --target web \
+        --no-typescript
+    bash scripts/strip-wasm.sh "target/deploy/rickycodes_bg.wasm"
     git_sha="$GIT_SHA"
     bash scripts/version-wasm-loader.sh "target/deploy/rickycodes.js" "$git_sha"
 }

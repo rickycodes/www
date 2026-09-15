@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-wasm_file="${1:-target/deploy/rickycodes.wasm}"
+wasm_file="${1:-target/deploy/rickycodes_bg.wasm}"
 
 if [[ ! -f "${wasm_file}" ]]; then
   echo "error: ${wasm_file} not found."
@@ -15,11 +15,7 @@ else
   echo "Stripped wasm binary: ${wasm_file}"
 fi
 
-if ! command -v wasm-opt >/dev/null 2>&1; then
-  echo "Skipping wasm-opt: wasm-opt is not installed."
-  exit 0
-fi
-
-# Further shrink and simplify the module (Binaryen).
-wasm-opt -Oz "${wasm_file}" -o "${wasm_file}"
-echo "Optimized wasm binary (-Oz): ${wasm_file}"
+# Rust's release profile already performs size optimization. Avoid a Binaryen
+# reserialization here: distro Binaryen versions can rewrite wasm-bindgen's
+# externref table in a way that fails during browser initialization.
+echo "Skipping wasm-opt: Rust release optimization preserves wasm-bindgen tables."

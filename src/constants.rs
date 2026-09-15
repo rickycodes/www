@@ -106,14 +106,14 @@ text-shadow: 0 0 0.05em #fff, 0 0 0.2em #fe05e1, 0 0 0.3em #fe05e1;
 transform: rotate(-7deg);";
 
 pub(crate) fn log() {
-    console!(log, "%c welcome to my homepage", CONSOLE_STYLE);
-    console!(
-        log,
-        "The original Magic Kitty™ is an oracle that lets anyone seek advice about their future!"
+    web_sys::console::log_2(&"%c welcome to my homepage".into(), &CONSOLE_STYLE.into());
+    web_sys::console::log_1(
+        &"The original Magic Kitty™ is an oracle that lets anyone seek advice about their future!"
+            .into(),
     );
-    console!(
-        log,
-        "All you have to do is “ask()” any yes or no question and your answer will be revealed."
+    web_sys::console::log_1(
+        &"All you have to do is “ask()” any yes or no question and your answer will be revealed."
+            .into(),
     );
-    console!(log, "example: ask('will i be pretty?')")
+    web_sys::console::log_1(&"example: ask('will i be pretty?')".into());
 }
