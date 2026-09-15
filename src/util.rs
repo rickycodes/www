@@ -4,7 +4,7 @@ use std::rc::Rc;
 use wasm_bindgen::JsCast;
 use wasm_bindgen::closure::Closure;
 use wasm_bindgen::convert::FromWasmAbi;
-use web_sys::{Document, EventTarget, HtmlElement, Window};
+use web_sys::{Document, Element, EventTarget, HtmlElement, NodeList, Window};
 
 use crate::constants::{A, BUTTON, CLASS, EMPTY, HASH, HREF, POOP, TYPE, YEAR_SELECTOR};
 
@@ -64,14 +64,18 @@ impl PointerState {
     }
 }
 
-pub(crate) fn node_list(selector: &str) -> Vec<web_sys::Element> {
-    let nodes = document()
-        .query_selector_all(selector)
-        .expect("valid selector");
+pub(crate) fn elements(nodes: NodeList) -> Vec<Element> {
     (0..nodes.length())
         .filter_map(|index| nodes.item(index))
         .filter_map(|node| node.dyn_into().ok())
         .collect()
+}
+
+pub(crate) fn node_list(selector: &str) -> Vec<Element> {
+    let nodes = document()
+        .query_selector_all(selector)
+        .expect("valid selector");
+    elements(nodes)
 }
 
 pub(crate) fn create_element(element_type: &str, class: &str) -> HtmlElement {
