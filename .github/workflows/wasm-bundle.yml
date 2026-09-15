@@ -67,11 +67,17 @@ jobs:
           cargo test --locked
 
       - name: Build wasm bundle
+        if: steps.wasm_bundle_cache.outputs.cache-hit != 'true'
         run: |
           ./build.sh --build
           mkdir -p .ci-cache/wasm
           cp target/deploy/rickycodes_bg.wasm .ci-cache/wasm/rickycodes_bg.wasm
           cp target/deploy/rickycodes.js .ci-cache/wasm/rickycodes.js
+
+      - name: Verify wasm bundle cache
+        run: |
+          test -s .ci-cache/wasm/rickycodes_bg.wasm
+          test -s .ci-cache/wasm/rickycodes.js
 
       - name: Upload wasm bundle artifact
         uses: actions/upload-artifact@v6
