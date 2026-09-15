@@ -43,10 +43,12 @@ const hideInteractiveElements = function () {
 
 if (featureKey in window) {
   try {
-    const response = await fetch(withBuildVersion(ASCII))
+    const [response, module] = await Promise.all([
+      fetch(withBuildVersion(ASCII)),
+      import(withBuildVersion('./rickycodes.js'))
+    ])
     console.log(await response.text())
 
-    const module = await import(withBuildVersion('./rickycodes.js'))
     await module.default({ module_or_path: withBuildVersion('./rickycodes_bg.wasm') })
   } catch (error) {
     console.error('Unable to initialize the WebAssembly application.', error)
