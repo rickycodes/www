@@ -6,7 +6,10 @@ use wasm_bindgen::closure::Closure;
 use wasm_bindgen::convert::FromWasmAbi;
 use web_sys::{Document, Element, EventTarget, HtmlElement, NodeList, Window};
 
-use crate::constants::{A, BUTTON, CLASS, EMPTY, HASH, HREF, POOP, TYPE, YEAR_SELECTOR};
+use crate::constants::{
+    A, BUTTON, CLASS, EMPTY, EXPECT_HTML_ELEMENT, EXPECT_SELECTOR, HASH, HREF, POOP, TYPE,
+    YEAR_SELECTOR,
+};
 
 pub(crate) fn window() -> Window {
     web_sys::window().expect("window")
@@ -74,7 +77,7 @@ pub(crate) fn elements(nodes: NodeList) -> Vec<Element> {
 pub(crate) fn node_list(selector: &str) -> Vec<Element> {
     let nodes = document()
         .query_selector_all(selector)
-        .expect("valid selector");
+        .expect(EXPECT_SELECTOR);
     elements(nodes)
 }
 
@@ -83,7 +86,7 @@ pub(crate) fn create_element(element_type: &str, class: &str) -> HtmlElement {
         .create_element(element_type)
         .expect("create element")
         .dyn_into()
-        .expect("HTML element");
+        .expect(EXPECT_HTML_ELEMENT);
     if element_type == A {
         el.set_attribute(HREF, HASH).expect("href");
     }
@@ -105,10 +108,10 @@ pub(crate) fn get_hash() -> String {
 pub(crate) fn query_selector(selector: &str) -> HtmlElement {
     document()
         .query_selector(selector)
-        .expect("valid selector")
+        .expect(EXPECT_SELECTOR)
         .expect(POOP)
         .dyn_into()
-        .expect("HTML element")
+        .expect(EXPECT_HTML_ELEMENT)
 }
 
 pub(crate) fn try_query_selector(selector: &str) -> Option<HtmlElement> {

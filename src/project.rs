@@ -2,7 +2,8 @@ use wasm_bindgen::JsCast;
 use web_sys::{Element, HtmlElement, KeyboardEvent};
 
 use crate::constants::{
-    ACTIVE, ACTIVE_PROJECT_SELECTOR, DATA_PROJECT, DATA_SCROLL, EMPTY, INERT, PROJECT_SELECTOR,
+    ACTIVE, ACTIVE_PROJECT_SELECTOR, DATA_PROJECT, DATA_SCROLL, EMPTY, EXPECT_ACTIVE_CLASS,
+    EXPECT_BODY, EXPECT_HTML_ELEMENT, EXPECT_PROJECT_STATE, INERT, PROJECT_SELECTOR,
 };
 use crate::util::{document, get_hash, listen, query_selector, window};
 
@@ -18,20 +19,23 @@ fn set_active_project(project: Option<Element>) {
         active_project
             .class_list()
             .remove_1(ACTIVE)
-            .expect("active class");
+            .expect(EXPECT_ACTIVE_CLASS);
         active_project.set_attribute(INERT, EMPTY).expect("inert");
     }
 
     if let Some(project) = project {
-        project.class_list().add_1(ACTIVE).expect("active class");
+        project
+            .class_list()
+            .add_1(ACTIVE)
+            .expect(EXPECT_ACTIVE_CLASS);
         project.remove_attribute(INERT).expect("remove inert");
-        let project: HtmlElement = project.dyn_into().expect("project HTML element");
+        let project: HtmlElement = project.dyn_into().expect(EXPECT_HTML_ELEMENT);
         project.focus().expect("focus project");
     }
 }
 
 fn show(hash: String, scroll_top: &mut Option<i32>, return_focus: &mut Option<HtmlElement>) {
-    let body = document().body().expect("body");
+    let body = document().body().expect(EXPECT_BODY);
     let selector = format!(".projects .project.{hash}");
     if let Some(project) = document()
         .query_selector(&selector)
@@ -53,10 +57,11 @@ fn show(hash: String, scroll_top: &mut Option<i32>, return_focus: &mut Option<Ht
 }
 
 fn hide(scroll_top: &mut Option<i32>, return_focus: &mut Option<HtmlElement>) {
-    let body = document().body().expect("body");
+    let body = document().body().expect(EXPECT_BODY);
     set_active_project(None);
     let top = scroll_top.take().unwrap_or_default();
-    body.remove_attribute(DATA_PROJECT).expect("project state");
+    body.remove_attribute(DATA_PROJECT)
+        .expect(EXPECT_PROJECT_STATE);
     if let Some(document_element) = document().document_element() {
         let document_element: HtmlElement =
             document_element.dyn_into().expect("document HTML element");

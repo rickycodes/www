@@ -22,6 +22,7 @@ pub(crate) const NEXT: &str = "next";
 pub(crate) const PREV: &str = "prev";
 pub(crate) const ESC: &str = "Escape";
 pub(crate) const DATA_INDEX: &str = "data-index";
+pub(crate) const DATA_THEME: &str = "data-theme";
 pub(crate) const DATA_PROJECT: &str = "data-project";
 pub(crate) const DATA_SCROLL: &str = "data-scroll";
 pub(crate) const HIDDEN: &str = "hidden";
@@ -69,6 +70,17 @@ pub(crate) const SLIDESHOW_SELECTOR: &str = ".slideshow";
 pub(crate) const SLIDE: &str = "slide";
 pub(crate) const ACTIVE: &str = "is-active";
 pub(crate) const YEAR_SELECTOR: &str = ".year";
+
+// Shared panic context for invariant DOM operations.
+pub(crate) const EXPECT_ACTIVE_CLASS: &str = "active class";
+pub(crate) const EXPECT_BODY: &str = "body";
+pub(crate) const EXPECT_CONTROL_STATE: &str = "control state";
+pub(crate) const EXPECT_CURSOR_CLASS: &str = "cursor class";
+pub(crate) const EXPECT_HTML_ELEMENT: &str = "HTML element";
+pub(crate) const EXPECT_INFO_CLASS: &str = "info class";
+pub(crate) const EXPECT_PROJECT_STATE: &str = "project state";
+pub(crate) const EXPECT_SELECTOR: &str = "valid selector";
+pub(crate) const EXPECT_SLIDESHOW_INDEX: &str = "slideshow index";
 
 pub(crate) struct CursorAttributes {
     pub(crate) selector: &'static str,

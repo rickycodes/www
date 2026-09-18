@@ -3,15 +3,15 @@ use web_sys::{HtmlElement, KeyboardEvent, MouseEvent};
 
 use crate::constants::{
     ACTIVE, ARIA_LABEL, ARIA_PRESSED, ARROW_LEFT, ARROW_RIGHT, BUTTON, CLASS, CONTROLS, DATA_INDEX,
-    DATA_PROJECT, DIV, EMPTY, ESC, LINK, NEXT, NEXT_SLIDE_ARIA_LABEL, PREV,
-    PREVIOUS_SLIDE_ARIA_LABEL, SLIDE, SLIDESHOW_SELECTOR,
+    DATA_PROJECT, DIV, EMPTY, ESC, EXPECT_CONTROL_STATE, EXPECT_SLIDESHOW_INDEX, LINK, NEXT,
+    NEXT_SLIDE_ARIA_LABEL, PREV, PREVIOUS_SLIDE_ARIA_LABEL, SLIDE, SLIDESHOW_SELECTOR,
 };
 use crate::util::{create_element, document, elements, listen, node_list, window};
 
 fn get_data_index(element: &HtmlElement) -> usize {
     element
         .get_attribute(DATA_INDEX)
-        .expect("slideshow index")
+        .expect(EXPECT_SLIDESHOW_INDEX)
         .parse()
         .expect("numeric slideshow index")
 }
@@ -45,7 +45,7 @@ fn set_active(slides: &[HtmlElement], controls: &[HtmlElement], index: usize) {
                     "false"
                 },
             )
-            .expect("control state");
+            .expect(EXPECT_CONTROL_STATE);
     }
 }
 
@@ -64,7 +64,7 @@ impl Controls {
                 .expect("control label");
             control
                 .set_attribute(ARIA_PRESSED, if index == 0 { "true" } else { "false" })
-                .expect("control state");
+                .expect(EXPECT_CONTROL_STATE);
             controls.push(control.clone());
             controls_element
                 .append_child(&control)
@@ -79,7 +79,7 @@ impl Controls {
                 event.prevent_default();
                 slideshow
                     .set_attribute(DATA_INDEX, &index.to_string())
-                    .expect("slideshow index");
+                    .expect(EXPECT_SLIDESHOW_INDEX);
                 set_active(&slides, &controls, index);
             });
         }
@@ -110,7 +110,7 @@ fn bind_direction(
         let increment = get_increment(direction, get_data_index(&slideshow), last);
         slideshow
             .set_attribute(DATA_INDEX, &increment.to_string())
-            .expect("slideshow index");
+            .expect(EXPECT_SLIDESHOW_INDEX);
         set_active(&slides, &controls, increment);
     });
 }

@@ -4,7 +4,10 @@ use std::rc::Rc;
 use wasm_bindgen::JsCast;
 use web_sys::{HtmlElement, MediaQueryListEvent, MouseEvent, Storage};
 
-use crate::constants::{THEME_DARK, THEME_LIGHT, THEME_SELECTOR, THEME_STORAGE_KEY};
+use crate::constants::{
+    ARIA_LABEL, ARIA_PRESSED, DATA_THEME, THEME_DARK, THEME_LIGHT, THEME_SELECTOR,
+    THEME_STORAGE_KEY,
+};
 use crate::util::{document, listen, window};
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -62,13 +65,13 @@ fn set_theme(button: &HtmlElement, dark: bool) {
     let icon = if dark { "🌚" } else { "🌞" };
 
     document_element
-        .set_attribute("data-theme", theme)
+        .set_attribute(DATA_THEME, theme)
         .expect("theme");
     button
-        .set_attribute("aria-label", label)
+        .set_attribute(ARIA_LABEL, label)
         .expect("theme label");
     button
-        .set_attribute("aria-pressed", if dark { "true" } else { "false" })
+        .set_attribute(ARIA_PRESSED, if dark { "true" } else { "false" })
         .expect("theme state");
     button.set_text_content(Some(icon));
 }
@@ -125,7 +128,7 @@ impl Theme {
                 ThemePreference::Light
             };
             set_theme(&event_button, state.dark);
-            event_button.blur().expect("blur theme button");
+            let _ = event_button.blur();
             if let Some(storage) = &storage {
                 let _ = storage.set_item(
                     THEME_STORAGE_KEY,

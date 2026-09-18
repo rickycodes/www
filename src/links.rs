@@ -2,20 +2,20 @@ use wasm_bindgen::JsCast;
 use web_sys::{HtmlElement, MouseEvent, Node};
 
 use crate::constants::{
-    BLANK, HIDDEN, INFO_LINKS_SELECTOR, INFO_SELECTOR, NAME, NOOPENER, NOT_PROJECT_SELECTOR,
-    PROJECT_LINK_SELECTOR, REL, TARGET, TITLE,
+    BLANK, EXPECT_INFO_CLASS, HIDDEN, INFO_LINKS_SELECTOR, INFO_SELECTOR, NAME, NOOPENER,
+    NOT_PROJECT_SELECTOR, PROJECT_LINK_SELECTOR, REL, TARGET, TITLE,
 };
 use crate::util::{get_range, listen, node_list, query_selector};
 
 fn show_info(attribute: &str, el: &HtmlElement, info: &HtmlElement) {
     if let Some(attr_value) = el.get_attribute(attribute) {
         info.set_text_content(Some(&attr_value));
-        info.class_list().remove_1(HIDDEN).expect("info class");
+        info.class_list().remove_1(HIDDEN).expect(EXPECT_INFO_CLASS);
     }
 }
 
 fn hide_info(info: &HtmlElement) {
-    info.class_list().add_1(HIDDEN).expect("info class");
+    info.class_list().add_1(HIDDEN).expect(EXPECT_INFO_CLASS);
 }
 
 pub(crate) struct Links;
