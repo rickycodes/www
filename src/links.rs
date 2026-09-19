@@ -2,8 +2,8 @@ use wasm_bindgen::JsCast;
 use web_sys::{HtmlElement, MouseEvent, Node};
 
 use crate::constants::{
-    BLANK, EXPECT_INFO_CLASS, HIDDEN, INFO_LINKS_SELECTOR, INFO_SELECTOR, NAME, NOOPENER,
-    NOT_PROJECT_SELECTOR, PROJECT_LINK_SELECTOR, REL, TARGET, TITLE,
+    BLANK, EXPECT_INFO_CLASS, HIDDEN, INFO_LINKS_SELECTOR, INFO_SELECTOR, MOUSEOUT, MOUSEOVER,
+    NAME, NOOPENER, NOT_PROJECT_SELECTOR, PROJECT_LINK_SELECTOR, REL, TARGET, TITLE,
 };
 use crate::util::{get_range, listen, node_list, query_selector};
 
@@ -51,13 +51,13 @@ impl Links {
             let el: HtmlElement = link.dyn_into().expect("info link");
             let info_for_over = info.clone();
             let el_for_over = el.clone();
-            listen(el.as_ref(), "mouseover", move |_event: MouseEvent| {
+            listen(el.as_ref(), MOUSEOVER, move |_event: MouseEvent| {
                 show_info(NAME, &el_for_over, &info_for_over);
                 show_info(TITLE, &el_for_over, &info_for_over);
             });
 
             let info_for_out = info.clone();
-            listen(el.as_ref(), "mouseout", move |_event: MouseEvent| {
+            listen(el.as_ref(), MOUSEOUT, move |_event: MouseEvent| {
                 hide_info(&info_for_out);
             });
         }

@@ -2,7 +2,8 @@ use wasm_bindgen::JsCast;
 use web_sys::{HtmlElement, MouseEvent};
 
 use crate::constants::{
-    CLOSE, CLOSE_SELECTOR, CURSOR_SELECTOR, CURSORS_ATTRIBUTES, EXPECT_CURSOR_CLASS, STYLE,
+    CLOSE, CLOSE_SELECTOR, CURSOR_SELECTOR, CURSORS_ATTRIBUTES, EXPECT_CURSOR_CLASS, MOUSEOUT,
+    MOUSEOVER, STYLE,
 };
 use crate::util::{PointerState, listen, node_list, query_selector, window};
 
@@ -11,7 +12,7 @@ struct Cursor;
 impl Cursor {
     fn new(el: &HtmlElement, cursor: &HtmlElement, classname: &'static str) -> Self {
         let cursor_for_over = cursor.clone();
-        listen(el.as_ref(), "mouseover", move |_event: MouseEvent| {
+        listen(el.as_ref(), MOUSEOVER, move |_event: MouseEvent| {
             cursor_for_over
                 .class_list()
                 .add_1(classname)
@@ -19,7 +20,7 @@ impl Cursor {
         });
 
         let cursor_for_out = cursor.clone();
-        listen(el.as_ref(), "mouseout", move |_event: MouseEvent| {
+        listen(el.as_ref(), MOUSEOUT, move |_event: MouseEvent| {
             cursor_for_out
                 .class_list()
                 .remove_1(classname)
