@@ -19,6 +19,7 @@ pub(crate) fn document() -> Document {
     window().document().expect("document")
 }
 
+/// Registers a typed JavaScript callback and keeps it alive for the page lifetime.
 pub(crate) fn listen<E, F>(target: &EventTarget, event_type: &str, handler: F)
 where
     E: FromWasmAbi + JsCast + 'static,
@@ -67,7 +68,7 @@ impl PointerState {
     }
 }
 
-pub(crate) fn elements(nodes: NodeList) -> Vec<Element> {
+pub(crate) fn elements_from_nodes(nodes: NodeList) -> Vec<Element> {
     (0..nodes.length())
         .filter_map(|index| nodes.item(index))
         .filter_map(|node| node.dyn_into().ok())
@@ -78,7 +79,7 @@ pub(crate) fn node_list(selector: &str) -> Vec<Element> {
     let nodes = document()
         .query_selector_all(selector)
         .expect(EXPECT_SELECTOR);
-    elements(nodes)
+    elements_from_nodes(nodes)
 }
 
 pub(crate) fn create_element(element_type: &str, class: &str) -> HtmlElement {

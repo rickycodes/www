@@ -6,7 +6,7 @@ use crate::constants::{
     DATA_PROJECT, DIV, EMPTY, ESC, EXPECT_CONTROL_STATE, EXPECT_SLIDESHOW_INDEX, LINK, NEXT,
     NEXT_SLIDE_ARIA_LABEL, PREV, PREVIOUS_SLIDE_ARIA_LABEL, SLIDE, SLIDESHOW_SELECTOR,
 };
-use crate::util::{create_element, document, elements, listen, node_list, window};
+use crate::util::{create_element, document, elements_from_nodes, listen, node_list, window};
 
 fn get_data_index(element: &HtmlElement) -> usize {
     element
@@ -122,7 +122,7 @@ impl SlideShows {
         for slideshow in node_list(SLIDESHOW_SELECTOR) {
             let slideshow: HtmlElement = slideshow.dyn_into().expect("slideshow");
             let children = slideshow.child_nodes();
-            let slides: Vec<HtmlElement> = elements(children)
+            let slides: Vec<HtmlElement> = elements_from_nodes(children)
                 .into_iter()
                 .filter(|node| node.node_name() == "DIV")
                 .map(|node| node.dyn_into().expect("slide"))

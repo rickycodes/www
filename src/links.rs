@@ -18,6 +18,33 @@ fn hide_info(info: &HtmlElement) {
     info.class_list().add_1(HIDDEN).expect(EXPECT_INFO_CLASS);
 }
 
+fn bind_info_link(link: HtmlElement, info: HtmlElement) {
+    let info_for_over = info.clone();
+    let link_for_over = link.clone();
+    listen(link.as_ref(), MOUSEOVER, move |_event: MouseEvent| {
+        show_info(NAME, &link_for_over, &info_for_over);
+        show_info(TITLE, &link_for_over, &info_for_over);
+    });
+
+    listen(link.as_ref(), MOUSEOUT, move |_event: MouseEvent| {
+        hide_info(&info);
+    });
+}
+
+fn bind_info_links(info: &HtmlElement) {
+    for link in node_list(INFO_LINKS_SELECTOR) {
+        bind_info_link(link.dyn_into().expect("info link"), info.clone());
+    }
+}
+
+fn decorate_external_links() {
+    for link in node_list(NOT_PROJECT_SELECTOR) {
+        let link: HtmlElement = link.dyn_into().expect("external link");
+        link.set_attribute(TARGET, BLANK).expect("link target");
+        link.set_attribute(REL, NOOPENER).expect("link rel");
+    }
+}
+
 pub(crate) struct Links;
 
 impl Links {
@@ -46,28 +73,8 @@ impl Links {
 
     pub(crate) fn new() -> Self {
         let info = query_selector(INFO_SELECTOR);
-
-        for link in node_list(INFO_LINKS_SELECTOR) {
-            let el: HtmlElement = link.dyn_into().expect("info link");
-            let info_for_over = info.clone();
-            let el_for_over = el.clone();
-            listen(el.as_ref(), MOUSEOVER, move |_event: MouseEvent| {
-                show_info(NAME, &el_for_over, &info_for_over);
-                show_info(TITLE, &el_for_over, &info_for_over);
-            });
-
-            let info_for_out = info.clone();
-            listen(el.as_ref(), MOUSEOUT, move |_event: MouseEvent| {
-                hide_info(&info_for_out);
-            });
-        }
-
-        for link in node_list(NOT_PROJECT_SELECTOR) {
-            let el: HtmlElement = link.dyn_into().expect("external link");
-            el.set_attribute(TARGET, BLANK).expect("link target");
-            el.set_attribute(REL, NOOPENER).expect("link rel");
-        }
-
+        bind_info_links(&info);
+        decorate_external_links();
         Self::shuffle_project_links();
         Self
     }
