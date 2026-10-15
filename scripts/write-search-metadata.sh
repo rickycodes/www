@@ -8,6 +8,7 @@ TODAY_UTC="$(date -u +"%Y-%m-%d")"
 cat > static/robots.txt <<EOF
 User-agent: *
 Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 
 Sitemap: $BASE_URL/sitemap.xml
 EOF
@@ -23,3 +24,5 @@ cat > static/sitemap.xml <<EOF
   </url>
 </urlset>
 EOF
+
+node scripts/generate-agent-content.mjs "$BASE_URL"

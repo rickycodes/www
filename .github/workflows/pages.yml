@@ -12,6 +12,7 @@ on:
       - "static/**"
       - "scripts/assemble-deploy-from-cache.sh"
       - "scripts/generate-html.sh"
+      - "scripts/generate-agent-content.mjs"
       - "scripts/minify-deploy-js.sh"
       - "scripts/require-node-tools.sh"
       - "scripts/version-static-assets.sh"
