@@ -5,6 +5,8 @@ static/cat.txt
 static/build-meta.json
 static/robots.txt
 static/sitemap.xml
+static/index.md
+static/llms.txt
 static/*.png
 static/*.jpg
 static/*.jpeg
