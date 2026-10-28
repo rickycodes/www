@@ -146,7 +146,11 @@ fn set_theme(button: &HtmlElement, dark: bool) {
     button
         .set_attribute(ARIA_PRESSED, if dark { "true" } else { "false" })
         .expect("theme state");
-    button.set_text_content(Some(icon));
+    button
+        .query_selector(".theme-toggle-icon")
+        .expect("theme icon selector")
+        .expect("theme icon")
+        .set_text_content(Some(icon));
 }
 
 fn watch_system_preference(button: HtmlElement, state: Rc<RefCell<ThemeState>>) {

@@ -55,6 +55,7 @@
 :root {
   --font-mono: 'IBM Plex Mono', monospace;
   --background: #fff;
+  --theme-toggle-background: #d9ffff;
   --foreground: #303030;
   --contrast: #000;
   --muted: lightgrey;
@@ -69,6 +70,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #151515;
+    --theme-toggle-background: var(--background);
     --foreground: #f2f2f2;
     --contrast: var(--foreground);
     --muted: #777;
@@ -81,6 +83,7 @@
 
 [data-theme='light'] {
   --background: #fff;
+  --theme-toggle-background: #d9ffff;
   --foreground: #303030;
   --contrast: #000;
   --muted: lightgrey;
@@ -92,6 +95,7 @@
 
 [data-theme='dark'] {
   --background: #151515;
+  --theme-toggle-background: var(--background);
   --foreground: #f2f2f2;
   --contrast: var(--foreground);
   --muted: #777;
@@ -131,14 +135,18 @@ a {
   padding: 0;
   border: 2px solid var(--contrast);
   border-radius: 50%;
-  background: transparent;
+  background: var(--theme-toggle-background);
   color: var(--foreground);
   font: 1em/1 var(--font-mono);
   cursor: pointer;
-  filter: grayscale(1);
   transition: background-color var(--ease-out),
 	  color var(--ease-out),
 	  border-color var(--ease-out);
+}
+
+.theme-toggle-icon {
+  display: inline-block;
+  filter: grayscale(1);
 }
 
 .theme-toggle:focus-visible {

@@ -64,6 +64,16 @@ try {
   if (await buildMetaLink.getAttribute('target') !== '_blank') throw new Error('build metadata commit link target missing')
 
   const themeToggle = page.locator('.theme-toggle')
+  await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'light'))
+  const toggleColors = await themeToggle.evaluate(element => {
+    const style = getComputedStyle(element)
+    const icon = getComputedStyle(element.querySelector('.theme-toggle-icon'))
+    return { background: style.backgroundColor, filter: style.filter, iconFilter: icon.filter }
+  })
+  if (toggleColors.background !== 'rgb(217, 255, 255)' || toggleColors.filter !== 'none' ||
+    toggleColors.iconFilter !== 'grayscale(1)') {
+    throw new Error(`light theme toggle colors were unexpected: ${JSON.stringify(toggleColors)}`)
+  }
   const beforeTheme = await themeToggle.getAttribute('aria-pressed')
   await themeToggle.click()
   const afterTheme = await themeToggle.getAttribute('aria-pressed')
