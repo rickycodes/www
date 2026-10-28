@@ -24,6 +24,8 @@ features = [
     "EventTarget",
     "HtmlDetailsElement",
     "HtmlElement",
+    "HtmlImageElement",
+    "IntersectionObserver",
     "KeyboardEvent",
     "Location",
     "MediaQueryList",
@@ -32,7 +34,10 @@ features = [
     "Node",
     "NodeList",
     "Storage",
+    "Text",
     "Window",
+    "XmlHttpRequest",
+    "XmlHttpRequestEventTarget",
 ]
 
 [profile.release]

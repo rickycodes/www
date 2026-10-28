@@ -3,7 +3,8 @@ use web_sys::{Element, HtmlElement, KeyboardEvent};
 
 use crate::constants::{
     ACTIVE, ACTIVE_PROJECT_SELECTOR, DATA_PROJECT, DATA_SCROLL, EMPTY, EXPECT_ACTIVE_CLASS,
-    EXPECT_BODY, EXPECT_HTML_ELEMENT, EXPECT_PROJECT_STATE, INERT, PROJECT_SELECTOR,
+    EXPECT_BODY, EXPECT_HTML_ELEMENT, EXPECT_PROJECT_STATE, INERT, PROJECT_ITEM_SELECTOR,
+    PROJECT_LINK_SELECTOR, PROJECT_SELECTOR,
 };
 use crate::util::{document, get_hash, listen, query_selector, window};
 
@@ -36,13 +37,13 @@ fn set_active_project(project: Option<Element>) {
 
 fn show(hash: String, scroll_top: &mut Option<i32>, return_focus: &mut Option<HtmlElement>) {
     let body = document().body().expect(EXPECT_BODY);
-    let selector = format!(".projects .project.{hash}");
+    let selector = format!("{PROJECT_ITEM_SELECTOR}.{hash}");
     if let Some(project) = document()
         .query_selector(&selector)
         .expect("project selector")
     {
         if let Some(opener) = document()
-            .query_selector(&format!("._projects .project.link.{hash}"))
+            .query_selector(&format!("{PROJECT_LINK_SELECTOR}.{hash}"))
             .expect("project opener selector")
         {
             *return_focus = opener.dyn_into().ok();

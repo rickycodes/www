@@ -77,7 +77,7 @@ impl Trash {
         });
 
         let coord_for_enter = coord.clone();
-        listen(coord.as_ref(), "dragenter", move |event: DragEvent| {
+        listen(coord.as_ref(), DRAG_ENTER, move |event: DragEvent| {
             event.prevent_default();
             let _ = coord_for_enter.class_list().add_1(DRAG_ENTER);
         });

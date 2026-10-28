@@ -6,6 +6,7 @@ mod constants;
 mod coordinates;
 mod cursors;
 mod links;
+mod page;
 mod project;
 mod project_slideshows;
 mod theme;
@@ -17,6 +18,7 @@ use crate::constants::log;
 use crate::coordinates::Coordinates;
 use crate::cursors::Cursors;
 use crate::links::Links;
+use crate::page::Page;
 use crate::project::ToggleProject;
 use crate::project_slideshows::SlideShows;
 use crate::theme::Theme;
@@ -41,6 +43,7 @@ impl Website {
         WorkHistory::new();
         ToggleProject::new();
         Theme::new();
+        Page::initialize();
         self
     }
 
