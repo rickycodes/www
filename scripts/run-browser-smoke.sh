@@ -2,7 +2,8 @@
 set -euo pipefail
 
 server_port="${SERVER_PORT:-8765}"
-python3 -m http.server "${server_port}" --directory target/deploy &
+# Keep HTTP access logs out of Playwright's test output.
+python3 -m http.server "${server_port}" --directory target/deploy >/dev/null 2>&1 &
 server_pid=$!
 trap 'kill "${server_pid}" 2>/dev/null || true' EXIT INT TERM
 
@@ -17,4 +18,4 @@ for attempt in {1..30}; do
   sleep 0.2
 done
 
-SERVER_PORT="${server_port}" node scripts/browser-smoke.mjs
+SERVER_PORT="${server_port}" npx playwright test scripts/browser-smoke.spec.mjs --reporter=list --workers=1
