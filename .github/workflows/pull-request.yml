@@ -1,4 +1,4 @@
-name: Pull Request Validation
+name: Project Validation
 
 on:
   push:
