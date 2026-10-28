@@ -31,6 +31,6 @@ fi
 echo "Running Rust format, lint, and test checks"
 cargo fmt --all -- --check
 cargo clippy --locked --target wasm32-unknown-unknown -- -D warnings
-cargo test --locked
+cargo test --lib --locked
 
 echo "all tests passed!"

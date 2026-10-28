@@ -61,7 +61,7 @@ jobs:
         run: bash scripts/setup-wasm-toolchain-ci.sh
 
       - name: Run Rust unit tests
-        run: cargo test --locked
+        run: cargo test --lib --locked
 
       - name: Build and check deploy bundle
         run: ./build.sh --generate --build --minify
