@@ -25,6 +25,33 @@ fn get_increment(direction: &str, data_index: usize, last: usize) -> usize {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::{NEXT, PREV, get_increment};
+
+    #[test]
+    fn next_wraps_from_last_slide_to_first() {
+        assert_eq!(get_increment(NEXT, 4, 4), 0);
+    }
+
+    #[test]
+    fn previous_wraps_from_first_slide_to_last() {
+        assert_eq!(get_increment(PREV, 0, 4), 4);
+    }
+
+    #[test]
+    fn next_and_previous_move_one_slide_in_the_middle() {
+        assert_eq!(get_increment(NEXT, 2, 4), 3);
+        assert_eq!(get_increment(PREV, 2, 4), 1);
+    }
+
+    #[test]
+    fn a_single_slide_stays_on_the_same_slide() {
+        assert_eq!(get_increment(NEXT, 0, 0), 0);
+        assert_eq!(get_increment(PREV, 0, 0), 0);
+    }
+}
+
 fn set_active(slides: &[HtmlElement], controls: &[HtmlElement], index: usize) {
     for (slide_index, slide) in slides.iter().enumerate() {
         let class = if slide_index == index {

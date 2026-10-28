@@ -11,6 +11,8 @@ use crate::util::{document, elements_from_nodes, listen, node_list, window};
 
 const BUILD_META_SELECTOR: &str = ".build-meta";
 const COMMIT_BASE_URL: &str = "https://github.com/rickycodes/www/commit/";
+const BUILD_META_PREFIX: &str = "Deployed: ";
+const BUILD_META_UNKNOWN: &str = "Deployed: unknown";
 
 pub(crate) struct Page;
 
@@ -55,12 +57,12 @@ fn render_build_meta() {
                 JSON::parse(&json).ok().map(|meta| {
                     let built_at = property_string(&meta, "built_at_utc");
                     let git_sha = property_string(&meta, "git_sha");
-                    (built_at, git_sha)
+                    build_meta_view(built_at.as_deref(), git_sha.as_deref(), format_shipped_at)
                 })
             });
         match result {
-            Some((built_at, git_sha)) if callback_request.status().unwrap_or_default() == 200 => {
-                render_meta(&target, built_at.as_deref(), git_sha.as_deref());
+            Some(view) if callback_request.status().unwrap_or_default() == 200 => {
+                render_meta(&target, view);
             }
             _ => render_unknown(&target),
         }
@@ -87,29 +89,45 @@ fn property_string(value: &JsValue, key: &str) -> Option<String> {
 }
 
 fn render_unknown(element: &HtmlElement) {
-    element.set_text_content(Some("Deployed: unknown"));
+    element.set_text_content(Some(BUILD_META_UNKNOWN));
 }
 
-fn render_meta(element: &HtmlElement, built_at: Option<&str>, git_sha: Option<&str>) {
+#[derive(Debug, PartialEq)]
+struct BuildMetaView {
+    built_at: Option<String>,
+    git_sha: Option<String>,
+}
+
+fn build_meta_view(
+    built_at: Option<&str>,
+    git_sha: Option<&str>,
+    format_date: impl Fn(&str) -> Option<String>,
+) -> BuildMetaView {
+    let built_at = built_at
+        .filter(|value| !value.is_empty())
+        .map(|value| format_date(value).unwrap_or_else(|| value.to_owned()));
+    let git_sha = git_sha.filter(|value| !value.is_empty()).map(str::to_owned);
+    BuildMetaView { built_at, git_sha }
+}
+
+fn render_meta(element: &HtmlElement, view: BuildMetaView) {
     element.set_text_content(None);
     element
-        .append_child(&document().create_text_node("Deployed: ").into())
+        .append_child(&document().create_text_node(BUILD_META_PREFIX).into())
         .expect("append build metadata");
 
-    let formatted =
-        built_at.map(|value| format_shipped_at(value).unwrap_or_else(|| value.to_owned()));
-    if let Some(formatted) = formatted.as_deref() {
+    if let Some(built_at) = view.built_at.as_deref() {
         element
-            .append_child(&document().create_text_node(formatted).into())
+            .append_child(&document().create_text_node(built_at).into())
             .expect("append build date");
-    } else if built_at.is_none() && git_sha.is_none() {
+    } else if view.git_sha.is_none() {
         element
             .append_child(&document().create_text_node("unknown").into())
             .expect("append unknown build metadata");
     }
 
-    if let Some(sha) = git_sha {
-        if formatted.is_some() {
+    if let Some(sha) = view.git_sha.as_deref() {
+        if view.built_at.is_some() {
             element
                 .append_child(&document().create_text_node(",").into())
                 .expect("append build separator");
@@ -128,7 +146,7 @@ fn render_meta(element: &HtmlElement, built_at: Option<&str>, git_sha: Option<&s
         element.append_child(&link).expect("append commit link");
     }
 
-    if formatted.is_some() || git_sha.is_some() {
+    if view.built_at.is_some() || view.git_sha.is_some() {
         element
             .append_child(&document().create_text_node(".").into())
             .expect("append build metadata period");
@@ -195,6 +213,120 @@ fn ordinal_suffix(day: u32) -> &'static str {
             3 => "rd",
             _ => "th",
         },
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{BuildMetaView, build_meta_view, ordinal_suffix, project_name_from_hash};
+
+    fn test_view(built_at: Option<&str>, git_sha: Option<&str>) -> BuildMetaView {
+        build_meta_view(built_at, git_sha, |value| {
+            (value != "invalid").then(|| format!("formatted {value}"))
+        })
+    }
+
+    #[test]
+    fn ordinal_suffixes_cover_regular_and_teen_days() {
+        for (day, expected) in [
+            (0, "th"),
+            (1, "st"),
+            (2, "nd"),
+            (3, "rd"),
+            (4, "th"),
+            (11, "th"),
+            (12, "th"),
+            (13, "th"),
+            (21, "st"),
+            (22, "nd"),
+            (23, "rd"),
+            (111, "th"),
+            (112, "th"),
+            (113, "th"),
+        ] {
+            assert_eq!(ordinal_suffix(day), expected, "day {day}");
+        }
+    }
+
+    #[test]
+    fn project_hash_parser_returns_nonempty_fragment_names() {
+        assert_eq!(project_name_from_hash("#metamask"), Some("metamask"));
+        assert_eq!(
+            project_name_from_hash("#audio-visualizer"),
+            Some("audio-visualizer")
+        );
+    }
+
+    #[test]
+    fn project_hash_parser_rejects_missing_or_empty_fragments() {
+        assert_eq!(project_name_from_hash(""), None);
+        assert_eq!(project_name_from_hash("metamask"), None);
+        assert_eq!(project_name_from_hash("#"), None);
+    }
+
+    #[test]
+    fn build_metadata_with_no_fields_renders_unknown_state() {
+        assert_eq!(
+            test_view(None, None),
+            BuildMetaView {
+                built_at: None,
+                git_sha: None,
+            }
+        );
+        assert_eq!(
+            test_view(Some(""), Some("")),
+            BuildMetaView {
+                built_at: None,
+                git_sha: None,
+            }
+        );
+    }
+
+    #[test]
+    fn build_metadata_keeps_valid_date_and_commit_fields() {
+        assert_eq!(
+            test_view(Some("iso-date"), Some("abc123")),
+            BuildMetaView {
+                built_at: Some("formatted iso-date".into()),
+                git_sha: Some("abc123".into()),
+            }
+        );
+    }
+
+    #[test]
+    fn missing_date_or_commit_keeps_the_available_field() {
+        assert_eq!(
+            test_view(None, Some("abc123")),
+            BuildMetaView {
+                built_at: None,
+                git_sha: Some("abc123".into()),
+            }
+        );
+        assert_eq!(
+            test_view(Some("iso-date"), None),
+            BuildMetaView {
+                built_at: Some("formatted iso-date".into()),
+                git_sha: None,
+            }
+        );
+    }
+
+    #[test]
+    fn invalid_date_is_preserved_while_missing_date_is_omitted() {
+        assert_eq!(
+            test_view(Some("invalid"), Some("abc123")),
+            BuildMetaView {
+                built_at: Some("invalid".into()),
+                git_sha: Some("abc123".into()),
+            }
+        );
+        assert_eq!(
+            test_view(None, Some("abc123")),
+            BuildMetaView {
+                built_at: None,
+                git_sha: Some("abc123".into()),
+            }
+        );
     }
 }
 
@@ -282,8 +414,12 @@ fn preload_open_project() {
     }
 }
 
+fn project_name_from_hash(hash: &str) -> Option<&str> {
+    hash.strip_prefix(HASH).filter(|name| !name.is_empty())
+}
+
 fn preload_project(hash: &str) {
-    let Some(name) = hash.strip_prefix(HASH).filter(|name| !name.is_empty()) else {
+    let Some(name) = project_name_from_hash(hash) else {
         return;
     };
     let Ok(Some(project)) = document().query_selector(&format!("{PROJECT_ITEM_SELECTOR}.{name}"))

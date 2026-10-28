@@ -35,10 +35,83 @@ impl ThemePreference {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::{ThemePreference, ThemeState};
+
+    #[test]
+    fn stored_dark_and_light_values_are_recognized() {
+        assert_eq!(
+            ThemePreference::from_storage(Some("dark".into())),
+            ThemePreference::Dark
+        );
+        assert_eq!(
+            ThemePreference::from_storage(Some("light".into())),
+            ThemePreference::Light
+        );
+    }
+
+    #[test]
+    fn missing_or_unrecognized_value_uses_system_preference() {
+        assert_eq!(ThemePreference::from_storage(None), ThemePreference::System);
+        assert_eq!(
+            ThemePreference::from_storage(Some("unexpected".into())),
+            ThemePreference::System
+        );
+    }
+
+    #[test]
+    fn only_explicit_preferences_override_the_system() {
+        assert_eq!(ThemePreference::System.is_dark(), None);
+        assert_eq!(ThemePreference::Light.is_dark(), Some(false));
+        assert_eq!(ThemePreference::Dark.is_dark(), Some(true));
+    }
+
+    #[test]
+    fn clicking_toggles_theme_and_persists_an_explicit_preference() {
+        let mut state = ThemeState {
+            preference: ThemePreference::System,
+            dark: false,
+        };
+
+        state.toggle();
+        assert!(state.dark);
+        assert_eq!(state.preference, ThemePreference::Dark);
+
+        state.toggle();
+        assert!(!state.dark);
+        assert_eq!(state.preference, ThemePreference::Light);
+    }
+
+    #[test]
+    fn clicking_from_system_dark_selects_light_explicitly() {
+        let mut state = ThemeState {
+            preference: ThemePreference::System,
+            dark: true,
+        };
+
+        state.toggle();
+
+        assert!(!state.dark);
+        assert_eq!(state.preference, ThemePreference::Light);
+    }
+}
+
 #[derive(Clone, Copy, Debug)]
 struct ThemeState {
     preference: ThemePreference,
     dark: bool,
+}
+
+impl ThemeState {
+    fn toggle(&mut self) {
+        self.dark = !self.dark;
+        self.preference = if self.dark {
+            ThemePreference::Dark
+        } else {
+            ThemePreference::Light
+        };
+    }
 }
 
 fn system_preference() -> Option<web_sys::MediaQueryList> {
@@ -120,19 +193,18 @@ impl Theme {
 
         let event_button = button.clone();
         listen(button.as_ref(), "click", move |_event: MouseEvent| {
-            let mut state = state.borrow_mut();
-            state.dark = !state.dark;
-            state.preference = if state.dark {
-                ThemePreference::Dark
-            } else {
-                ThemePreference::Light
+            let dark = {
+                let mut state = state.borrow_mut();
+                state.toggle();
+                state.dark
             };
-            set_theme(&event_button, state.dark);
+
+            set_theme(&event_button, dark);
             let _ = event_button.blur();
             if let Some(storage) = &storage {
                 let _ = storage.set_item(
                     THEME_STORAGE_KEY,
-                    if state.dark { THEME_DARK } else { THEME_LIGHT },
+                    if dark { THEME_DARK } else { THEME_LIGHT },
                 );
             }
         });
