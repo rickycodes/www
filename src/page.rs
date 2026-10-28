@@ -12,7 +12,6 @@ use crate::util::{document, elements_from_nodes, listen, node_list, window};
 const BUILD_META_SELECTOR: &str = ".build-meta";
 const COMMIT_BASE_URL: &str = "https://github.com/rickycodes/www/commit/";
 const BUILD_META_PREFIX: &str = "Deployed: ";
-const BUILD_META_UNKNOWN: &str = "Deployed: unknown";
 
 pub(crate) struct Page;
 
@@ -89,7 +88,7 @@ fn property_string(value: &JsValue, key: &str) -> Option<String> {
 }
 
 fn render_unknown(element: &HtmlElement) {
-    element.set_text_content(Some(BUILD_META_UNKNOWN));
+    element.set_text_content(Some(&format!("{BUILD_META_PREFIX}unknown")));
 }
 
 #[derive(Debug, PartialEq)]
