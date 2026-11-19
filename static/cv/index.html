@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ricky Miller — Senior Software Engineer">
+  <title>Ricky Miller — CV</title>
+  <style>
+@font-face {
+  font-family: 'GT America Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://oxide.computer/fonts/GT-America-Mono-Regular-OCC.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'SuisseIntl';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://oxide.computer/fonts/SuisseIntl-Regular-WebS.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'SuisseIntl';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://oxide.computer/fonts/SuisseIntl-Medium-WebS.woff2) format('woff2');
+}
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 2em;
+  color: #000;
+  background: #fff;
+  font-family: 'SuisseIntl', sans-serif;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: .15em;
+}
+
+h1, h2, h3, .location, .contact, .title, .dates, .site-footer {
+  font-family: 'GT America Mono', monospace;
+  font-weight: 400;
+}
+
+.site-header { margin-bottom: 2rem; }
+main {
+  font-size: 1.1rem;
+  line-height: 1.55;
+}
+
+.identity {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.location {
+  margin: 0;
+  font-size: .9rem;
+}
+
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem .4rem;
+  margin: .75rem 0 0;
+  font-size: .82rem;
+}
+
+.contact span::before {
+  content: '·';
+  margin-right: .4rem;
+}
+
+
+.title {
+  margin: 1rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.section { margin-top: 2rem; }
+
+.section h2 {
+  margin: 0 0 .75rem;
+  font-size: 1.35rem;
+  line-height: 1.35;
+}
+
+.entry { margin-top: 1.2rem; }
+.entry + .entry { margin-top: 2rem; }
+.experience .entry + .entry { margin-top: 3rem; }
+
+.entry-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .75rem 1rem;
+  align-items: baseline;
+  margin: 0 0 .75rem;
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
+
+.entry-heading .role { font-weight: 500; }
+strong { font-weight: 500; }
+
+.entry-heading .dates {
+  font-size: .82rem;
+  font-weight: 400;
+  text-align: right;
+  white-space: nowrap;
+}
+
+p { margin: .75rem 0 0; }
+.entry > p:first-of-type { margin-top: 0; }
+
+ul {
+  margin: .75rem 0 0;
+  padding-left: 1.25rem;
+}
+
+li { padding-left: .2rem; }
+li + li { margin-top: .5rem; }
+
+.cta-gap { margin-top: .4rem; }
+
+.site-footer {
+  margin-top: 3rem;
+  font-size: .78rem;
+}
+
+.page-break { display: none; }
+
+@media (max-width: 620px) {
+  .identity { align-items: flex-start; flex-direction: column; }
+  .entry-heading { display: block; }
+  .entry-heading .dates {
+    display: block;
+    margin-top: .25rem;
+    text-align: left;
+  }
+}
+
+@media print {
+  .page-break { display: block; break-before: page; }
+  a { color: inherit; }
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="identity">
+    <h1>Ricky Miller</h1>
+    <p class="location">Ottawa, Ontario, Canada</p>
+  </div>
+  <nav class="contact" aria-label="Contact">
+    <a href="mailto:hello@ricky.codes">hello@ricky.codes</a>
+    <span><a href="https://ricky.codes">ricky.codes</a></span>
+    <span><a href="https://github.com/rickycodes">github.com/rickycodes</a></span>
+  </nav>
+    <h2 class="title">Senior Software Engineer</h2>
+</header>
+<main>
+<section class="section">
+<h2>Summary</h2>
+<p>Senior software engineer with 15+ years building web and mobile products, shared platforms, and developer infrastructure. Product engineering, architecture, release engineering, developer productivity. Strongest work: complex systems, difficult bugs, better engineering flow.</p>
+</section>
+<section class="section">
+<h2>Core Technologies</h2>
+<p><strong>Languages:</strong> JavaScript, TypeScript, Rust, Python, Bash, PHP</p>
+<p><strong>Frameworks:</strong> React, React Native, Node.js, HapiJS</p>
+<p><strong>Engineering:</strong> GitHub Actions, CI/CD, release engineering, test automation, Linux, Docker, REST APIs</p>
+<p><strong>AI-assisted development:</strong> Codex, GitHub Copilot, Claude, large language model tooling</p>
+</section>
+<section class="section experience">
+<h2>Professional Experience</h2>
+<article class="entry">
+<h3 class="entry-heading"><span><span class="role">Senior Software Engineer</span> <span class="company">| MetaMask</span></span><time class="dates">Nov 2019 – Oct 2024</time></h3>
+<p>Built MetaMask Mobile, Extension, Core, shared libraries, and engineering infrastructure for major cryptocurrency wallet.</p>
+<ul>
+  <li>Authored <strong>447 pull requests</strong> across <strong>21 repositories</strong>; merged <strong>376</strong> across products, shared libraries, and infrastructure.</li>
+  <li>Delivered <a href="https://github.com/MetaMask/core/pull/521"><strong>EIP-1559 transaction support</strong></a>: controller logic, gas estimation, typed transactions, <a href="https://github.com/MetaMask/core/pull/535">speed-up/cancellation flows</a>, tests, MetaMask Mobile integration.</li>
+  <li>Shipped Mobile and Extension features across wallet state, transactions, networking, onboarding, browser compatibility, and platform behavior.</li>
+  <li>Modernized delivery systems with GitHub Actions, release automation, npm publishing, monorepo tooling, and reusable cross-repository workflows.</li>
+  <li>Led framework and dependency upgrades, including MetaMask Extension’s React 16 migration; preserved stability and test coverage.</li>
+  <li>Worked across Mobile, Extension, Core, QA, Security, Product, and Infrastructure teams in security-sensitive systems.</li>
+</ul>
+<p><strong>Selected technologies:</strong> JavaScript, TypeScript, React Native, React, Node.js, GitHub Actions, Ethereum</p>
+</article>
+<article class="entry">
+<h3 class="entry-heading"><span><span class="role">Senior Developer</span> <span class="company">| Resolver</span></span><time class="dates">Nov 2018 – Nov 2019</time></h3>
+<p>Built enterprise governance, risk, compliance, and incident-management software.</p>
+<ul>
+  <li>Shipped full-stack features across React applications and HapiJS services.</li>
+  <li>Designed REST APIs, database migrations, and customer-facing workflows.</li>
+  <li>Improved test automation, developer tooling, and application reliability.</li>
+</ul>
+</article>
+<div class="page-break" aria-hidden="true"></div>
+<article class="entry">
+<h3 class="entry-heading"><span><span class="role">Senior Developer</span> <span class="company">| NowSecure</span></span><time class="dates">Jul 2015 – Apr 2018</time></h3>
+<p>Built enterprise software for Android and iOS security analysis.</p>
+<ul>
+  <li>Built React applications for enterprise customers and security researchers.</li>
+  <li>Integrated client applications with backend security-analysis services.</li>
+  <li>Improved reusable UI architecture and engineering workflows.</li>
+</ul>
+</article>
+<article class="entry">
+<h3 class="entry-heading"><span><span class="role">Senior Developer</span> <span class="company">| OneMethod</span></span><time class="dates">Sep 2014 – Jul 2015</time></h3>
+<p>Built digital products and interactive web applications for enterprise clients.</p>
+<ul>
+  <li>Built reusable AngularJS and Backbone applications.</li>
+  <li>Introduced Selenium browser testing; reduced regressions and improved release confidence.</li>
+</ul>
+</article>
+<article class="entry">
+<h3 class="entry-heading"><span><span class="role">Developer</span> <span class="company">| MetaLab</span></span><time class="dates">Apr 2014 – Sep 2014</time></h3>
+<p>Built production e-commerce features for Walmart Canada with JavaScript and Node.js.</p>
+</article>
+<article class="entry">
+<h3 class="entry-heading"><span><span class="role">Developer</span> <span class="company">| High Road Communications</span></span><time class="dates">Nov 2010 – Jul 2013</time></h3>
+<p>Built web applications, API integrations, and interactive marketing platforms for enterprise clients.</p>
+</article>
+</section>
+<section class="section">
+<h2>Selected Projects</h2>
+<article class="entry">
+<h3 class="entry-heading"><a href="https://github.com/rickycodes/oysterclip">Oysterclip</a></h3>
+<p>Privacy-focused clipboard manager. Local text and image history. Native desktop interface.</p>
+</article>
+<article class="entry">
+<h3 class="entry-heading"><a href="https://github.com/rickycodes/retrorecord">Retrorecord</a></h3>
+<p>Rust reimplementation of Raspberry Pi gameplay recorder. Systems programming, performance, hardware integration.</p>
+</article>
+<article class="entry">
+<h3 class="entry-heading">Open Source</h3>
+<p>Contributor to <a href="https://github.com/zeit/hyper/pull/2001#issuecomment-341775733">Hyper</a>, <a href="https://github.com/beakerbrowser/beaker/commits?author=rickycodes">Beaker Browser</a>, <a href="https://github.com/koute/stdweb/commits?author=rickycodes">stdweb</a>, <a href="https://github.com/captbaritone/winamp2-js/commits?author=rickycodes">winamp2-js</a>, and other open-source web, Rust, and developer-tooling projects.</p>
+</article>
+<div class="cta-gap" aria-hidden="true"></div>
+<p>Explore more projects on <a href="https://github.com/rickycodes">GitHub</a>.</p>
+</section>
+<section class="section">
+<h2>Community</h2>
+<article class="entry">
+<h3 class="entry-heading">Co-founder <span class="company">@ Toronto NodeSchool</span></h3>
+<p>Co-founded Toronto NodeSchool. Organized JavaScript workshops. Mentored developers entering Node.js ecosystem.</p>
+</article>
+</section>
+</main>
+<footer class="site-footer">
+  <a href="https://ricky.codes">ricky.codes</a> ·
+  <a href="../cv.pdf">Download PDF</a> ·
+  Updated from <a href="https://github.com/rickycodes/cv/blob/main/cv.md">cv.md</a>.
+</footer>
+</body>
+</html>
