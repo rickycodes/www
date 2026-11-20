@@ -59,10 +59,7 @@ main {
 }
 
 .identity {
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-start;
-  gap: 1rem;
+  display: block;
 }
 
 h1 {
@@ -72,17 +69,22 @@ h1 {
 }
 
 .location {
-  margin: 0 0 0 1rem;
+  margin: .25rem 0 0;
   font-size: .9rem;
 }
 
 .contact {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .35rem .4rem;
+  display: block;
   margin: .75rem 0 0;
   font-size: .82rem;
 }
+
+.contact > span {
+  display: block;
+  margin-top: .35rem;
+}
+
+.contact > span:first-child { margin-top: 0; }
 
 .contact > span::before {
   content: '·';
@@ -119,8 +121,8 @@ h1 {
 strong { font-weight: 500; }
 
 .entry-heading .dates {
-  display: inline;
-  margin-left: .75rem;
+  display: block;
+  margin-top: .35rem;
   font-size: .82rem;
   font-weight: 400;
   white-space: normal;
@@ -148,14 +150,6 @@ li + li { margin-top: .5rem; }
 .page-break { display: none; }
 
 @media (max-width: 620px) {
-  .identity { align-items: flex-start; flex-direction: column; }
-  .location { margin-left: 0; }
-  .contact { display: block; }
-  .contact > span {
-    display: block;
-    margin-top: .35rem;
-  }
-  .contact > span:first-child { margin-top: 0; }
   .site-footer > a,
   .site-footer > .source {
     display: block;
@@ -166,11 +160,6 @@ li + li { margin-top: .5rem; }
   .entry-heading .role-company { display: block; }
   .entry-heading .company { display: block; }
   .role-company .company::before { content: ''; }
-  .entry-heading .dates {
-    display: block;
-    margin-top: .35rem;
-    margin-left: 0;
-  }
 }
 
 @media print {
