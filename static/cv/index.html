@@ -84,7 +84,6 @@ h1 {
   font-size: .82rem;
 }
 
-.contact > a::before,
 .contact > span::before {
   content: '·';
   margin-right: .4rem;
@@ -143,6 +142,8 @@ li + li { margin-top: .5rem; }
   margin-top: 3rem;
   font-size: .78rem;
 }
+.footer-separator { margin: 0 .25rem; }
+.source { white-space: nowrap; }
 
 .page-break { display: none; }
 
@@ -150,12 +151,18 @@ li + li { margin-top: .5rem; }
   .identity { align-items: flex-start; flex-direction: column; }
   .location { margin-left: 0; }
   .contact { display: block; }
-  .contact > a,
   .contact > span {
     display: block;
     margin-top: .35rem;
   }
-  .contact > a:first-child { margin-top: 0; }
+  .contact > span:first-child { margin-top: 0; }
+  .site-footer > a,
+  .site-footer > .source {
+    display: block;
+    margin-top: .35rem;
+  }
+  .site-footer > a:first-child { margin-top: 0; }
+  .footer-separator { display: none; }
   .entry-heading .role-company { display: block; }
   .entry-heading .company { display: block; }
   .role-company .company::before { content: ''; }
@@ -179,7 +186,7 @@ li + li { margin-top: .5rem; }
     <p class="location">Ottawa, Ontario, Canada</p>
   </div>
   <nav class="contact" aria-label="Contact">
-    <a href="mailto:hello@ricky.codes">hello@ricky.codes</a>
+    <span><a href="mailto:hello@ricky.codes">hello@ricky.codes</a></span>
     <span><a href="https://ricky.codes">ricky.codes</a></span>
     <span><a href="https://github.com/rickycodes">github.com/rickycodes</a></span>
   </nav>
@@ -274,9 +281,11 @@ li + li { margin-top: .5rem; }
 </section>
 </main>
 <footer class="site-footer">
-  <a href="https://ricky.codes">ricky.codes</a> ·
-  <a href="../cv.pdf">Download PDF</a> ·
-  Updated from <a href="https://github.com/rickycodes/cv/blob/main/cv.md">cv.md</a>.
+  <a href="https://ricky.codes">ricky.codes</a>
+  <span class="footer-separator">·</span>
+  <a href="../cv.pdf">Download PDF</a>
+  <span class="footer-separator">·</span>
+  <span class="source">Updated from <a href="https://github.com/rickycodes/cv/blob/main/cv.md">cv.md</a>.</span>
 </footer>
 </body>
 </html>
