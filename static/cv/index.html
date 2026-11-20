@@ -84,7 +84,8 @@ h1 {
   font-size: .82rem;
 }
 
-.contact span::before {
+.contact > a::before,
+.contact > span::before {
   content: '·';
   margin-right: .4rem;
 }
@@ -115,6 +116,7 @@ h1 {
 }
 
 .entry-heading .role { font-weight: 500; }
+.role-company .company::before { content: ' | '; }
 strong { font-weight: 500; }
 
 .entry-heading .dates {
@@ -123,7 +125,6 @@ strong { font-weight: 500; }
   font-size: .82rem;
   font-weight: 400;
   white-space: normal;
-
 }
 p { margin: .75rem 0 0; }
 .entry > p:first-of-type { margin-top: 0; }
@@ -148,7 +149,21 @@ li + li { margin-top: .5rem; }
 @media (max-width: 620px) {
   .identity { align-items: flex-start; flex-direction: column; }
   .location { margin-left: 0; }
-  .entry-heading .dates { margin-left: 0; }
+  .contact { display: block; }
+  .contact > a,
+  .contact > span {
+    display: block;
+    margin-top: .35rem;
+  }
+  .contact > a:first-child { margin-top: 0; }
+  .entry-heading .role-company { display: block; }
+  .entry-heading .company { display: block; }
+  .role-company .company::before { content: ''; }
+  .entry-heading .dates {
+    display: block;
+    margin-top: .35rem;
+    margin-left: 0;
+  }
 }
 
 @media print {
@@ -185,7 +200,7 @@ li + li { margin-top: .5rem; }
 <section class="section experience">
 <h2>Professional Experience</h2>
 <article class="entry">
-<h3 class="entry-heading"><span><span class="role">Senior Software Engineer</span> <span class="company">| MetaMask</span></span><time class="dates">Nov 2019 – Oct 2024</time></h3>
+<h3 class="entry-heading"><span class="role-company"><span class="role">Senior Software Engineer</span><span class="company">MetaMask</span></span><time class="dates">Nov 2019 – Oct 2024</time></h3>
 <p>Built MetaMask Mobile, Extension, Core, shared libraries, and engineering infrastructure for major cryptocurrency wallet.</p>
 <ul>
   <li>Authored <strong>447 pull requests</strong> across <strong>21 repositories</strong>; merged <strong>376</strong> across products, shared libraries, and infrastructure.</li>
@@ -198,7 +213,7 @@ li + li { margin-top: .5rem; }
 <p><strong>Selected technologies:</strong> JavaScript, TypeScript, React Native, React, Node.js, GitHub Actions, Ethereum</p>
 </article>
 <article class="entry">
-<h3 class="entry-heading"><span><span class="role">Senior Developer</span> <span class="company">| Resolver</span></span><time class="dates">Nov 2018 – Nov 2019</time></h3>
+<h3 class="entry-heading"><span class="role-company"><span class="role">Senior Developer</span><span class="company">Resolver</span></span><time class="dates">Nov 2018 – Nov 2019</time></h3>
 <p>Built enterprise governance, risk, compliance, and incident-management software.</p>
 <ul>
   <li>Shipped full-stack features across React applications and HapiJS services.</li>
@@ -208,7 +223,7 @@ li + li { margin-top: .5rem; }
 </article>
 <div class="page-break" aria-hidden="true"></div>
 <article class="entry">
-<h3 class="entry-heading"><span><span class="role">Senior Developer</span> <span class="company">| NowSecure</span></span><time class="dates">Jul 2015 – Apr 2018</time></h3>
+<h3 class="entry-heading"><span class="role-company"><span class="role">Senior Developer</span><span class="company">NowSecure</span></span><time class="dates">Jul 2015 – Apr 2018</time></h3>
 <p>Built enterprise software for Android and iOS security analysis.</p>
 <ul>
   <li>Built React applications for enterprise customers and security researchers.</li>
@@ -217,7 +232,7 @@ li + li { margin-top: .5rem; }
 </ul>
 </article>
 <article class="entry">
-<h3 class="entry-heading"><span><span class="role">Senior Developer</span> <span class="company">| OneMethod</span></span><time class="dates">Sep 2014 – Jul 2015</time></h3>
+<h3 class="entry-heading"><span class="role-company"><span class="role">Senior Developer</span><span class="company">OneMethod</span></span><time class="dates">Sep 2014 – Jul 2015</time></h3>
 <p>Built digital products and interactive web applications for enterprise clients.</p>
 <ul>
   <li>Built reusable AngularJS and Backbone applications.</li>
@@ -225,11 +240,11 @@ li + li { margin-top: .5rem; }
 </ul>
 </article>
 <article class="entry">
-<h3 class="entry-heading"><span><span class="role">Developer</span> <span class="company">| MetaLab</span></span><time class="dates">Apr 2014 – Sep 2014</time></h3>
+<h3 class="entry-heading"><span class="role-company"><span class="role">Developer</span><span class="company">MetaLab</span></span><time class="dates">Apr 2014 – Sep 2014</time></h3>
 <p>Built production e-commerce features for Walmart Canada with JavaScript and Node.js.</p>
 </article>
 <article class="entry">
-<h3 class="entry-heading"><span><span class="role">Developer</span> <span class="company">| High Road Communications</span></span><time class="dates">Nov 2010 – Jul 2013</time></h3>
+<h3 class="entry-heading"><span class="role-company"><span class="role">Developer</span><span class="company">High Road Communications</span></span><time class="dates">Nov 2010 – Jul 2013</time></h3>
 <p>Built web applications, API integrations, and interactive marketing platforms for enterprise clients.</p>
 </article>
 </section>
